@@ -1,8 +1,11 @@
 /* ============================================
-   QSE PRO - STYLE
+   QSE PRO - STYLE CSS
+   Versi: 6.0 - Complete with Gambar Features
    ============================================ */
 
-/* Reset & Base */
+/* ============================================
+   RESET & BASE
+   ============================================ */
 * {
     margin: 0;
     padding: 0;
@@ -14,10 +17,11 @@ body {
     background: #f0f4f8;
     color: #1e293b;
     padding: 12px;
+    min-height: 100vh;
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
 }
 
@@ -34,6 +38,7 @@ body {
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
 }
 
 .header-left {
@@ -112,6 +117,7 @@ body {
     padding: 10px 12px;
     border-radius: 12px;
     border: 1px solid #e9edf4;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.02);
 }
 
 .stat-card .label {
@@ -119,6 +125,7 @@ body {
     color: #64748b;
     text-transform: uppercase;
     letter-spacing: 0.3px;
+    font-weight: 600;
 }
 
 .stat-card .value {
@@ -138,7 +145,7 @@ body {
    ============================================ */
 .main-grid {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 1.3fr 0.7fr;
     gap: 12px;
 }
 
@@ -160,6 +167,7 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
+    color: #0f172a;
 }
 
 .card-title i {
@@ -236,7 +244,8 @@ body {
     margin-top: 2px;
 }
 
-select, input {
+select,
+input {
     width: 100%;
     padding: 8px 12px;
     border-radius: 10px;
@@ -246,12 +255,18 @@ select, input {
     transition: 0.2s;
     font-family: 'Inter', sans-serif;
     appearance: auto;
+    color: #1e293b;
 }
 
-select:focus, input:focus {
+select:focus,
+input:focus {
     outline: none;
     border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37,99,235,0.08);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+}
+
+select option {
+    padding: 8px;
 }
 
 .form-row {
@@ -407,6 +422,8 @@ select:focus, input:focus {
 
 .btn-primary:hover {
     background: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
 .btn-danger {
@@ -435,6 +452,8 @@ select:focus, input:focus {
 
 .btn-success:hover {
     background: #047857;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
 }
 
 .btn-warning {
@@ -486,6 +505,11 @@ select:focus, input:focus {
     padding: 10px 12px;
     margin-bottom: 6px;
     border-left: 3px solid #2563eb;
+    transition: 0.15s;
+}
+
+.item-card:hover {
+    background: #f1f5f9;
 }
 
 .item-card .item-header {
@@ -554,10 +578,12 @@ select:focus, input:focus {
     border-radius: 6px;
     cursor: pointer;
     color: #94a3b8;
+    transition: 0.15s;
 }
 
 .item-card .item-actions button:hover {
     background: #e2e8f0;
+    color: #0f172a;
 }
 
 .item-card .item-actions .del:hover {
@@ -583,56 +609,335 @@ select:focus, input:focus {
 }
 
 /* ============================================
-   GAMBAR
+   GAMBAR / IMAGE AREA
    ============================================ */
-.gambar-area {
+.gambar-container {
+    position: relative;
     border: 2px dashed #dbe3ef;
     border-radius: 12px;
-    padding: 16px;
-    text-align: center;
     background: #fafcff;
-    min-height: 100px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    min-height: 200px;
+    overflow: hidden;
+    transition: 0.2s;
+    touch-action: none;
 }
 
-.gambar-area.drag-over {
+.gambar-container.drag-over {
     border-color: #2563eb;
     background: #eff6ff;
 }
 
-.gambar-area img {
-    max-width: 100%;
-    max-height: 120px;
-    border-radius: 10px;
+.gambar-container .placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    padding: 20px;
+    color: #94a3b8;
+    pointer-events: none;
+}
+
+.gambar-container .placeholder i {
+    font-size: 36px;
+    margin-bottom: 8px;
+    opacity: 0.3;
+}
+
+/* Image Wrapper untuk Zoom & Pan */
+.image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+    min-height: 200px;
+    display: none;
+}
+
+.image-wrapper.active {
+    display: block;
+}
+
+.image-wrapper:active {
+    cursor: grabbing;
+}
+
+.image-wrapper img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transform-origin: 0 0;
+    transition: none;
+    pointer-events: none;
+    max-height: 500px;
     object-fit: contain;
 }
 
-.gambar-area .placeholder i {
-    font-size: 24px;
-    color: #94a3b8;
-    display: block;
-    margin-bottom: 4px;
+.image-wrapper img.loaded {
+    pointer-events: auto;
 }
 
-.gambar-area .file-label {
-    margin-top: 6px;
-    padding: 4px 14px;
-    border-radius: 20px;
-    background: white;
-    border: 1px solid #d1d9e6;
-    font-size: 11px;
+/* Canvas untuk markup */
+.markup-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.markup-canvas.drawing {
+    pointer-events: auto;
+    cursor: crosshair;
+}
+
+/* Zoom Controls */
+.zoom-controls {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    display: flex;
+    gap: 4px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 4px;
+    border-radius: 10px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+    z-index: 10;
+    backdrop-filter: blur(4px);
+}
+
+.zoom-controls button {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: #1e293b;
     cursor: pointer;
+    font-size: 14px;
+    transition: 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.gambar-area .file-label:hover {
+.zoom-controls button:hover {
+    background: #e2e8f0;
+}
+
+.zoom-controls button:active {
+    background: #cbd5e1;
+}
+
+.zoom-controls .zoom-level {
+    font-size: 11px;
+    font-weight: 600;
+    color: #475569;
+    min-width: 40px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.zoom-controls .divider {
+    width: 1px;
+    background: #e2e8f0;
+}
+
+/* Gambar Info */
+.gambar-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 12px;
+    background: #f8fafc;
+    border-radius: 10px;
+    margin-top: 6px;
+    font-size: 11px;
+    color: #64748b;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.gambar-info .gambar-nama {
+    font-weight: 500;
+    color: #0f172a;
+}
+
+.gambar-info .gambar-ukuran {
+    color: #94a3b8;
+}
+
+/* Upload Area */
+.upload-area {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+.upload-area .file-label {
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #475569;
+}
+
+.upload-area .file-label:hover {
+    background: #e2e8f0;
+}
+
+.upload-area .file-label i {
+    font-size: 12px;
+}
+
+#fileInput,
+#fileInputMultiple {
+    display: none;
+}
+
+/* Thumbnail List */
+.thumbnail-list {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+.thumbnail-item {
+    position: relative;
+    width: 56px;
+    height: 56px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid #e2e8f0;
+    cursor: pointer;
+    transition: 0.15s;
+    flex-shrink: 0;
+}
+
+.thumbnail-item:hover {
+    border-color: #2563eb;
+}
+
+.thumbnail-item.active {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+.thumbnail-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.thumbnail-item .remove-thumb {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #dc2626;
+    color: white;
+    border: none;
+    font-size: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: 0.15s;
+}
+
+.thumbnail-item:hover .remove-thumb {
+    opacity: 1;
+}
+
+.thumbnail-item .badge-order {
+    position: absolute;
+    bottom: 2px;
+    left: 2px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    font-size: 8px;
+    padding: 1px 6px;
+    border-radius: 10px;
+}
+
+/* Markup Tools */
+.markup-tools {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    padding: 6px 10px;
+    background: #f8fafc;
+    border-radius: 10px;
+    margin-top: 6px;
+    border: 1px solid #e9edf4;
+}
+
+.markup-tools button {
+    padding: 4px 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    background: white;
+    font-size: 10px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.15s;
+    color: #475569;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-family: 'Inter', sans-serif;
+}
+
+.markup-tools button:hover {
     background: #f1f5f9;
 }
 
-#fileInput {
-    display: none;
+.markup-tools button.active {
+    background: #dbeafe;
+    border-color: #2563eb;
+    color: #1d4ed8;
+}
+
+.markup-tools button i {
+    font-size: 12px;
+}
+
+.markup-tools .color-picker {
+    display: flex;
+    gap: 3px;
+    align-items: center;
+    padding: 2px 6px;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    background: white;
+}
+
+.markup-tools .color-picker input[type="color"] {
+    width: 20px;
+    height: 20px;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    background: none;
 }
 
 /* ============================================
@@ -725,6 +1030,18 @@ select:focus, input:focus {
     .item-picker {
         grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     }
+
+    .gambar-container .placeholder {
+        min-height: 300px;
+    }
+
+    .image-wrapper {
+        min-height: 300px;
+    }
+
+    .image-wrapper img {
+        max-height: 600px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -756,4 +1073,172 @@ select:focus, input:focus {
     .item-picker-btn i {
         font-size: 16px;
     }
-  }
+
+    .zoom-controls {
+        bottom: 6px;
+        right: 6px;
+    }
+
+    .zoom-controls button {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+    }
+
+    .thumbnail-item {
+        width: 44px;
+        height: 44px;
+    }
+
+    .gambar-container .placeholder {
+        min-height: 150px;
+    }
+
+    .image-wrapper {
+        min-height: 150px;
+    }
+
+    .image-wrapper img {
+        max-height: 350px;
+    }
+
+    .markup-tools button {
+        font-size: 9px;
+        padding: 3px 8px;
+    }
+
+    .markup-tools button i {
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 360px) {
+    .header-left h1 {
+        font-size: 14px;
+    }
+
+    .header-left .subtitle {
+        font-size: 8px;
+    }
+
+    .header-right .badge {
+        font-size: 8px;
+        padding: 2px 6px;
+    }
+
+    .stat-card .value {
+        font-size: 12px;
+    }
+
+    .item-picker {
+        grid-template-columns: 1fr 1fr;
+        gap: 4px;
+    }
+
+    .item-picker-btn {
+        padding: 6px 8px;
+        font-size: 10px;
+    }
+
+    .item-picker-btn i {
+        font-size: 14px;
+    }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.item-card {
+    animation: fadeIn 0.2s ease;
+}
+
+.stat-card {
+    animation: fadeIn 0.3s ease;
+}
+
+.thumbnail-item {
+    animation: fadeIn 0.15s ease;
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+@media print {
+    body {
+        background: white;
+        padding: 20px;
+    }
+
+    .header {
+        background: #0f172a !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .btn,
+    .btn-group,
+    .upload-area,
+    .markup-tools,
+    .zoom-controls,
+    .thumbnail-list,
+    .gambar-container .placeholder,
+    #fileInput,
+    #fileInputMultiple,
+    .hapusGambarBtn {
+        display: none !important;
+    }
+
+    .card {
+        border: 1px solid #e2e8f0 !important;
+        box-shadow: none !important;
+        page-break-inside: avoid;
+    }
+
+    .main-grid {
+        display: block;
+    }
+
+    .gambar-container {
+        border: 1px solid #e2e8f0 !important;
+        min-height: auto !important;
+    }
+
+    .image-wrapper {
+        display: block !important;
+        min-height: auto !important;
+    }
+
+    .image-wrapper img {
+        max-height: 300px !important;
+    }
+
+    .item-card {
+        background: #f8fafc !important;
+        border-left-color: #2563eb !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .stat-card {
+        border: 1px solid #e2e8f0 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .stat-card .value i {
+        color: #2563eb !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+   }
