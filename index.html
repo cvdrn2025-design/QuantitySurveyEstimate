@@ -7,18 +7,19 @@
     <meta name="description" content="Quantity Survey Engineer - Aplikasi Estimasi Material Proyek Konstruksi" />
     <title>QSE Pro - Quantity Survey Engineer</title>
     
-    <!-- PWA -->
+    <!-- ===== PWA ===== -->
     <link rel="manifest" href="manifest.json" />
     <link rel="apple-touch-icon" href="icons/icon-192.png" />
     
-    <!-- Fonts & Icons -->
+    <!-- ===== FONTS & ICONS ===== -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     
-    <!-- CSS -->
+    <!-- ===== CSS ===== -->
     <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
+    <!-- ===== HTML CONTENT ===== -->
     <div class="container">
         <!-- Header -->
         <header class="header">
@@ -204,9 +205,24 @@
         </div>
     </div>
 
-    <!-- ===== SCRIPTS ===== -->
+    <!-- ===== SCRIPTS - URUTAN PENTING! ===== -->
+    <!-- 1. Utility functions (tidak ada dependensi) -->
     <script src="js/utils.js"></script>
+    
+    <!-- 2. Database (tidak ada dependensi) -->
     <script src="js/database.js"></script>
+    
+    <!-- 3. Aplikasi utama (membutuhkan utils.js dan database.js) -->
     <script src="js/app.js"></script>
+    
+    <!-- ===== SERVICE WORKER (PWA) ===== -->
+    <script>
+        // Register Service Worker untuk PWA
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+                .then(() => console.log('✅ Service Worker registered'))
+                .catch(err => console.log('⚠️ Service Worker registration failed:', err));
+        }
+    </script>
 </body>
     </html>
