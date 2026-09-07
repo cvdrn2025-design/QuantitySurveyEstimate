@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Quantity Survey Engineer - QSE Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ===== CSS (sama seperti sebelumnya) ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f0f4f8; color: #1e293b; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        
+        .header {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: white;
+            padding: 24px 32px;
+            border-radius: 20px;
+            margin-bottom: 28px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        .header-left { display: flex; align-items: center; gap: 16px; }
+        .header-left .logo-icon {
+            width: 50px; height: 50px;
+            background: rgba(96, 165, 250, 0.15);
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 28px; color: #60a5fa;
+        }
+        .header-left h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
+        .header-left h1 span { color: #60a5fa; }
+        .header-left .subtitle { font-size: 13px; color: #94a3b8; font-weight: 400; margin-top: 2px; }
+        .header-right { display: flex; gap: 12px; flex-wrap: wrap; }
+        .header-right .badge {
+            background: rgba(255,255,255,0.08);
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 13px;
+            display: flex; align-items: center; gap: 8px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .header-right .badge i { color: #60a5fa; }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .stat-card {
+            background: white;
+            padding: 18px 22px;
+            border-radius: 16px;
+            border: 1px solid #e9edf4;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+        .stat-card .label { font-size: 12px; color: #64748b; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-card .value { font-size: 24px; font-weight: 700; margin-top: 4px; color: #0f172a; }
+        .stat-card .value i { font-size: 18px; margin-right: 8px; color: #2563eb; }
+        .stat-card .value .unit { font-size: 14px; font-weight: 400; color: #94a3b8; margin-left: 4px; }
+        
+        .main-grid { display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 24px; }
+        
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            border: 1px solid #e9edf4;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #0f172a;
+        }
+        .card-title i { color: #2563eb; font-size: 18px; }
+        .card-title .sub { font-size: 12px; color: #94a3b8; font-weight: 400; margin-left: auto; }
+        
+        .tab-container {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 16px;
+            background: #f1f5f9;
+            padding: 4px;
+            border-radius: 14px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            background: transparent;
+            color: #64748b;
+            transition: 0.2s;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .tab-btn:hover { background: rgba(255,255,255,0.5); }
+        .tab-btn.active { background: white; color: #0f172a; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .tab-btn i { font-size: 14px; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+        .form-group { margin-bottom: 14px; }
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .form-group label i { margin-right: 4px; color: #94a3b8; font-size: 11px; }
+        .form-group .hint { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 1.5px solid #e2e8f0;
+            background: #fafcff;
+            font-size: 14px;
+            transition: 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.08);
+            background: white;
+        }
+        .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+        .form-row-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; }
+        .form-row-5 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr; gap: 10px; }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.15s;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-primary { background: #2563eb; color: white; }
+        .btn-primary:hover { background: #1d4ed8; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37,99,235,0.3); }
+        .btn-success { background: #059669; color: white; }
+        .btn-success:hover { background: #047857; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(5,150,105,0.3); }
+        .btn-danger { background: #dc2626; color: white; }
+        .btn-danger:hover { background: #b91c1c; }
+        .btn-outline { background: transparent; color: #475569; border: 1.5px solid #e2e8f0; }
+        .btn-outline:hover { background: #f1f5f9; }
+        .btn-warning { background: #f59e0b; color: white; }
+        .btn-warning:hover { background: #d97706; }
+        .btn-sm { padding: 6px 14px; font-size: 12px; }
+        .btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn-group .btn { flex: 1; justify-content: center; }
+        
+        .item-list { max-height: 420px; overflow-y: auto; margin-top: 10px; padding-right: 4px; }
+        .item-list::-webkit-scrollbar { width: 4px; }
+        .item-list::-webkit-scrollbar-thumb { background: #d1d9e6; border-radius: 20px; }
+        
+        .item-card {
+            background: #f8fafc;
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
+            border-left: 4px solid #2563eb;
+            transition: 0.15s;
+        }
+        .item-card:hover { background: #f1f5f9; }
+        .item-card .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .item-card .item-name { font-weight: 600; font-size: 15px; color: #0f172a; }
+        .item-card .item-name .badge-type {
+            font-size: 10px;
+            font-weight: 500;
+            background: #dbeafe;
+            color: #1d4ed8;
+            padding: 2px 10px;
+            border-radius: 30px;
+            margin-left: 8px;
+        }
+        .item-card .item-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 16px;
+            margin-top: 6px;
+            font-size: 13px;
+            color: #475569;
+        }
+        .item-card .item-details span { display: flex; align-items: center; gap: 4px; }
+        .item-card .item-details i { color: #94a3b8; font-size: 12px; }
+        .item-card .item-volume {
+            font-weight: 700;
+            font-size: 16px;
+            color: #0f172a;
+            background: white;
+            padding: 4px 14px;
+            border-radius: 30px;
+            border: 1px solid #e2e8f0;
+            margin: 4px 0;
+        }
+        .item-card .item-actions { display: flex; gap: 4px; }
+        .item-card .item-actions button {
+            background: transparent;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #94a3b8;
+            transition: 0.1s;
+        }
+        .item-card .item-actions button:hover { background: #e2e8f0; color: #0f172a; }
+        .item-card .item-actions .del:hover { background: #fee2e2; color: #dc2626; }
+        
+        .empty-state { text-align: center; padding: 50px 20px; color: #94a3b8; }
+        .empty-state i { font-size: 40px; opacity: 0.3; margin-bottom: 12px; display: block; }
+        
+        .gambar-area {
+            border: 2px dashed #dbe3ef;
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            background: #fafcff;
+            min-height: 160px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+        .gambar-area.drag-over { border-color: #2563eb; background: #eff6ff; }
+        .gambar-area img { max-width: 100%; max-height: 200px; border-radius: 12px; object-fit: contain; }
+        .gambar-area .placeholder i { font-size: 36px; color: #94a3b8; display: block; margin-bottom: 8px; }
+        .gambar-area .file-label {
+            margin-top: 12px;
+            padding: 8px 20px;
+            border-radius: 30px;
+            background: white;
+            border: 1px solid #d1d9e6;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-block;
+        }
+        .gambar-area .file-label:hover { background: #f1f5f9; }
+        #fileInput { display: none; }
+        
+        .calc-detail {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin-top: 12px;
+            border: 1px solid #e9edf4;
+        }
+        .calc-detail .formula { font-weight: 600; color: #0f172a; font-size: 14px; }
+        .calc-detail .step {
+            color: #475569;
+            margin-top: 4px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 12px;
+        }
+        .calc-detail .step span {
+            background: white;
+            padding: 2px 10px;
+            border-radius: 20px;
+            border: 1px solid #e2e8f0;
+            font-size: 12px;
+        }
+        .calc-detail .result-box {
+            margin-top: 8px;
+            padding: 10px 14px;
+            background: #dbeafe;
+            border-radius: 10px;
+            font-weight: 600;
+            color: #1d4ed8;
+        }
+        .calc-detail .result-box .sub-result {
+            font-weight: 400;
+            font-size: 13px;
+            color: #475569;
+            display: block;
+            margin-top: 4px;
+        }
+        
+        .material-breakdown { margin-top: 12px; }
+        .material-breakdown .mat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid #e9edf4;
+            font-size: 13px;
+        }
+        .material-breakdown .mat-item:last-child { border-bottom: none; }
+        .material-breakdown .mat-name { font-weight: 500; }
+        .material-breakdown .mat-vol { font-weight: 600; color: #2563eb; }
+        
+        .sub-section {
+            background: #f0f7ff;
+            padding: 12px 14px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border-left: 3px solid #2563eb;
+        }
+        .sub-section .title { font-weight: 600; font-size: 13px; color: #1d4ed8; margin-bottom: 8px; }
+        .sub-section-warning {
+            background: #fef3c7;
+            padding: 12px 14px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border-left: 3px solid #f59e0b;
+        }
+        .sub-section-warning .title { font-weight: 600; font-size: 13px; color: #92400e; margin-bottom: 8px; }
+        
+        .highlight-box {
+            background: #fef3c7;
+            border: 1px solid #fcd34d;
+            border-radius: 10px;
+            padding: 10px 14px;
+            margin-top: 8px;
+            font-size: 13px;
+        }
+        .highlight-box .label { font-weight: 600; color: #92400e; }
+        
+        @media (max-width: 1024px) { .main-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 640px) {
+            .header { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .header-right { width: 100%; }
+            .form-row { grid-template-columns: 1fr; }
+            .form-row-3 { grid-template-columns: 1fr 1fr; }
+            .form-row-4 { grid-template-columns: 1fr 1fr; }
+            .form-row-5 { grid-template-columns: 1fr 1fr; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .item-card .item-header { flex-direction: column; }
+            .tab-container { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-left">
+            <div class="logo-icon"><i class="fas fa-ruler-combined"></i></div>
+            <div>
+                <h1>Quantity <span>Survey</span> Engineer</h1>
+                <div class="subtitle"><i class="fas fa-database"></i> Database Rumus Terpisah | v5.0</div>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="badge"><i class="fas fa-file-alt"></i> <span id="totalItemsBadge">0</span> Item</div>
+            <div class="badge"><i class="fas fa-cube"></i> <span id="totalVolumeBadge">0.000</span></div>
+            <div class="badge"><i class="fas fa-tag"></i> QSE v5.0</div>
+        </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="label">Total Volume</div>
+            <div class="value"><i class="fas fa-cubes"></i> <span id="statTotalVolume">0.000</span> <span class="unit">m³</span></div>
+        </div>
+        <div class="stat-card">
+            <div class="label">Total Item</div>
+            <div class="value"><i class="fas fa-list"></i> <span id="statTotalItem">0</span></div>
+        </div>
+        <div class="stat-card">
+            <div class="label">Jenis Pekerjaan</div>
+            <div class="value"><i class="fas fa-tasks"></i> <span id="statJenisPekerjaan">0</span></div>
+        </div>
+        <div class="stat-card">
+            <div class="label">Material Dominan</div>
+            <div class="value" style="font-size:16px;"><i class="fas fa-cube"></i> <span id="statMaterialTop">-</span></div>
+        </div>
+    </div>
+
+    <!-- MAIN GRID -->
+    <div class="main-grid">
+
+        <!-- LEFT: FORM & LIST -->
+        <div class="card">
+            <div class="card-title">
+                <i class="fas fa-plus-circle"></i> Input Item Pekerjaan
+                <span class="sub">QTO Calculator</span>
+            </div>
+
+            <!-- Tabs akan di-generate oleh JavaScript dari database -->
+            <div class="tab-container" id="tabContainer"></div>
+
+            <!-- Container untuk semua tab content -->
+            <div id="tabContentContainer"></div>
+
+            <div class="btn-group" style="margin-top:12px;">
+                <button class="btn btn-primary" id="tambahBtn"><i class="fas fa-plus"></i> Tambah Item</button>
+                <button class="btn btn-outline" id="resetFormBtn"><i class="fas fa-redo"></i> Reset</button>
+            </div>
+
+            <!-- Item List -->
+            <div style="margin-top: 24px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <span style="font-weight:600; font-size:14px;"><i class="fas fa-list-ul"></i> Daftar Item (<span id="jumlahItem">0</span>)</span>
+                    <button class="btn btn-danger btn-sm" id="hapusSemuaBtn" style="background:transparent; color:#dc2626; border:1px solid #fecaca; padding:4px 14px;">
+                        <i class="fas fa-trash"></i> Hapus Semua
+                    </button>
+                </div>
+                <div class="item-list" id="itemListContainer">
+                    <div class="empty-state">
+                        <i class="fas fa-box-open"></i>
+                        <p>Belum ada item pekerjaan</p>
+                        <p style="font-size:12px; margin-top:4px;">Tambahkan item untuk mulai menghitung</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT: GAMBAR & MATERIAL INFO -->
+        <div>
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-image"></i> Acuan Gambar
+                    <span class="sub">Referensi visual</span>
+                </div>
+                <div class="gambar-area" id="gambarArea">
+                    <div id="gambarPlaceholder" class="placeholder">
+                        <i class="fas fa-file-image"></i>
+                        <span>Drag & drop atau klik untuk upload</span>
+                        <label for="fileInput" class="file-label"><i class="fas fa-cloud-upload-alt"></i> Pilih Gambar</label>
+                    </div>
+                    <img id="gambarPreview" style="display:none;" alt="Preview" />
+                    <input type="file" id="fileInput" accept="image/*" />
+                    <div style="margin-top:12px;">
+                        <button class="btn btn-outline btn-sm" id="hapusGambarBtn"><i class="fas fa-times"></i> Hapus Gambar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top:16px;">
+                <div class="card-title">
+                    <i class="fas fa-info-circle"></i> Ringkasan Item Terakhir
+                    <span class="sub">Detail</span>
+                </div>
+                <div id="materialInfo" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                    <div>
+                        <div style="font-size:11px; color:#94a3b8; text-transform:uppercase; font-weight:600;">Material</div>
+                        <div style="font-weight:600; font-size:15px;" id="displayMaterial">-</div>
+                    </div>
+                    <div>
+                        <div style="font-size:11px; color:#94a3b8; text-transform:uppercase; font-weight:600;">Volume</div>
+                        <div style="font-weight:600; font-size:15px;" id="displayVolume">0.000</div>
+                    </div>
+                    <div>
+                        <div style="font-size:11px; color:#94a3b8; text-transform:uppercase; font-weight:600;">Tipe</div>
+                        <div style="font-weight:600;" id="displayTipe">-</div>
+                    </div>
+                    <div>
+                        <div style="font-size:11px; color:#94a3b8; text-transform:uppercase; font-weight:600;">Jenis</div>
+                        <div style="font-weight:600;" id="displayJenis">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top:16px;">
+                <div class="card-title">
+                    <i class="fas fa-chart-pie"></i> Breakdown Material
+                    <span class="sub">Per item</span>
+                </div>
+                <div id="materialBreakdown" class="material-breakdown">
+                    <div style="color:#94a3b8; font-size:13px; text-align:center; padding:20px 0;">
+                        <i class="fas fa-cube" style="display:block; font-size:24px; margin-bottom:8px; opacity:0.3;"></i>
+                        Belum ada data material
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top:16px;">
+                <div class="btn-group">
+                    <button class="btn btn-success" id="exportBtn"><i class="fas fa-file-export"></i> Export CSV</button>
+                    <button class="btn btn-warning" id="cetakBtn"><i class="fas fa-print"></i> Cetak</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== LOAD DATABASE RUMUS ===== -->
+<script src="qse-rumus.js"></script>
+
+<script>
+    (function(){
+        "use strict";
+
+        // ============================================
+        // 1. CEK DATABASE RUMUS
+        // ============================================
+        if (typeof QSE_RUMUS === 'undefined') {
+            alert('⚠️ Database rumus tidak ditemukan! Pastikan file qse-rumus.js terload dengan benar.');
+            console.error('QSE_RUMUS tidak terdefinisi!');
+            return;
+        }
+
+        // ============================================
+        // 2. STATE
+        // ============================================
+        let items = [];
+        let gambarFile = null;
+        let activeTab = 'beton'; // key dari QSE_RUMUS
+
+        // ============================================
+        // 3. DOM REFS
+        // ============================================
+        const tabContainer = document.getElementById('tabContainer');
+        const tabContentContainer = document.getElementById('tabContentContainer');
+        const tambahBtn = document.getElementById('tambahBtn');
+        const resetFormBtn = document.getElementById('resetFormBtn');
+        const hapusSemuaBtn = document.getElementById('hapusSemuaBtn');
+        const itemListContainer = document.getElementById('itemListContainer');
+        const jumlahItem = document.getElementById('jumlahItem');
+        const statTotalItem = document.getElementById('statTotalItem');
+        const statTotalVolume = document.getElementById('statTotalVolume');
+        const statJenisPekerjaan = document.getElementById('statJenisPekerjaan');
+        const statMaterialTop = document.getElementById('statMaterialTop');
+        const totalItemsBadge = document.getElementById('totalItemsBadge');
+        const totalVolumeBadge = document.getElementById('totalVolumeBadge');
+        const displayMaterial = document.getElementById('displayMaterial');
+        const displayVolume = document.getElementById('displayVolume');
+        const displayTipe = document.getElementById('displayTipe');
+        const displayJenis = document.getElementById('displayJenis');
+        const materialBreakdown = document.getElementById('materialBreakdown');
+        const fileInput = document.getElementById('fileInput');
+        const gambarArea = document.getElementById('gambarArea');
+        const gambarPreview = document.getElementById('gambarPreview');
+        const gambarPlaceholder = document.getElementById('gambarPlaceholder');
+        const hapusGambarBtn = document.getElementById('hapusGambarBtn');
+        const exportBtn = document.getElementById('exportBtn');
+        const cetakBtn = document.getElementById('cetakBtn');
+
+        // ============================================
+        // 4. FUNGSI BANTU
+        // ============================================
+        function formatAngka(v, digits = 3) {
+            return v.toFixed(digits);
+        }
+
+        function escHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        function getJenisIcon(jenis) {
+            const icons = {
+                'Struktur': 'fa-building',
+                'Arsitektur': 'fa-archway',
+                'Mekanikal': 'fa-cogs',
+                'Elektrikal': 'fa-bolt',
+                'Finishing': 'fa-paint-roller',
+                'Plumbing': 'fa-wrench'
+            };
+            return icons[jenis] || 'fa-cube';
+        }
+
+        // ============================================
+        // 5. GENERATE FORM DARI DATABASE
+        // ============================================
+        function generateTabsAndForms() {
+            let tabHtml = '';
+            let contentHtml = '';
+            let first = true;
+
+            for (const [key, rumus] of Object.entries(QSE_RUMUS)) {
+                // Tab Button
+                const activeClass = first ? 'active' : '';
+                tabHtml += `
+                    <button class="tab-btn ${activeClass}" data-tab="${key}">
+                        <i class="fas ${rumus.icon}"></i> ${rumus.nama}
+                    </button>
+                `;
+
+                // Tab Content - Generate form dari fields
+                let formHtml = '';
+                let fieldGroups = [];
+                let currentGroup = [];
+                let groupIndex = 0;
+
+                // Kelompokkan fields menjadi row (max 4 per row)
+                const fields = rumus.fields || [];
+                for (let i = 0; i < fields.length; i++) {
+                    const f = fields[i];
+                    let inputHtml = '';
+
+                    if (f.type === 'text') {
+                        inputHtml = `<input type="text" id="${f.id}" placeholder="${f.label}" value="${f.default || ''}" />`;
+                    } else if (f.type === 'number') {
+                        inputHtml = `<input type="number" id="${f.id}" step="${f.step || 0.001}" value="${f.default || 0}" />`;
+                    } else if (f.type === 'select') {
+                        let optionsHtml = '';
+                        const opts = f.options || [];
+                        opts.forEach(opt => {
+                            const sel = opt === f.default ? 'selected' : '';
+                            optionsHtml += `<option value="${opt}" ${sel}>${opt}</option>`;
+                        });
+                        inputHtml = `<select id="${f.id}">${optionsHtml}</select>`;
+                    }
+
+                    const fieldHtml = `
+                        <div class="form-group">
+                            <label><i class="fas fa-${f.icon || 'circle'}"></i> ${f.label}</label>
+                            ${inputHtml}
+                            ${f.hint ? `<div class="hint">${f.hint}</div>` : ''}
+                        </div>
+                    `;
+                    currentGroup.push(fieldHtml);
+
+                    if (currentGroup.length === 4 || i === fields.length - 1) {
+                        const cols = currentGroup.length;
+                        const colClass = cols === 1 ? '' : cols === 2 ? 'form-row' : cols === 3 ? 'form-row-3' : 'form-row-4';
+                        formHtml += `<div class="${colClass}" style="margin-bottom:12px;">${currentGroup.join('')}</div>`;
+                        currentGroup = [];
+                    }
+                }
+
+                // Tambahkan detail perhitungan
+                formHtml += `
+                    <div class="calc-detail" id="calcDetail_${key}">
+                        <div class="formula">📐 ${rumus.rumus}</div>
+                        <div class="step" id="calcSteps_${key}">
+                            <span style="background:#2563eb;color:white;border:none;">Hasil: <strong id="calcResult_${key}">0.000</strong></span>
+                        </div>
+                    </div>
+                `;
+
+                const contentClass = first ? 'tab-content active' : 'tab-content';
+                contentHtml += `
+                    <div id="tabContent_${key}" class="${contentClass}">
+                        ${formHtml}
+                    </div>
+                `;
+
+                first = false;
+            }
+
+            tabContainer.innerHTML = tabHtml;
+            tabContentContainer.innerHTML = contentHtml;
+
+            // Event listener untuk tabs
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    const tabId = this.dataset.tab;
+                    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+                    document.getElementById(`tabContent_${tabId}`).classList.add('active');
+                    activeTab = tabId;
+                    updateCalcPreview();
+                });
+            });
+        }
+
+        // ============================================
+        // 6. FUNGSI UTAMA
+        // ============================================
+
+        // Ambil data dari form berdasarkan key
+        function getFormData(key) {
+            const rumus = QSE_RUMUS[key];
+            if (!rumus) return {};
+            const data = {};
+            const fields = rumus.fields || [];
+            fields.forEach(f => {
+                const el = document.getElementById(f.id);
+                if (el) {
+                    if (f.type === 'number') {
+                        data[f.id] = parseFloat(el.value) || 0;
+                    } else if (f.type === 'select') {
+                        data[f.id] = el.value;
+                    } else {
+                        data[f.id] = el.value;
+                    }
+                }
+            });
+            return data;
+        }
+
+        // Set data ke form berdasarkan key
+        function setFormData(key, data) {
+            const rumus = QSE_RUMUS[key];
+            if (!rumus) return;
+            const fields = rumus.fields || [];
+            fields.forEach(f => {
+                const el = document.getElementById(f.id);
+                if (el && data[f.id] !== undefined) {
+                    el.value = data[f.id];
+                }
+            });
+        }
+
+        // Hitung berdasarkan key
+        function hitungItem(key) {
+            const rumus = QSE_RUMUS[key];
+            if (!rumus || !rumus.hitung) return null;
+            const data = getFormData(key);
+            return rumus.hitung(data);
+        }
+
+        // Update preview perhitungan
+        function updateCalcPreview() {
+            for (const [key, rumus] of Object.entries(QSE_RUMUS)) {
+                const resultEl = document.getElementById(`calcResult_${key}`);
+                if (!resultEl) continue;
+                const hasil = hitungItem(key);
+                if (hasil) {
+                    // Tampilkan hasil pertama
+                    const firstKey = Object.keys(hasil)[0];
+                    if (firstKey) {
+                        resultEl.textContent = formatAngka(hasil[firstKey] || 0);
+                    }
+                }
+            }
+        }
+
+        // ============================================
+        // 7. RENDER ITEMS
+        // ============================================
+        function renderItems() {
+            if (items.length === 0) {
+                itemListContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-box-open"></i>
+                        <p>Belum ada item pekerjaan</p>
+                        <p style="font-size:12px; margin-top:4px;">Tambahkan item untuk mulai menghitung</p>
+                    </div>
+                `;
+                updateStats();
+                updateMaterialPreview();
+                updateBreakdown();
+                return;
+            }
+
+            let html = '';
+            let totalVol = 0;
+            const materialCount = {};
+            const jenisSet = new Set();
+
+            items.forEach((item, index) => {
+                const rumus = QSE_RUMUS[item.tipe];
+                const display = rumus ? rumus.display(item) : { volume: 0, unit: 'm³', detail: '' };
+                const vol = display.volume || 0;
+                const unit = display.unit || 'm³';
+
+                totalVol += vol;
+                jenisSet.add(item.jenis);
+                materialCount[item.material] = (materialCount[item.material] || 0) + vol;
+
+                const icon = getJenisIcon(item.jenis);
+                const tipeLabel = rumus ? rumus.nama : item.tipe;
+
+                html += `
+                    <div class="item-card">
+                        <div class="item-header">
+                            <div>
+                                <span class="item-name">
+                                    ${escHtml(item.nama)}
+                                    <span class="badge-type"><i class="fas ${icon}"></i> ${escHtml(item.jenis)}</span>
+                                    <span class="badge-type" style="background:#e0f2fe;color:#0369a1;">${tipeLabel}</span>
+                                </span>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span class="item-volume">${formatAngka(vol)} ${unit}</span>
+                                <div class="item-actions">
+                                    <button class="del-item" data-index="${index}" title="Hapus"><i class="fas fa-trash-alt"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-details">
+                            <span><i class="fas fa-cube"></i> ${escHtml(item.material)}</span>
+                            ${display.detail || ''}
+                        </div>
+                    </div>
+                `;
+            });
+
+            itemListContainer.innerHTML = html;
+
+            document.querySelectorAll('.del-item').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const idx = parseInt(this.dataset.index, 10);
+                    if (!isNaN(idx) && idx >= 0 && idx < items.length) {
+                        items.splice(idx, 1);
+                        renderItems();
+                    }
+                });
+            });
+
+            updateStats();
+            updateMaterialPreview();
+            updateBreakdown();
+
+            let topMaterial = '-';
+            let topVol = 0;
+            for (const [mat, vol] of Object.entries(materialCount)) {
+                if (vol > topVol) {
+                    topVol = vol;
+                    topMaterial = mat;
+                }
+            }
+            statMaterialTop.textContent = topMaterial;
+            statJenisPekerjaan.textContent = jenisSet.size;
+        }
+
+        function updateStats() {
+            let totalVol = 0;
+            items.forEach(item => {
+                const rumus = QSE_RUMUS[item.tipe];
+                const display = rumus ? rumus.display(item) : { volume: 0 };
+                totalVol += display.volume || 0;
+            });
+            const total = formatAngka(totalVol);
+            statTotalVolume.textContent = total;
+            totalVolumeBadge.textContent = total;
+            statTotalItem.textContent = items.length;
+            totalItemsBadge.textContent = items.length;
+            jumlahItem.textContent = items.length;
+        }
+
+        function updateMaterialPreview() {
+            if (items.length === 0) {
+                displayMaterial.textContent = '-';
+                displayVolume.textContent = '0.000';
+                displayTipe.textContent = '-';
+                displayJenis.textContent = '-';
+                return;
+            }
+            const last = items[items.length - 1];
+            const rumus = QSE_RUMUS[last.tipe];
+            const display = rumus ? rumus.display(last) : { volume: 0, unit: 'm³' };
+            const tipeLabel = rumus ? rumus.nama : last.tipe;
+            
+            displayMaterial.textContent = last.material;
+            displayVolume.textContent = formatAngka(display.volume || 0) + ' ' + (display.unit || 'm³');
+            displayTipe.textContent = tipeLabel;
+            displayJenis.textContent = last.jenis;
+        }
+
+        function updateBreakdown() {
+            if (items.length === 0) {
+                materialBreakdown.innerHTML = `
+                    <div style="color:#94a3b8; font-size:13px; text-align:center; padding:20px 0;">
+                        <i class="fas fa-cube" style="display:block; font-size:24px; margin-bottom:8px; opacity:0.3;"></i>
+                        Belum ada data material
+                    </div>
+                `;
+                return;
+            }
+
+            const materialVol = {};
+            items.forEach(item => {
+                const rumus = QSE_RUMUS[item.tipe];
+                const display = rumus ? rumus.display(item) : { volume: 0 };
+                const vol = display.volume || 0;
+                materialVol[item.material] = (materialVol[item.material] || 0) + vol;
+            });
+
+            let html = '';
+            let totalVol = Object.values(materialVol).reduce((a, b) => a + b, 0);
+            const sorted = Object.entries(materialVol).sort((a, b) => b[1] - a[1]);
+
+            sorted.forEach(([material, volume]) => {
+                const percent = totalVol > 0 ? (volume / totalVol * 100) : 0;
+                html += `
+                    <div class="mat-item">
+                        <span class="mat-name">${escHtml(material)}</span>
+                        <span class="mat-vol">${formatAngka(volume)} (${percent.toFixed(1)}%)</span>
+                    </div>
+                `;
+            });
+
+            materialBreakdown.innerHTML = html;
+        }
+
+        // ============================================
+        // 8. TAMBAH ITEM
+        // ============================================
+        function tambahItem() {
+            const key = activeTab;
+            const rumus = QSE_RUMUS[key];
+            if (!rumus) return;
+
+            const data = getFormData(key);
+            
+            // Validasi - cek apakah ada field yang kosong
+            let valid = true;
+            const fields = rumus.fields || [];
+            fields.forEach(f => {
+                const el = document.getElementById(f.id);
+                if (el && f.type === 'number') {
+                    const val = parseFloat(el.value);
+                    if (isNaN(val) || val <= 0) {
+                        valid = false;
+                    }
+                }
+            });
+
+            if (!valid) {
+                alert('⚠️ Periksa kembali semua input, pastikan nilai > 0');
+                return;
+            }
+
+            // Ambil nama dan material
+            const namaField = fields.find(f => f.label && f.label.toLowerCase().includes('nama'));
+            const materialField = fields.find(f => f.label && f.label.toLowerCase().includes('material'));
+            const jenisField = fields.find(f => f.label && f.label.toLowerCase().includes('jenis'));
+
+            const nama = namaField ? document.getElementById(namaField.id).value.trim() || 'Item' : 'Item';
+            const material = materialField ? document.getElementById(materialField.id).value : 'Material';
+            const jenis = jenisField ? document.getElementById(jenisField.id).value : 'Struktur';
+
+            // Hitung
+            const hasil = rumus.hitung(data);
+            if (!hasil) return;
+
+            const itemData = {
+                tipe: key,
+                nama: nama,
+                jenis: jenis,
+                material: material,
+                ...data,
+                ...hasil
+            };
+
+            items.push(itemData);
+            renderItems();
+        }
+
+        // ============================================
+        // 9. RESET FORM
+        // ============================================
+        function resetForm() {
+            for (const [key, rumus] of Object.entries(QSE_RUMUS)) {
+                const fields = rumus.fields || [];
+                const defaultData = {};
+                fields.forEach(f => {
+                    defaultData[f.id] = f.default;
+                });
+                setFormData(key, defaultData);
+            }
+            updateCalcPreview();
+        }
+
+        // ============================================
+        // 10. GAMBAR
+        // ============================================
+        function handleGambar(file) {
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                gambarPreview.src = e.target.result;
+                gambarPreview.style.display = 'block';
+                gambarPlaceholder.style.display = 'none';
+                gambarFile = file;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // ============================================
+        // 11. EXPORT CSV
+        // ============================================
+        function exportCSV() {
+            if (items.length === 0) {
+                alert('Tidak ada data untuk diexport.');
+                return;
+            }
+            let header = 'Nama Item,Jenis,Tipe,Material,Volume,Satuan\n';
+            let rows = items.map(item => {
+                const rumus = QSE_RUMUS[item.tipe];
+                const display = rumus ? rumus.display(item) : { volume: 0, unit: 'm³' };
+                const tipeLabel = rumus ? rumus.nama : item.tipe;
+                return `${item.nama},${item.jenis},${tipeLabel},${item.material},${formatAngka(display.volume || 0)},${display.unit || 'm³'}`;
+            }).join('\n');
+            const csv = header + rows;
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'Quantity_Survey_Engineer_Report.csv';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link.href);
+        }
+
+        // ============================================
+        // 12. CETAK
+        // ============================================
+        function cetakRingkasan() {
+            if (items.length === 0) {
+                alert('Tidak ada item untuk dicetak.');
+                return;
+            }
+
+            let text = '==================================================\n';
+            text += '   QUANTITY SURVEY ENGINEER - LAPORAN QTO\n';
+            text += '==================================================\n\n';
+            
+            const materialVol = {};
+
+            items.forEach((item, i) => {
+                const rumus = QSE_RUMUS[item.tipe];
+                const display = rumus ? rumus.display(item) : { volume: 0, unit: 'm³' };
+                const tipeLabel = rumus ? rumus.nama : item.tipe;
+                const vol = display.volume || 0;
+                const unit = display.unit || 'm³';
+
+                materialVol[item.material] = (materialVol[item.material] || 0) + vol;
+
+                text += `${i+1}. ${item.nama}\n`;
+                text += `   Jenis     : ${item.jenis}\n`;
+                text += `   Tipe      : ${tipeLabel}\n`;
+                text += `   Material  : ${item.material}\n`;
+                text += `   Volume    : ${formatAngka(vol)} ${unit}\n\n`;
+            });
+
+            text += '--------------------------------------------------\n';
+            const totalDisplay = Object.values(materialVol).reduce((a, b) => a + b, 0);
+            text += `TOTAL VOLUME      : ${formatAngka(totalDisplay)} (berbagai satuan)\n`;
+            text += `JUMLAH ITEM       : ${items.length}\n`;
+            text += `JENIS PEKERJAAN   : ${new Set(items.map(i => i.jenis)).size} jenis\n\n`;
+
+            text += 'BREAKDOWN MATERIAL:\n';
+            for (const [mat, vol] of Object.entries(materialVol).sort((a, b) => b[1] - a[1])) {
+                const percent = totalDisplay > 0 ? (vol / totalDisplay * 100) : 0;
+                text += `   ${mat} : ${formatAngka(vol)} (${percent.toFixed(1)}%)\n`;
+            }
+
+            text += '\n--------------------------------------------------\n';
+            text += `Acuan Gambar      : ${gambarFile ? gambarFile.name : 'Tidak ada'}\n`;
+            text += `Tanggal           : ${new Date().toLocaleDateString('id-ID')}\n`;
+            text += '==================================================\n';
+
+            const win = window.open('', '_blank', 'width=700,height=600');
+            if (win) {
+                win.document.write(`
+                    <html><head><title>QSE Report</title>
+                    <style>
+                        body { font-family: 'Courier New', monospace; padding: 40px; background: #fafafa; }
+                        pre { background: white; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; white-space: pre-wrap; font-size: 14px; line-height: 1.6; }
+                        @media print { body { padding: 0; } pre { border: none; padding: 20px; } }
+                    </style>
+                    </head><body><pre>${text}</pre></body></html>
+                `);
+                win.document.close();
+                setTimeout(() => { win.print(); }, 500);
+            } else {
+                alert('Popup diblokir. Izinkan popup untuk mencetak.');
+            }
+        }
+
+        // ============================================
+        // 13. EVENT LISTENERS
+        // ============================================
+        tambahBtn.addEventListener('click', tambahItem);
+        resetFormBtn.addEventListener('click', resetForm);
+
+        document.querySelectorAll('input, select').forEach(el => {
+            el.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    tambahItem();
+                }
+            });
+        });
+
+        document.querySelectorAll('input, select').forEach(el => {
+            el.addEventListener('input', updateCalcPreview);
+            el.addEventListener('change', updateCalcPreview);
+        });
+
+        hapusSemuaBtn.addEventListener('click', function() {
+            if (items.length === 0) return;
+            if (confirm('⚠️ Hapus semua item pekerjaan?')) {
+                items = [];
+                renderItems();
+            }
+        });
+
+        exportBtn.addEventListener('click', exportCSV);
+        cetakBtn.addEventListener('click', cetakRingkasan);
+
+        fileInput.addEventListener('change', function(e) {
+            if (this.files && this.files[0]) {
+                handleGambar(this.files[0]);
+            }
+        });
+
+        gambarArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('drag-over');
+        });
+        gambarArea.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.classList.remove('drag-over');
+        });
+        gambarArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('drag-over');
+            const files = e.dataTransfer.files;
+            if (files && files[0]) {
+                handleGambar(files[0]);
+                fileInput.files = files;
+            }
+        });
+
+        hapusGambarBtn.addEventListener('click', function() {
+            gambarPreview.src = '';
+            gambarPreview.style.display = 'none';
+            gambarPlaceholder.style.display = 'flex';
+            gambarFile = null;
+            fileInput.value = '';
+        });
+
+        // ============================================
+        // 14. INIT
+        // ============================================
+        // Generate tabs dan form dari database
+        generateTabsAndForms();
+
+        // Reset form ke default
+        resetForm();
+
+        // Sample data
+        const sampleData = [
+            { tipe: 'beton', nama: 'Kolom Lantai 1', jenis: 'Struktur', material: 'Beton K-300', panjang: 0.30, lebar: 0.30, tinggi: 3.50, koefisien: 1.0, volume: 0.315 },
+            { tipe: 'balok', nama: 'Balok B1 30x50', jenis: 'Struktur', material: 'Beton K-300', panjangBalok: 6.00, lebarBalok: 0.30, tinggiBalok: 0.50, jumlahBalok: 4, volume: 3.60, totalBeratBesi: 186.50 },
+            { tipe: 'dinding', nama: 'Core Lift LT1', jenis: 'Struktur', material: 'Beton K-350', panjangDinding: 8.00, tinggiDinding: 3.50, tebalDinding: 0.25, volume: 7.00, totalBeratBesi: 210.70 },
+            { tipe: 'kolom_bulat', nama: 'Kolom Bulat D400', jenis: 'Struktur', material: 'Beton K-350', diameterKolom: 0.40, totalBerat: 63.75, volumeBeton: 0.440 }
+        ];
+
+        sampleData.forEach(sample => {
+            const rumus = QSE_RUMUS[sample.tipe];
+            if (rumus) {
+                const display = rumus.display(sample);
+                items.push({
+                    ...sample,
+                    ...display
+                });
+            }
+        });
+
+        renderItems();
+
+        console.log('🏗️ Quantity Survey Engineer v5.0 loaded!');
+        console.log('📦 Database rumus terpisah di file qse-rumus.js');
+        console.log(`📊 Total rumus: ${Object.keys(QSE_RUMUS).length} jenis`);
+
+    })();
+</script>
+</body>
+              </html>
