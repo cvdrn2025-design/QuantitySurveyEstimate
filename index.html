@@ -4,25 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="theme-color" content="#0f172a" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    
-    <title>Quantity Survey Engineer - QSE Pro</title>
-    
-    <!-- PWA Link -->
-    <link rel="manifest" href="manifest.json" />
-    <link rel="apple-touch-icon" href="icon-192.png" />
-    
-    <!-- Font & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-    
+    <title>QSE Pro - Quantity Survey Engineer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* ===== CSS Lengkap Sama Seperti Sebelumnya ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: #f0f4f8; color: #1e293b; padding: 12px; }
-        .container { max-width: 1400px; margin: 0 auto; }
+        .container { max-width: 1200px; margin: 0 auto; }
         
+        /* Header */
         .header {
             background: linear-gradient(135deg, #0f172a, #1e293b);
             color: white;
@@ -33,7 +23,6 @@
             flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
         .header-left { display: flex; align-items: center; gap: 12px; }
         .header-left .logo-icon {
@@ -51,14 +40,15 @@
             background: rgba(255,255,255,0.08);
             padding: 4px 10px;
             border-radius: 20px;
-            font-size: 11px;
+            font-size: 10px;
             display: flex;
             align-items: center;
             gap: 4px;
             border: 1px solid rgba(255,255,255,0.05);
         }
-        .header-right .badge i { color: #60a5fa; font-size: 12px; }
+        .header-right .badge i { color: #60a5fa; }
         
+        /* Stats */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -71,10 +61,9 @@
             border-radius: 12px;
             border: 1px solid #e9edf4;
         }
-        .stat-card .label { font-size: 10px; color: #64748b; text-transform: uppercase; letter-spacing: 0.3px; }
-        .stat-card .value { font-size: 16px; font-weight: 700; color: #0f172a; }
+        .stat-card .label { font-size: 9px; color: #64748b; text-transform: uppercase; letter-spacing: 0.3px; }
+        .stat-card .value { font-size: 15px; font-weight: 700; color: #0f172a; }
         .stat-card .value i { font-size: 12px; margin-right: 4px; color: #2563eb; }
-        .stat-card .value .unit { font-size: 11px; font-weight: 400; color: #94a3b8; }
         
         .main-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
         .card {
@@ -88,66 +77,169 @@
         .card-title i { color: #2563eb; font-size: 16px; }
         .card-title .sub { font-size: 10px; color: #94a3b8; font-weight: 400; margin-left: auto; }
         
-        .tab-container {
-            display: flex;
-            gap: 4px;
-            margin-bottom: 12px;
-            background: #f1f5f9;
-            padding: 4px;
-            border-radius: 12px;
-            flex-wrap: wrap;
-        }
-        .tab-btn {
-            padding: 6px 12px;
-            border: none;
-            border-radius: 10px;
-            font-size: 11px;
-            font-weight: 500;
-            cursor: pointer;
-            background: transparent;
-            color: #64748b;
-            transition: 0.2s;
-            font-family: 'Inter', sans-serif;
+        /* Workflow */
+        .workflow-step {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 12px;
+            padding: 12px 16px;
+            background: #f8fafc;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border-left: 4px solid #2563eb;
         }
-        .tab-btn:hover { background: rgba(255,255,255,0.5); }
-        .tab-btn.active { background: white; color: #0f172a; box-shadow: 0 2px 4px rgba(0,0,0,0.06); }
-        .tab-btn i { font-size: 12px; }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
+        .workflow-step .step-num {
+            width: 28px;
+            height: 28px;
+            background: #2563eb;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .workflow-step .step-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: #475569;
+        }
+        .workflow-step .step-value {
+            font-weight: 600;
+            color: #0f172a;
+            font-size: 13px;
+        }
         
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
-        .form-group { margin-bottom: 8px; }
+        .form-group { margin-bottom: 10px; }
         .form-group label {
             display: block;
             font-size: 10px;
             font-weight: 600;
             color: #475569;
-            margin-bottom: 2px;
+            margin-bottom: 3px;
             text-transform: uppercase;
             letter-spacing: 0.3px;
         }
-        .form-group label i { margin-right: 4px; color: #94a3b8; font-size: 10px; }
+        .form-group label i { margin-right: 4px; color: #94a3b8; }
         .form-group .hint { font-size: 9px; color: #94a3b8; margin-top: 2px; }
-        input, select {
+        
+        select, input {
             width: 100%;
-            padding: 6px 10px;
+            padding: 8px 12px;
             border-radius: 10px;
             border: 1.5px solid #e2e8f0;
             background: #fafcff;
-            font-size: 12px;
+            font-size: 13px;
             transition: 0.2s;
             font-family: 'Inter', sans-serif;
+            appearance: auto;
         }
-        input:focus, select:focus {
+        select:focus, input:focus {
             outline: none;
             border-color: #2563eb;
             box-shadow: 0 0 0 3px rgba(37,99,235,0.08);
         }
-        .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
-        .form-row-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; }
+        select option { padding: 8px; }
+        
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+        .form-row-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; }
+        
+        /* Item Picker */
+        .item-picker {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 8px;
+            margin: 8px 0 12px 0;
+        }
+        .item-picker-btn {
+            padding: 10px 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            background: #fafcff;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            color: #475569;
+        }
+        .item-picker-btn:hover {
+            border-color: #94a3b8;
+            background: #f1f5f9;
+        }
+        .item-picker-btn.active {
+            border-color: #2563eb;
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+        .item-picker-btn i {
+            display: block;
+            font-size: 20px;
+            margin-bottom: 4px;
+            color: #2563eb;
+        }
+        .item-picker-btn .badge-item {
+            font-size: 9px;
+            background: #e2e8f0;
+            padding: 1px 8px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 2px;
+        }
+        
+        /* Detail Perhitungan */
+        .calc-detail {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 12px 14px;
+            margin-top: 10px;
+            border: 1px solid #e9edf4;
+            display: none;
+        }
+        .calc-detail.show { display: block; }
+        .calc-detail .formula {
+            font-weight: 600;
+            color: #0f172a;
+            font-size: 13px;
+            padding: 6px 10px;
+            background: #e0f2fe;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        .calc-detail .step {
+            color: #475569;
+            margin-top: 4px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 10px;
+            font-size: 12px;
+        }
+        .calc-detail .step span {
+            background: white;
+            padding: 2px 10px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+        }
+        .calc-detail .result-box {
+            margin-top: 8px;
+            padding: 8px 14px;
+            background: #dbeafe;
+            border-radius: 8px;
+            font-weight: 600;
+            color: #1d4ed8;
+            font-size: 14px;
+        }
+        .calc-detail .result-box .sub-result {
+            font-weight: 400;
+            font-size: 11px;
+            color: #475569;
+            display: block;
+            margin-top: 2px;
+        }
         
         .btn {
             padding: 8px 16px;
@@ -176,13 +268,14 @@
         .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
         .btn-group .btn { flex: 1; justify-content: center; }
         
-        .item-list { max-height: 300px; overflow-y: auto; margin-top: 8px; }
+        /* Item List */
+        .item-list { max-height: 280px; overflow-y: auto; margin-top: 8px; }
         .item-list::-webkit-scrollbar { width: 4px; }
         .item-list::-webkit-scrollbar-thumb { background: #d1d9e6; border-radius: 20px; }
         
         .item-card {
             background: #f8fafc;
-            border-radius: 12px;
+            border-radius: 10px;
             padding: 10px 12px;
             margin-bottom: 6px;
             border-left: 3px solid #2563eb;
@@ -225,22 +318,23 @@
         .empty-state { text-align: center; padding: 30px 20px; color: #94a3b8; font-size: 13px; }
         .empty-state i { font-size: 30px; opacity: 0.3; display: block; margin-bottom: 8px; }
         
+        /* Gambar */
         .gambar-area {
             border: 2px dashed #dbe3ef;
             border-radius: 12px;
             padding: 16px;
             text-align: center;
             background: #fafcff;
-            min-height: 120px;
+            min-height: 100px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
         }
-        .gambar-area img { max-width: 100%; max-height: 150px; border-radius: 10px; object-fit: contain; }
-        .gambar-area .placeholder i { font-size: 28px; color: #94a3b8; display: block; margin-bottom: 4px; }
+        .gambar-area img { max-width: 100%; max-height: 120px; border-radius: 10px; object-fit: contain; }
+        .gambar-area .placeholder i { font-size: 24px; color: #94a3b8; display: block; margin-bottom: 4px; }
         .gambar-area .file-label {
-            margin-top: 8px;
+            margin-top: 6px;
             padding: 4px 14px;
             border-radius: 20px;
             background: white;
@@ -249,27 +343,6 @@
             cursor: pointer;
         }
         #fileInput { display: none; }
-        
-        .calc-detail {
-            background: #f8fafc;
-            border-radius: 10px;
-            padding: 10px 12px;
-            margin-top: 8px;
-            border: 1px solid #e9edf4;
-        }
-        .calc-detail .formula { font-weight: 600; color: #0f172a; font-size: 12px; }
-        .calc-detail .step { color: #475569; margin-top: 4px; display: flex; flex-wrap: wrap; gap: 4px 8px; font-size: 11px; }
-        .calc-detail .step span { background: white; padding: 2px 8px; border-radius: 16px; border: 1px solid #e2e8f0; }
-        .calc-detail .result-box {
-            margin-top: 6px;
-            padding: 8px 12px;
-            background: #dbeafe;
-            border-radius: 8px;
-            font-weight: 600;
-            color: #1d4ed8;
-            font-size: 13px;
-        }
-        .calc-detail .result-box .sub-result { font-weight: 400; font-size: 11px; color: #475569; display: block; margin-top: 2px; }
         
         .material-breakdown { margin-top: 8px; }
         .material-breakdown .mat-item {
@@ -283,7 +356,7 @@
         .material-breakdown .mat-name { font-weight: 500; }
         .material-breakdown .mat-vol { font-weight: 600; color: #2563eb; }
         
-        #materialInfo { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        #materialInfo { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
         #materialInfo div { font-size: 12px; }
         #materialInfo .label { font-size: 9px; color: #94a3b8; text-transform: uppercase; font-weight: 600; }
         #materialInfo .value { font-weight: 600; }
@@ -305,6 +378,8 @@
         }
         .sub-section-warning .title { font-weight: 600; font-size: 11px; color: #92400e; margin-bottom: 6px; }
         
+        .hidden { display: none !important; }
+        
         @media (min-width: 768px) {
             .main-grid { grid-template-columns: 1.3fr 0.7fr; }
             body { padding: 20px; }
@@ -312,15 +387,16 @@
             .header-left h1 { font-size: 24px; }
             .stat-card { padding: 14px 18px; }
             .stat-card .value { font-size: 20px; }
+            .item-picker { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
         }
         @media (max-width: 480px) {
             .stats-grid { grid-template-columns: 1fr 1fr; }
             .form-row { grid-template-columns: 1fr; }
             .form-row-3 { grid-template-columns: 1fr 1fr; }
             .form-row-4 { grid-template-columns: 1fr 1fr; }
-            .tab-container { flex-direction: row; overflow-x: auto; flex-wrap: nowrap; }
-            .tab-btn { font-size: 10px; padding: 4px 10px; white-space: nowrap; }
-            .header-right .badge { font-size: 9px; padding: 2px 8px; }
+            .item-picker { grid-template-columns: repeat(2, 1fr); }
+            .item-picker-btn { padding: 8px 10px; font-size: 11px; }
+            .item-picker-btn i { font-size: 16px; }
         }
     </style>
 </head>
@@ -339,26 +415,26 @@
         <div class="header-right">
             <div class="badge"><i class="fas fa-file-alt"></i> <span id="totalItemsBadge">0</span></div>
             <div class="badge"><i class="fas fa-cube"></i> <span id="totalVolumeBadge">0.000</span></div>
-            <div class="badge"><i class="fas fa-tag"></i> v5.0</div>
+            <div class="badge"><i class="fas fa-tag"></i> v6.0</div>
         </div>
     </div>
 
     <!-- STATS -->
     <div class="stats-grid">
         <div class="stat-card">
-            <div class="label">Volume</div>
+            <div class="label">Total Volume</div>
             <div class="value"><i class="fas fa-cubes"></i> <span id="statTotalVolume">0.000</span></div>
         </div>
         <div class="stat-card">
-            <div class="label">Item</div>
+            <div class="label">Total Item</div>
             <div class="value"><i class="fas fa-list"></i> <span id="statTotalItem">0</span></div>
         </div>
         <div class="stat-card">
-            <div class="label">Jenis</div>
+            <div class="label">Jenis Pekerjaan</div>
             <div class="value"><i class="fas fa-tasks"></i> <span id="statJenisPekerjaan">0</span></div>
         </div>
         <div class="stat-card">
-            <div class="label">Material Top</div>
+            <div class="label">Material Dominan</div>
             <div class="value" style="font-size:13px;"><i class="fas fa-cube"></i> <span id="statMaterialTop">-</span></div>
         </div>
     </div>
@@ -369,21 +445,75 @@
         <!-- LEFT -->
         <div class="card">
             <div class="card-title">
-                <i class="fas fa-plus-circle"></i> Input Item
-                <span class="sub">QTO Calculator</span>
+                <i class="fas fa-plus-circle"></i> Input Item Pekerjaan
+                <span class="sub">Workflow</span>
             </div>
 
-            <div class="tab-container" id="tabContainer"></div>
-            <div id="tabContentContainer"></div>
-
-            <div class="btn-group" style="margin-top:8px;">
-                <button class="btn btn-primary" id="tambahBtn"><i class="fas fa-plus"></i> Tambah</button>
-                <button class="btn btn-outline" id="resetFormBtn"><i class="fas fa-redo"></i> Reset</button>
+            <!-- STEP 1: PILIH JENIS PEKERJAAN -->
+            <div class="workflow-step">
+                <div class="step-num">1</div>
+                <div class="step-label">Pilih Jenis Pekerjaan</div>
+                <div style="flex:1; min-width:120px;">
+                    <select id="jenisPekerjaanUtama" style="margin:0;">
+                        <option value="">-- Pilih Jenis --</option>
+                        <option value="Struktur">🏗️ Struktur</option>
+                        <option value="Arsitektur">🏛️ Arsitektur</option>
+                        <option value="Mekanikal">⚙️ Mekanikal</option>
+                        <option value="Elektrikal">⚡ Elektrikal</option>
+                        <option value="Finishing">🎨 Finishing</option>
+                        <option value="Plumbing">🔧 Plumbing</option>
+                    </select>
+                </div>
             </div>
 
+            <!-- STEP 2: PILIH ITEM PEKERJAAN -->
+            <div id="step2Container" class="hidden">
+                <div class="workflow-step">
+                    <div class="step-num">2</div>
+                    <div class="step-label">Pilih Item Pekerjaan</div>
+                    <div style="flex:1; font-size:12px; color:#64748b;" id="selectedJenisLabel">-</div>
+                </div>
+                <div class="item-picker" id="itemPickerContainer">
+                    <div style="grid-column:1/-1; text-align:center; color:#94a3b8; font-size:13px; padding:20px 0;">
+                        <i class="fas fa-arrow-up" style="display:block; font-size:24px; margin-bottom:8px; opacity:0.3;"></i>
+                        Pilih Jenis Pekerjaan terlebih dahulu
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 3: INPUT DIMENSI & RUMUS -->
+            <div id="step3Container" class="hidden">
+                <div class="workflow-step">
+                    <div class="step-num">3</div>
+                    <div class="step-label">Input Dimensi</div>
+                    <div style="flex:1; font-size:12px; color:#2563eb; font-weight:600;" id="selectedItemLabel">-</div>
+                </div>
+
+                <!-- Form dinamis akan di-generate di sini -->
+                <div id="formContainer"></div>
+
+                <!-- Detail Perhitungan -->
+                <div id="calcDetailContainer" class="calc-detail">
+                    <div class="formula" id="rumusDisplay">📐 Rumus</div>
+                    <div class="step" id="stepDisplay">
+                        <span>Parameter akan tampil di sini</span>
+                    </div>
+                    <div class="result-box" id="resultDisplay">
+                        Hasil: <strong id="calcResultValue">0.000</strong>
+                        <span class="sub-result" id="calcResultSub">-</span>
+                    </div>
+                </div>
+
+                <div class="btn-group" style="margin-top:10px;">
+                    <button class="btn btn-primary" id="tambahBtn"><i class="fas fa-plus"></i> Tambah Item</button>
+                    <button class="btn btn-outline" id="resetFormBtn"><i class="fas fa-redo"></i> Reset</button>
+                </div>
+            </div>
+
+            <!-- Item List -->
             <div style="margin-top:16px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                    <span style="font-weight:600; font-size:12px;"><i class="fas fa-list-ul"></i> Item (<span id="jumlahItem">0</span>)</span>
+                    <span style="font-weight:600; font-size:12px;"><i class="fas fa-list-ul"></i> Daftar Item (<span id="jumlahItem">0</span>)</span>
                     <button class="btn btn-danger btn-sm" id="hapusSemuaBtn" style="background:transparent; color:#dc2626; border:1px solid #fecaca; padding:2px 10px; font-size:10px;">
                         <i class="fas fa-trash"></i> Hapus
                     </button>
@@ -392,6 +522,7 @@
                     <div class="empty-state">
                         <i class="fas fa-box-open"></i>
                         <p>Belum ada item</p>
+                        <p style="font-size:11px; margin-top:4px;">Ikuti workflow di atas untuk menambahkan</p>
                     </div>
                 </div>
             </div>
@@ -401,7 +532,7 @@
         <div>
             <div class="card">
                 <div class="card-title">
-                    <i class="fas fa-image"></i> Gambar
+                    <i class="fas fa-image"></i> Acuan Gambar
                     <span class="sub">Referensi</span>
                 </div>
                 <div class="gambar-area" id="gambarArea">
@@ -412,7 +543,7 @@
                     </div>
                     <img id="gambarPreview" style="display:none;" alt="Preview" />
                     <input type="file" id="fileInput" accept="image/*" />
-                    <div style="margin-top:8px;">
+                    <div style="margin-top:6px;">
                         <button class="btn btn-outline btn-sm" id="hapusGambarBtn"><i class="fas fa-times"></i> Hapus</button>
                     </div>
                 </div>
@@ -420,21 +551,21 @@
 
             <div class="card" style="margin-top:10px;">
                 <div class="card-title">
-                    <i class="fas fa-info-circle"></i> Ringkasan
-                    <span class="sub">Terakhir</span>
+                    <i class="fas fa-info-circle"></i> Ringkasan Item Terakhir
+                    <span class="sub">Detail</span>
                 </div>
                 <div id="materialInfo">
                     <div><div class="label">Material</div><div class="value" id="displayMaterial">-</div></div>
                     <div><div class="label">Volume</div><div class="value" id="displayVolume">0.000</div></div>
-                    <div><div class="label">Tipe</div><div class="value" id="displayTipe">-</div></div>
+                    <div><div class="label">Item</div><div class="value" id="displayItem">-</div></div>
                     <div><div class="label">Jenis</div><div class="value" id="displayJenis">-</div></div>
                 </div>
             </div>
 
             <div class="card" style="margin-top:10px;">
                 <div class="card-title">
-                    <i class="fas fa-chart-pie"></i> Breakdown
-                    <span class="sub">Material</span>
+                    <i class="fas fa-chart-pie"></i> Breakdown Material
+                    <span class="sub">Per item</span>
                 </div>
                 <div id="materialBreakdown" class="material-breakdown">
                     <div style="color:#94a3b8; font-size:12px; text-align:center; padding:12px 0;">
@@ -454,26 +585,728 @@
     </div>
 </div>
 
-<!-- ===== LOAD DATABASE ===== -->
-<script src="qse-rumus.js"></script>
-
 <script>
     (function(){
         "use strict";
 
-        if (typeof QSE_RUMUS === 'undefined') {
-            alert('⚠️ Database rumus tidak ditemukan!');
-            return;
-        }
+        // ============================================
+        // DATABASE RUMUS - Berdasarkan Jenis Pekerjaan
+        // ============================================
+        const DB_RUMUS = {
+            // ===== STRUKTUR =====
+            Struktur: {
+                icon: 'fa-building',
+                warna: '#2563eb',
+                items: {
+                    beton: {
+                        nama: 'Beton',
+                        icon: 'fa-cube',
+                        rumus: 'Volume = P × L × T × Koefisien',
+                        fields: [
+                            { id: 'namaItem', label: 'Nama Pekerjaan', type: 'text', default: 'Kolom Lantai 1' },
+                            { id: 'material', label: 'Material', type: 'select', options: ['Beton K-250', 'Beton K-300', 'Beton K-350', 'Beton K-400', 'Beton K-450'], default: 'Beton K-300' },
+                            { id: 'panjang', label: 'Panjang (m)', type: 'number', step: 0.001, default: 0.30 },
+                            { id: 'lebar', label: 'Lebar (m)', type: 'number', step: 0.001, default: 0.30 },
+                            { id: 'tinggi', label: 'Tinggi (m)', type: 'number', step: 0.001, default: 3.50 },
+                            { id: 'koefisien', label: 'Koefisien', type: 'number', step: 0.001, default: 1.0, hint: 'Faktor pengali' }
+                        ],
+                        hitung: function(data) {
+                            const vol = data.panjang * data.lebar * data.tinggi * data.koefisien;
+                            return { volume: isNaN(vol) || vol < 0 ? 0 : vol, satuan: 'm³' };
+                        },
+                        display: function(item) {
+                            return {
+                                volume: item.volume || 0,
+                                unit: 'm³',
+                                detail: `
+                                    <span><i class="fas fa-arrows-alt-h"></i> ${(item.panjang || 0).toFixed(3)} m</span>
+                                    <span><i class="fas fa-arrows-alt-v"></i> ${(item.lebar || 0).toFixed(3)} m</span>
+                                    <span><i class="fas fa-arrows-alt"></i> ${(item.tinggi || 0).toFixed(3)} m</span>
+                                    <span><i class="fas fa-times"></i> ${(item.koefisien || 1).toFixed(3)}</span>
+                                `
+                            };
+                        }
+                    },
+                    pembesian: {
+                        nama: 'Pembesian',
+                        icon: 'fa-vector-square',
+                        rumus: 'Besi = (P × Jml × Berat) + Sengkang',
+                        fields: [
+                            { id: 'namaItem', label: 'Nama Pekerjaan', type: 'text', default: 'Tulangan Kolom K1' },
+                            { id: 'material', label: 'Material', type: 'select', options: ['Besi D10', 'Besi D13', 'Besi D16', 'Besi D19', 'Besi D22', 'Besi D25'], default: 'Besi D16' },
+                            { id: 'panjang', label: 'Panjang (m)', type: 'number', step: 0.001, default: 3.50 },
+                            { id: 'jmlTulangan', label: 'Jumlah Tulangan', type: 'number', step: 1, default: 8 },
+                            { id: 'beratJenis', label: 'Berat Jenis (kg/m)', type: 'number', step: 0.001, default: 1.58 },
+                            { id: 'lebarKolom', label: 'Lebar Kolom (m)', type: 'number', step: 0.001, default: 0.30 },
+                            { id: 'tinggiKolom', label: 'Tinggi Kolom (m)', type: 'number', step: 0.001, default: 0.30 },
+                            { id: 'jarakSengkang', label: 'Jarak Sengkang (cm)', type: 'number', step: 0.5, default: 15 },
+                            { id: 'selimut', label: 'Selimut Beton (cm)', type: 'number', step: 0.5, default: 4 },
+                            { id: 'beratSengkang', label: 'Berat Sengkang (kg/m)', type: 'number', step: 0.001, default: 0.617 },
+                            { id: 'kait', label: 'Panjang Kait (m)', type: 'number', step: 0.001, default: 0.10 }
+                        ],
+                        hitung: function(data) {
+                            const p = data.panjang || 0;
+                            const jml = data.jmlTulangan || 0;
+                            const bUtama = data.beratJenis || 1.58;
+                            const l = data.lebarKolom || 0;
+                            const t = data.tinggiKolom || 0;
+                            const jarak = data.jarakSengkang || 15;
+                            const selimut = data.selimut || 4;
+                            const bSengkang = data.beratSengkang || 0.617;
+                            const kait = data.kait || 0.10;
 
-        // ===== STATE =====
+                            const beratTulangan = p * jml * bUtama;
+                            const selimutM = selimut / 100;
+                            const ls = l - 2 * selimutM;
+                            const ts = t - 2 * selimutM;
+                            const pSengkang = 2 * (ls + ts) + 2 * kait;
+                            const jmlSengkang = Math.floor(p / (jarak / 100)) + 1;
+                            const beratSengkangTotal = jmlSengkang * pSengkang * bSengkang;
+                            const total = beratTulangan + beratSengkangTotal;
+
+                            return { 
+                                volume: total, 
+                                satuan: 'kg',
+                                beratTulangan, 
+                                beratSengkang: beratSengkangTotal,
+                                jmlSengkang
+                            };
+                        },
+                        display: function(item) {
+                            return {
+                                volume: item.volume || 0,
+                                unit: 'kg',
+                                detail: `
+                                    <span><i class="fas fa-arrow-up"></i> Utama: ${(item.beratTulangan || 0).toFixed(2)} kg</span>
+                                    <span><i class="fas fa-vector-square"></i> Sengkang: ${(item.beratSengkang || 0).toFixed(2)} kg</span>
+                                    <span><i class="fas fa-hashtag"></i> ${item.jmlSengkang || 0} bh</span>
+                                `
+                            };
+                        }
+                    },
+                    bekisting: {
+                        nama: 'Bekisting',
+                        icon: 'fa-border-all',
+                        rumus: 'Luas = (P×T + L×T) × (Sisi/2)',
+                        fields: [
+                            { id: 'namaItem', label: 'Nama Pekerjaan', type: 'text', default: 'Bekisting Kolom K1' },
+                            { id: 'material', label: 'Material', type: 'select', options: ['Kayu Meranti', 'Kayu Kamper', 'Kayu Jati', 'Multiplek 12mm', 'Multiplek 15mm'], default: 'Kayu Kamper' },
+                            { id: 'panjang', label: 'Panjang (m)', type: 'number', step: 0.001, default: 0.30 },
+                            { id: 'lebar', label: 'Lebar (m)', type: 'number', step: 0.001, default: 0.30 },
+                            { id: 'tinggi', label: 'Tinggi (m)', type: 'number', step: 0.001, default: 3.50 },
+                            { id: 'jumlahSisi', label: 'Jumlah Sisi', type: 'select', options: ['1', '2', '3', '4'], default: '4' }
+                        ],
+                        hitung: function(data) {
+                            const p = data.panjang || 0;
+                            const l = data.lebar || 0;
+                            const t = data.tinggi || 0;
+                            const sisi = parseInt(data.jumlahSisi) || 4;
+                            const luas = (p * t + l * t) * (sisi / 2);
+                            return { volume: luas, satuan: 'm²' };
+                        },
+                        display: function(item) {
+                            return {
+                                volume: item.volume || 0,
+                                unit: 'm²',
+                                detail: `
+                                    <span><i class="fas fa-border-all"></i> ${item.jumlahSisi || 4} sisi</span>
+                                    <span><i class="fas fa-arrows-alt-h"></i> ${(item.panjang || 0).toFixed(2)}×${(item.tinggi || 0).toFixed(2)}</span>
+                                `
+                            };
+                        }
+                    },
+                    balok: {
+                        nama: 'Balok Beton',
+                        icon: 'fa-grip-lines',
+                        rumus: 'Volume = P × L × T × Jumlah',
+                        fields: [
+                            { id: 'namaItem', label: 'Nama Pekerjaan', type: 'text', default: 'Balok B1 30x50' },
+                            { id: 'material', label: 'Material', type: 'select', options: ['Beton K-250', 'Beton K-300', 'Beton K-350'], default: 'Beton K-300' },
+                            { id: 'panjang', label: 'Panjang (m)', type: 'number', step: 0.001, default: 6.00 },
+                            { id: 'lebar', label: 'Lebar (m)', type: 'number', step: 0.001, default: 0.30 },
+                            { id: 'tinggi', label: 'Tinggi (m)', type: 'number', step: 0.001, default: 0.50 },
+                            { id: 'jumlah', label: 'Jumlah', type: 'number', step: 1, default: 4 },
+                            { id: 'tulanganAtas', label: 'Tulangan Atas', type: 'number', step: 1, default: 4 },
+                            { id: 'tulanganBawah', label: 'Tulangan Bawah', type: 'number', step: 1, default: 3 },
+                            { id: 'beratJenis', label: 'Berat Jenis (kg/m)', type: 'number', step: 0.001, default: 1.58 },
+                            { id: 'jarakSengkang', label: 'Sengkang (cm)', type: 'number', step: 0.5, default: 15 }
+                        ],
+                        hitung: function(data) {
+                            const p = data.panjang || 0;
+                            const l = data.lebar || 0;
+                            const t = data.tinggi || 0;
+                            const jml = data.jumlah || 1;
+                            const vol = p * l * t * jml;
+                            
+                            const tulAtas = data.tulanganAtas || 0;
+                            const tulBawah = data.tulanganBawah || 0;
+                            const berat = data.beratJenis || 1.58;
+                            const jarak = data.jarakSengkang || 15;
+                            const totalTulangan = tulAtas + tulBawah;
+                            const beratBesi = p * totalTulangan * berat * jml;
+                            const jmlSengkang = Math.floor(p / (jarak / 100)) * jml;
+                            const pSengkang = 2 * ((l - 0.08) + (t - 0.08)) + 0.1;
+                            const beratSengkang = jmlSengkang * pSengkang * 0.617;
+                            const totalBesi = beratBesi + beratSengkang;
+
+                            return { volume: vol, satuan: 'm³', totalBesi, beratBesi, beratSengkang };
+                        },
+                        display: function(item) {
+                            return {
+                                volume: item.volume || 0,
+                                unit: 'm³',
+                                detail: `
+                                    <span><i class="fas fa-grip-lines"></i> ${(item.panjang || 0).toFixed(2)}×${(item.lebar || 0).toFixed(2)}×${(item.tinggi || 0).toFixed(2)}</span>
+                                    <span><i class="fas fa-hashtag"></i> ${item.jumlah || 1} bh</span>
+                                    <span><i class="fas fa-weight-hanging"></i> Besi: ${(item.totalBesi || 0).toFixed(2)} kg</span>
+                                `
+                            };
+                        }
+                    },
+                    sloof: {
+                        nama: 'Sloof',
+                        icon: 'fa-grip-lines-vertical',
+                        rumus: 'Volume = P × L × T',
+                        fields: [
+                            { id: 'namaItem', label: 'Nama Pekerjaan', type: 'text', default: 'Sloof 20x30' },
+                            { id: 'material', label: 'Material', type: 'select', options: ['Beton K-250', 'Beton K-300', 'Beton K-350'], default: 'Beton K-300' },
+                            { id: 'panjang', label: 'Panjang Total (m)', type: 'number', step: 0.001, default: 45.00 },
+                            { id: 'lebar', label: 'Lebar (m)', type: 'number', step: 0.001, default: 0.20 },
+                            { id: 'tinggi', label: 'Tinggi (m)', type: 'number', step: 0.001, default: 0.30 },
+                            { id: 'tulanganAtas', label: 'Tulangan Atas', type: 'number', step: 1, default: 3 },
+                            { id: 'tulanganBawah', label: 'Tulangan Bawah', type: 'number', step: 1, default: 3 },
+                            { id: 'beratJenis', label: 'Berat Jenis (kg/m)', type: 'number', step: 0.001, default: 1.58 },
+                            { id: 'jarakSengkang', label: 'Sengkang (cm)', type: 'number', step: 0.5, default: 15 }
+                        ],
+                        hitung: function(data) {
+                            const p = data.panjang || 0;
+                            const l = data.lebar || 0;
+                            const t = data.tinggi || 0;
+                            const vol = p * l * t;
+                            
+                            const tulAtas = data.tulanganAtas || 0;
+                            const tulBawah = data.tulanganBawah || 0;
+                            const berat = data.beratJenis || 1.58;
+                            const jarak = data.jarakSengkang || 15;
+                            const totalTulangan = tulAtas + tulBawah;
+                            const beratBesi = p * totalTulangan * berat;
+                            const jmlSengkang = Math.floor(p / (jarak / 100));
+                            const pSengkang = 2 * ((l - 0.08) + (t - 0.08)) + 0.1;
+                            const beratSengkang = jmlSengkang * pSengkang * 0.617;
+                            const totalBesi = beratBesi + beratSengkang;
+
+                            return { volume: vol, satuan: 'm³', totalBesi };
+                        },
+                        display: function(item) {
+                            return {
+                                volume: item.volume || 0,
+                                unit: 'm³',
+                                detail: `
+                                    <span><i class="fas fa-grip-lines-vertical"></i> ${(item.panjang || 0).toFixed(2)}×${(item.lebar || 0).toFixed(2)}×${(item.tinggi || 0).toFixed(2)}</span>
+                                    <span><i class="fas fa-weight-hanging"></i> Besi: ${(item.totalBesi || 0).toFixed(2)} kg</span>
+                                `
+                            };
+                        }
+                    },
+                    pilecap: {
+                        nama: 'Pile Cap',
+                        icon: 'fa-chess-queen',
+                        rumus: 'Volume = P × L × T × Jumlah',
+                        fields: [
+                            { id: 'namaItem', label: 'Nama Pekerjaan', type: 'text', default: 'Pile Cap PC1' },
+                            { id: 'material', label: 'Material', type: 'select', options: ['Beton K-300', 'Beton K-350', 'Beton K-400'], default: 'Beton K-350' },
+                            { id: 'panjang', label: 'Panjang (m)', type: 'number', step: 0.001, default: 1.20 },
+                            { id: 'lebar', label: 'Lebar (m)', type: 'number', step: 0.001, default: 1.20 },
+                            { id: 'tinggi', label: 'Tinggi (m)', type: 'number', step: 0.001, default: 0.80 },
+                            { id: 'jumlah', label: 'Jumlah', type: 'number', step: 1, default: 6 }
+                        ],
+                        hitung: function(data) {
+                            const vol = (data.panjang || 0) * (data.lebar || 0) * (data.tinggi || 0) * (data.jumlah || 1);
+                            return { volume: vol, satuan: 'm³' };
+                        },
+                        display: function(item) {
+                            return {
+                                volume: item.volume || 0,
+                                unit: 'm³',
+                                detail: `
+                                    <span><i class="fas fa-chess-queen"></i> ${(item.panjang || 0).toFixed(2)}×${(item.lebar || 0).toFixed(2)}×${(item.tinggi || 0).toFixed(2)}</span>
+                                    <span><i class="fas fa-hashtag"></i> ${item.jumlah || 1} bh</span>
+                                `
+                            };
+                        }
+                    },
+                    kolom_bulat: {
+                        nama: 'Kolom Bulat + Spiral',
+                        icon: 'fa-circle',
+                        rumus: 'Volume = π × r² × T | Besi = Utama + Spiral',
+                        fields: [
+                            { id: 'namaItem', label: 'Nama Pekerjaan', type: 'text', default: 'Kolom Bulat D400' },
+                            { id: 'material', label: 'Material', type: 'select', options: ['Beton K-300', 'Beton K-350', 'Beton K-400'], default: 'Beton K-350' },
+                            { id: 'diameter', label: 'Diameter (m)', type: 'number', step: 0.001, default: 0.40 },
+                            { id: 'tinggi', label: 'Tinggi (m)', type: 'number', step: 0.001, default: 3.50 },
+                            { id: 'selimut', label: 'Selimut (cm)', type: 'number', step: 0.5, default: 4 },
+                            { id: 'jmlTulangan', label: 'Jumlah Tulangan', type: 'number', step: 1, default: 10 },
+                            { id: 'beratJenis', label: 'Berat Jenis (kg/m)', type: 'number', step: 0.001, default: 1.58 },
+                            { id: 'jarakSpiral', label: 'Jarak Spiral (cm)', type: 'number', step: 0.5, default: 10 },
+                            { id: 'beratSpiral', label: 'Berat Spiral (kg/m)', type: 'number', step: 0.001, default: 0.617 }
+                        ],
+                        hitung: function(data) {
+                            const d = data.diameter || 0;
+                            const t = data.tinggi || 0;
+                            const r = d / 2;
+                            const volBeton = Math.PI * r * r * t;
+                            
+                            const jml = data.jmlTulangan || 0;
+                            const bUtama = data.beratJenis || 1.58;
+                            const beratTulangan = t * jml * bUtama;
+                            
+                            const selimut = data.selimut || 4;
+                            const jarak = data.jarakSpiral || 10;
+                            const bSpiral = data.beratSpiral || 0.617;
+                            const selimutM = selimut / 100;
+                            const dSpiral = d - 2 * selimutM;
+                            const keliling = Math.PI * dSpiral;
+                            const jmlLilitan = Math.floor(t / (jarak / 100)) + 1;
+                            const pSpiral = keliling * jmlLilitan;
+                            const beratSpiralTotal = pSpiral * bSpiral;
+                            const totalBesi = beratTulangan + beratSpiralTotal;
+
+                            return { 
+                                volume: volBeton, 
+                                satuan: 'm³',
+                                totalBesi,
+                                beratTulangan,
+                                beratSpiral: beratSpiralTotal,
+                                jmlLilitan
+                            };
+                        },
+                        display: function(item) {
+                            return {
+                                volume: item.volume || 0,
+                                unit: 'm³',
+                                detail: `
+                                    <span><i class="fas fa-circle"></i> D${((item.diameter || 0) * 100).toFixed(0)}</span>
+                                    <span><i class="fas fa-arrow-up"></i> Utama: ${(item.beratTulangan || 0).toFixed(2)} kg</span>
+                                    <span><i class="fas fa-spiral"></i> Spiral: ${(item.beratSpiral || 0).toFixed(2)} kg</span>
+                                    <span><i class="fas fa-weight-hanging"></i> Total: ${(item.totalBesi || 0).toFixed(2)} kg</span>
+                                `
+                            };
+                        }
+                    },
+                    dinding: {
+                        nama: 'Dinding Core/Shear Wall',
+                        icon: 'fa-layer-group',
+                        rumus: 'Volume = P × T × Tebal × Lantai',
+                        fields: [
+                            { id: 'namaItem', label: 'Nama Pekerjaan', type: 'text', default: 'Core Lift LT1' },
+                            { id: 'material', label: 'Material', type: 'select', options: ['Beton K-300', 'Beton K-350', 'Beton K-400'], default: 'Beton K-350' },
+                            { id: 'panjang', label: 'Panjang (m)', type: 'number', step: 0.001, default: 8.00 },
+                            { id: 'tinggi', label: 'Tinggi (m)', type: 'number', step: 0.001, default: 3.50 },
+                            { id: 'tebal', label: 'Tebal (m)', type: 'number', step: 0.001, default: 0.25 },
+                            { id: 'jmlLantai', label: 'Jumlah Lantai', type: 'number', step: 1, default: 1 }
+                        ],
+                        hitung: function(data) {
+                            const vol = (data.panjang || 0) * (data.tinggi || 0) * (data.tebal || 0) * (data.jmlLantai || 1);
+                            return { volume: vol, satuan: 'm³' };
+                        },
+                        display: function(item) {
+                            return {
+                                volume: item.volume || 0,
+                                unit: 'm³',
+                                detail: `
+                                    <span><i class="fas fa-layer-group"></i> ${(item.panjang || 0).toFixed(2)}×${(item.tinggi || 0).toFixed(2)}×${(item.tebal || 0).toFixed(2)}</span>
+                                    <span><i class="fas fa-layer-group"></i> ${item.jmlLantai || 1} Lantai</span>
+                                `
+                            };
+                        }
+                    },
+                    pondasi: {
+                        nama: 'Pondasi Batu Belah',
+                        icon: 'fa-chess-queen',
+                        rumus: 'Volume = ((LA+LB)/2) × T × P',
+                        fields: [
+                            { id: 'namaItem', label: 'Nama Pekerjaan', type: 'text', default: 'Pondasi Batu Belah' },
+                            { id: 'material', label: 'Material', type: 'select', options: ['Batu Belah', 'Batu Kali', 'Batu Gunung'], default: 'Batu Belah' },
+                            { id: 'panjang', label: 'Panjang (m)', type: 'number', step: 0.001, default: 10.00 },
+                            { id: 'lebarAtas', label: 'Lebar Atas (m)', type: 'number', step: 0.001, default: 0.30 },
+                            { id: 'lebarBawah', label: 'Lebar Bawah (m)', type: 'number', step: 0.001, default: 0.60 },
+                            { id: 'tinggi', label: 'Tinggi (m)', type: 'number', step: 0.001, default: 0.80 },
+                            { id: 'persenBatu', label: 'Batu (%)', type: 'number', step: 1, default: 70 },
+                            { id: 'persenPasir', label: 'Pasir (%)', type: 'number', step: 1, default: 20 },
+                            { id: 'persenSemen', label: 'Semen (%)', type: 'number', step: 1, default: 10 }
+                        ],
+                        hitung: function(data) {
+                            const p = data.panjang || 0;
+                            const la = data.lebarAtas || 0;
+                            const lb = data.lebarBawah || 0;
+                            const t = data.tinggi || 0;
+                            const rata = (la + lb) / 2;
+                            const vol = rata * t * p;
+                            return { 
+                                volume: vol, 
+                                satuan: 'm³',
+                                batu: vol * (data.persenBatu / 100),
+                                pasir: vol * (data.persenPasir / 100),
+                                semen: vol * (data.persenSemen / 100)
+                            };
+                        },
+                        display: function(item) {
+                            return {
+                                volume: item.volume || 0,
+                                unit: 'm³',
+                                detail: `
+                                    <span><i class="fas fa-chess-queen"></i> ${(item.panjang || 0).toFixed(2)}m</span>
+                                    <span><i class="fas fa-percent"></i> Batu ${item.persenBatu || 70}%</span>
+                                    <span><i class="fas fa-cube"></i> Batu: ${(item.batu || 0).toFixed(3)} m³</span>
+                                `
+                            };
+                        }
+                    }
+                }
+            },
+
+            // ===== ARSITEKTUR =====
+            Arsitektur: {
+                icon: 'fa-archway',
+                warna: '#7c3aed',
+                items: {
+                    pasang_bata: {
+                        nama: 'Pasang Bata',
+                        icon: 'fa-cubes',
+                        rumus: 'Volume = P × T × Tebal | Jumlah Bata = Volume × 70',
+                        fields: [
+                            { id: 'namaItem', label: 'Nama Pekerjaan', type: 'text', default: 'Pasang Bata Dinding' },
+                            { id: 'material', label: 'Material', type: 'select', options: ['Bata Merah', 'Bata Ringan 7.5cm', 'Bata Ringan 10cm', 'Batako'], default: 'Bata Ringan 10cm' },
+                            { id: 'panjang', label: 'Panjang (m)', type: 'number', step: 0.001, default: 8.00 },
+                            { id: 'tinggi', label: 'Tinggi (m)', type: 'number', step: 0.001, default: 3.50 },
+                            { id: 'tebal', label: 'Tebal (m)', type: 'number', step: 0.001, default: 0.10 },
+                            { id: 'luasLubang', label: 'Luas Lubang (m²)', type: 'number', step: 0.001, default: 0, hint: 'Pintu, jendela, dll' }
+                        ],
+                        hitung: function(data) {
+                            const p = data.panjang || 0;
+                            const t = data.tinggi || 0;
+                            const tebal = data.tebal || 0.10;
+                            const luas = p * t;
+                            const luasBersih = luas - (data.luasLubang || 0);
+                            const vol = luasBersih * tebal;
+                            const jmlBata = vol * 70;
+                            return { volume: vol, satuan: 'm³', luasBersih, jmlBata };
+                        },
+                        display: function(item) {
+                            return {
+                                volume: item.volume || 0,
+                                unit: 'm³',
+                                detail: `
+                                    <span><i class="fas fa-arrows-alt-h"></i> ${(item.panjang || 0).toFixed(2)}×${(item.tinggi || 0).toFixed(2)}</span>
+                                    <span><i class="fas fa-cubes"></i> Bata: ${Math.round(item.jmlBata || 0)} bh</span>
+                                    <span><i class="fas fa-vector-square"></i> Luas: ${(item.luasBersih || 0).toFixed(2)} m²</span>
+                                `
+                            };
+                        }
+                    },
+                    plesteran: {
+                        nama: 'Plesteran',
+                        icon: 'fa-trowel',
+                        rumus: 'Luas = P × T × 2 (dua sisi)',
+                        fields: [
+                            { id: 'namaItem', label: 'Nama Pekerjaan', type: 'text', default: 'Plesteran Dinding' },
+                            { id: 'material', label: 'Material', type: 'select', options: ['Mortar 1:3', 'Mortar 1:4', 'Mortar 1:5'], default: 'Mortar 1:4' },
+                            { id: 'panjang', label: 'Panjang (m)', type: 'number', step: 0.001, default: 8.00 },
+                            { id: 'tinggi', label: 'Tinggi (m)', type: 'number', step: 0.001, default: 3.50 },
+                            { id: 'tebalPlester', label: 'Tebal Plester (cm)', type: 'number', step: 0.1, default: 2.0 },
+                            { id: 'jumlahSisi', label: 'Jumlah Sisi', type: 'select', options: ['1', '2'], default: '2' },
+                            { id: 'luasLubang', label: 'Luas Lubang (m²)', type: 'number', step: 0.001, default: 0 }
+                        ],
+                        hitung: function(data) {
+                            const p = data.panjang || 0;
+                            const t = data.tinggi || 0;
+                            const sisi = parseInt(data.jumlahSisi) || 2;
+                            const luas = (p * t - (data.luasLubang || 0)) * sisi;
+                            const volMortar = luas * (data.tebalPlester / 100);
+                            return { volume: volMortar, satuan: 'm³', luas };
+                        },
+                        display: function(item) {
+                            return {
+                                volume: item.volume || 0,
+                                unit: 'm³',
+                                detail: `
+                                    <span><i class="fas fa-arrows-alt-h"></i> ${(item.panjang || 0).toFixed(2)}×${(item.tinggi || 0).toFixed(2)}</span>
+                                    <span><i class="fas fa-border-all"></i> ${item.jumlahSisi || 2} sisi</span>
+                                    <span><i class="fas fa-vector-square"></i> Luas: ${(item.luas || 0).toFixed(2)} m²</span>
+                                `
+                            };
+                        }
+                    },
+                    acian: {
+                        nama: 'Acian',
+                        icon: 'fa-paint-roller',
+                        rumus: 'Luas = P × T × 2 (dua sisi)',
+                        fields: [
+                            { id: 'namaItem', label: 'Nama Pekerjaan', type: 'text', default: 'Acian Dinding' },
+                            { id: 'material', label: 'Material', type: 'select', options: ['Acian Semen', 'Acian Putih', 'Acian Warna'], default: 'Acian Semen' },
+                            { id: 'panjang', label: 'Panjang (m)', type: 'number', step: 0.001, default: 8.00 },
+                            { id: 'tinggi', label: 'Tinggi (m)', type: 'number', step: 0.001, default: 3.50 },
+                            { id: 'jumlahSisi', label: 'Jumlah Sisi', type: 'select', options: ['1', '2'], default: '2' },
+                            { id: 'luasLubang', label: 'Luas Lubang (m²)', type: 'number', step: 0.001, default: 0 }
+                        ],
+                        hitung: function(data) {
+                            const p = data.panjang || 0;
+                            const t = data.tinggi || 0;
+                            const sisi = parseInt(data.jumlahSisi) || 2;
+                            const luas = (p * t - (data.luasLubang || 0)) * sisi;
+                            return { volume: luas, satuan: 'm²' };
+                        },
+                        display: function(item) {
+                            return {
+                                volume: item.volume || 0,
+                                unit: 'm²',
+                                detail: `
+                                    <span><i class="fas fa-arrows-alt-h"></i> ${(item.panjang || 0).toFixed(2)}×${(item.tinggi || 0).toFixed(2)}</span>
+                                    <span><i class="fas fa-border-all"></i> ${item.jumlahSisi || 2} sisi</span>
+                                `
+                            };
+                        }
+                    },
+                    lantai: {
+                        nama: 'Lantai Keramik',
+                        icon: 'fa-th-large',
+                        rumus: 'Luas = P × L',
+                        fields: [
+                            { id: 'namaItem', label: 'Nama Pekerjaan', type: 'text', default: 'Pasang Keramik Lantai' },
+                            { id: 'material', label: 'Material', type: 'select', options: ['Keramik 30x30', 'Keramik 40x40', 'Keramik 60x60', 'Granit 60x60', 'Marmer'], default: 'Keramik 40x40' },
+                            { id: 'panjang', label: 'Panjang (m)', type: 'number', step: 0.001, default: 6.00 },
+                            { id: 'lebar', label: 'Lebar (m)', type: 'number', step: 0.001, default: 4.00 },
+                            { id: 'luasLubang', label: 'Luas Lubang (m²)', type: 'number', step: 0.001, default: 0 }
+                        ],
+                        hitung: function(data) {
+                            const luas = (data.panjang || 0) * (data.lebar || 0) - (data.luasLubang || 0);
+                            const jmlKeramik = luas * 1.05;
+                            return { volume: luas, satuan: 'm²', jmlKeramik };
+                        },
+                        display: function(item) {
+                            return {
+                                volume: item.volume || 0,
+                                unit: 'm²',
+                                detail: `
+                                    <span><i class="fas fa-arrows-alt-h"></i> ${(item.panjang || 0).toFixed(2)}×${(item.lebar || 0).toFixed(2)}</span>
+                                    <span><i class="fas fa-th-large"></i> Keramik: ${Math.round(item.jmlKeramik || 0)} bh</span>
+                                `
+                            };
+                        }
+                    },
+                    plafon: {
+                        nama: 'Plafon',
+                        icon: 'fa-chevron-up',
+                        rumus: 'Luas = P × L',
+                        fields: [
+                            { id: 'namaItem', label: 'Nama Pekerjaan', type: 'text', default: 'Pasang Plafon' },
+                            { id: 'material', label: 'Material', type: 'select', options: ['Gypsum', 'GRC Board', 'Multiplek', 'PVC'], default: 'Gypsum' },
+                            { id: 'panjang', label: 'Panjang (m)', type: 'number', step: 0.001, default: 6.00 },
+                            { id: 'lebar', label: 'Lebar (m)', type: 'number', step: 0.001, default: 4.00 }
+                        ],
+                        hitung: function(data) {
+                            const luas = (data.panjang || 0) * (data.lebar || 0);
+                            return { volume: luas, satuan: 'm²' };
+                        },
+                        display: function(item) {
+                            return {
+                                volume: item.volume || 0,
+                                unit: 'm²',
+                                detail: `
+                                    <span><i class="fas fa-arrows-alt-h"></i> ${(item.panjang || 0).toFixed(2)}×${(item.lebar || 0).toFixed(2)}</span>
+                                `
+                            };
+                        }
+                    }
+                }
+            },
+
+            // ===== FINISHING =====
+            Finishing: {
+                icon: 'fa-paint-roller',
+                warna: '#d97706',
+                items: {
+                    cat_dinding: {
+                        nama: 'Cat Dinding',
+                        icon: 'fa-paint-brush',
+                        rumus: 'Luas = P × T × 2',
+                        fields: [
+                            { id: 'namaItem', label: 'Nama Pekerjaan', type: 'text', default: 'Cat Dinding' },
+                            { id: 'material', label: 'Material', type: 'select', options: ['Cat Tembok Interior', 'Cat Tembok Eksterior', 'Cat Vinyl'], default: 'Cat Tembok Interior' },
+                            { id: 'panjang', label: 'Panjang (m)', type: 'number', step: 0.001, default: 8.00 },
+                            { id: 'tinggi', label: 'Tinggi (m)', type: 'number', step: 0.001, default: 3.50 },
+                            { id: 'luasLubang', label: 'Luas Lubang (m²)', type: 'number', step: 0.001, default: 0 },
+                            { id: 'lapis', label: 'Jumlah Lapis', type: 'select', options: ['1', '2'], default: '2' }
+                        ],
+                        hitung: function(data) {
+                            const luas = ((data.panjang || 0) * (data.tinggi || 0) - (data.luasLubang || 0)) * 2;
+                            const kebutuhan = luas * (parseInt(data.lapis) || 2);
+                            return { volume: luas, satuan: 'm²', kebutuhan };
+                        },
+                        display: function(item) {
+                            return {
+                                volume: item.volume || 0,
+                                unit: 'm²',
+                                detail: `
+                                    <span><i class="fas fa-arrows-alt-h"></i> ${(item.panjang || 0).toFixed(2)}×${(item.tinggi || 0).toFixed(2)}</span>
+                                    <span><i class="fas fa-paint-brush"></i> ${item.lapis || 2} lapis</span>
+                                    <span><i class="fas fa-paint-roller"></i> ${Math.round(item.kebutuhan || 0)} m²</span>
+                                `
+                            };
+                        }
+                    },
+                    cat_plafon: {
+                        nama: 'Cat Plafon',
+                        icon: 'fa-chevron-up',
+                        rumus: 'Luas = P × L',
+                        fields: [
+                            { id: 'namaItem', label: 'Nama Pekerjaan', type: 'text', default: 'Cat Plafon' },
+                            { id: 'material', label: 'Material', type: 'select', options: ['Cat Tembok', 'Cat Khusus Plafon'], default: 'Cat Tembok' },
+                            { id: 'panjang', label: 'Panjang (m)', type: 'number', step: 0.001, default: 6.00 },
+                            { id: 'lebar', label: 'Lebar (m)', type: 'number', step: 0.001, default: 4.00 },
+                            { id: 'lapis', label: 'Jumlah Lapis', type: 'select', options: ['1', '2'], default: '2' }
+                        ],
+                        hitung: function(data) {
+                            const luas = (data.panjang || 0) * (data.lebar || 0);
+                            const kebutuhan = luas * (parseInt(data.lapis) || 2);
+                            return { volume: luas, satuan: 'm²', kebutuhan };
+                        },
+                        display: function(item) {
+                            return {
+                                volume: item.volume || 0,
+                                unit: 'm²',
+                                detail: `
+                                    <span><i class="fas fa-arrows-alt-h"></i> ${(item.panjang || 0).toFixed(2)}×${(item.lebar || 0).toFixed(2)}</span>
+                                    <span><i class="fas fa-paint-brush"></i> ${item.lapis || 2} lapis</span>
+                                `
+                            };
+                        }
+                    }
+                }
+            },
+
+            // ===== MEKANIKAL =====
+            Mekanikal: {
+                icon: 'fa-cogs',
+                warna: '#0891b2',
+                items: {
+                    pipa_air: {
+                        nama: 'Instalasi Pipa Air',
+                        icon: 'fa-water',
+                        rumus: 'Panjang = Total panjang pipa',
+                        fields: [
+                            { id: 'namaItem', label: 'Nama Pekerjaan', type: 'text', default: 'Pipa Air Bersih' },
+                            { id: 'material', label: 'Material', type: 'select', options: ['Pipa PVC', 'Pipa PPR', 'Pipa Galvanis', 'Pipa Tembaga'], default: 'Pipa PVC' },
+                            { id: 'panjang', label: 'Panjang (m)', type: 'number', step: 0.001, default: 25.00 },
+                            { id: 'diameter', label: 'Diameter (inch)', type: 'select', options: ['1/2"', '3/4"', '1"', '1 1/4"', '1 1/2"', '2"'], default: '1"' }
+                        ],
+                        hitung: function(data) {
+                            return { volume: data.panjang || 0, satuan: 'm' };
+                        },
+                        display: function(item) {
+                            return {
+                                volume: item.volume || 0,
+                                unit: 'm',
+                                detail: `
+                                    <span><i class="fas fa-water"></i> ${item.diameter || '1"'}</span>
+                                    <span><i class="fas fa-arrows-alt-h"></i> ${(item.panjang || 0).toFixed(2)} m</span>
+                                `
+                            };
+                        }
+                    }
+                }
+            },
+
+            // ===== ELEKTRIKAL =====
+            Elektrikal: {
+                icon: 'fa-bolt',
+                warna: '#f59e0b',
+                items: {
+                    kabel: {
+                        nama: 'Instalasi Kabel',
+                        icon: 'fa-plug',
+                        rumus: 'Panjang = Total panjang kabel',
+                        fields: [
+                            { id: 'namaItem', label: 'Nama Pekerjaan', type: 'text', default: 'Kabel Listrik' },
+                            { id: 'material', label: 'Material', type: 'select', options: ['NYA 1.5mm²', 'NYA 2.5mm²', 'NYM 3x1.5', 'NYM 3x2.5', 'NYM 4x2.5'], default: 'NYA 2.5mm²' },
+                            { id: 'panjang', label: 'Panjang (m)', type: 'number', step: 0.001, default: 50.00 },
+                            { id: 'jumlahKabel', label: 'Jumlah Kabel', type: 'number', step: 1, default: 3 }
+                        ],
+                        hitung: function(data) {
+                            const total = (data.panjang || 0) * (data.jumlahKabel || 1);
+                            return { volume: total, satuan: 'm' };
+                        },
+                        display: function(item) {
+                            return {
+                                volume: item.volume || 0,
+                                unit: 'm',
+                                detail: `
+                                    <span><i class="fas fa-plug"></i> ${item.material || 'NYA 2.5mm²'}</span>
+                                    <span><i class="fas fa-arrows-alt-h"></i> ${(item.panjang || 0).toFixed(2)} × ${item.jumlahKabel || 1}</span>
+                                `
+                            };
+                        }
+                    }
+                }
+            },
+
+            // ===== PLUMBING =====
+            Plumbing: {
+                icon: 'fa-wrench',
+                warna: '#059669',
+                items: {
+                    instalasi_plumbing: {
+                        nama: 'Instalasi Plumbing',
+                        icon: 'fa-pipe',
+                        rumus: 'Panjang = Total panjang instalasi',
+                        fields: [
+                            { id: 'namaItem', label: 'Nama Pekerjaan', type: 'text', default: 'Instalasi Plumbing' },
+                            { id: 'material', label: 'Material', type: 'select', options: ['Pipa PVC AW', 'Pipa PVC D', 'Pipa PPR', 'Pipa Tembaga'], default: 'Pipa PVC AW' },
+                            { id: 'panjang', label: 'Panjang (m)', type: 'number', step: 0.001, default: 30.00 },
+                            { id: 'diameter', label: 'Diameter (inch)', type: 'select', options: ['1/2"', '3/4"', '1"', '1 1/4"', '1 1/2"', '2"', '3"', '4"'], default: '1"' }
+                        ],
+                        hitung: function(data) {
+                            return { volume: data.panjang || 0, satuan: 'm' };
+                        },
+                        display: function(item) {
+                            return {
+                                volume: item.volume || 0,
+                                unit: 'm',
+                                detail: `
+                                    <span><i class="fas fa-pipe"></i> ${item.diameter || '1"'}</span>
+                                    <span><i class="fas fa-arrows-alt-h"></i> ${(item.panjang || 0).toFixed(2)} m</span>
+                                `
+                            };
+                        }
+                    }
+                }
+            }
+        };
+
+        // ============================================
+        // STATE
+        // ============================================
         let items = [];
         let gambarFile = null;
-        let activeTab = 'beton';
+        let selectedJenis = '';
+        let selectedItemKey = '';
+        let currentFormData = {};
 
-        // ===== DOM =====
-        const tabContainer = document.getElementById('tabContainer');
-        const tabContentContainer = document.getElementById('tabContentContainer');
+        // ============================================
+        // DOM REFS
+        // ============================================
+        const jenisPekerjaanSelect = document.getElementById('jenisPekerjaanUtama');
+        const step2Container = document.getElementById('step2Container');
+        const step3Container = document.getElementById('step3Container');
+        const selectedJenisLabel = document.getElementById('selectedJenisLabel');
+        const selectedItemLabel = document.getElementById('selectedItemLabel');
+        const itemPickerContainer = document.getElementById('itemPickerContainer');
+        const formContainer = document.getElementById('formContainer');
+        const calcDetailContainer = document.getElementById('calcDetailContainer');
+        const rumusDisplay = document.getElementById('rumusDisplay');
+        const stepDisplay = document.getElementById('stepDisplay');
+        const calcResultValue = document.getElementById('calcResultValue');
+        const calcResultSub = document.getElementById('calcResultSub');
         const tambahBtn = document.getElementById('tambahBtn');
         const resetFormBtn = document.getElementById('resetFormBtn');
         const hapusSemuaBtn = document.getElementById('hapusSemuaBtn');
@@ -487,7 +1320,7 @@
         const totalVolumeBadge = document.getElementById('totalVolumeBadge');
         const displayMaterial = document.getElementById('displayMaterial');
         const displayVolume = document.getElementById('displayVolume');
-        const displayTipe = document.getElementById('displayTipe');
+        const displayItem = document.getElementById('displayItem');
         const displayJenis = document.getElementById('displayJenis');
         const materialBreakdown = document.getElementById('materialBreakdown');
         const fileInput = document.getElementById('fileInput');
@@ -498,7 +1331,9 @@
         const exportBtn = document.getElementById('exportBtn');
         const cetakBtn = document.getElementById('cetakBtn');
 
-        // ===== FUNGSI BANTU =====
+        // ============================================
+        // FUNGSI BANTU
+        // ============================================
         function formatAngka(v, digits = 3) { return v.toFixed(digits); }
         function escHtml(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
         function getJenisIcon(jenis) {
@@ -506,122 +1341,299 @@
             return icons[jenis] || 'fa-cube';
         }
 
-        // ===== GENERATE FORM =====
-        function generateTabsAndForms() {
-            let tabHtml = '', contentHtml = '', first = true;
-            for (const [key, rumus] of Object.entries(QSE_RUMUS)) {
-                const activeClass = first ? 'active' : '';
-                tabHtml += `<button class="tab-btn ${activeClass}" data-tab="${key}"><i class="fas ${rumus.icon}"></i> ${rumus.nama}</button>`;
-
-                let formHtml = '';
-                const fields = rumus.fields || [];
-                let currentGroup = [];
-                for (let i = 0; i < fields.length; i++) {
-                    const f = fields[i];
-                    let inputHtml = '';
-                    if (f.type === 'text') inputHtml = `<input type="text" id="${f.id}" placeholder="${f.label}" value="${f.default || ''}" />`;
-                    else if (f.type === 'number') inputHtml = `<input type="number" id="${f.id}" step="${f.step || 0.001}" value="${f.default || 0}" />`;
-                    else if (f.type === 'select') {
-                        let opts = (f.options || []).map(o => `<option value="${o}" ${o===f.default?'selected':''}>${o}</option>`).join('');
-                        inputHtml = `<select id="${f.id}">${opts}</select>`;
-                    }
-                    const fieldHtml = `<div class="form-group"><label><i class="fas fa-${f.icon || 'circle'}"></i> ${f.label}</label>${inputHtml}${f.hint ? `<div class="hint">${f.hint}</div>` : ''}</div>`;
-                    currentGroup.push(fieldHtml);
-                    if (currentGroup.length === 4 || i === fields.length - 1) {
-                        const cols = currentGroup.length;
-                        const colClass = cols === 1 ? '' : cols === 2 ? 'form-row' : cols === 3 ? 'form-row-3' : 'form-row-4';
-                        formHtml += `<div class="${colClass}" style="margin-bottom:8px;">${currentGroup.join('')}</div>`;
-                        currentGroup = [];
-                    }
-                }
-                formHtml += `
-                    <div class="calc-detail">
-                        <div class="formula">📐 ${rumus.rumus}</div>
-                        <div class="step" id="calcSteps_${key}">
-                            <span style="background:#2563eb;color:white;border:none;">Hasil: <strong id="calcResult_${key}">0.000</strong></span>
-                        </div>
-                    </div>
-                `;
-                const contentClass = first ? 'tab-content active' : 'tab-content';
-                contentHtml += `<div id="tabContent_${key}" class="${contentClass}">${formHtml}</div>`;
-                first = false;
+        // ============================================
+        // STEP 1: PILIH JENIS PEKERJAAN
+        // ============================================
+        jenisPekerjaanSelect.addEventListener('change', function() {
+            selectedJenis = this.value;
+            if (!selectedJenis) {
+                step2Container.classList.add('hidden');
+                step3Container.classList.add('hidden');
+                itemPickerContainer.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#94a3b8;font-size:13px;padding:20px 0;"><i class="fas fa-arrow-up" style="display:block;font-size:24px;margin-bottom:8px;opacity:0.3;"></i>Pilih Jenis Pekerjaan terlebih dahulu</div>';
+                return;
             }
-            tabContainer.innerHTML = tabHtml;
-            tabContentContainer.innerHTML = contentHtml;
-            document.querySelectorAll('.tab-btn').forEach(btn => {
+            step2Container.classList.remove('hidden');
+            selectedJenisLabel.textContent = '🏗️ ' + selectedJenis;
+            loadItems(selectedJenis);
+        });
+
+        // ============================================
+        // STEP 2: LOAD ITEMS
+        // ============================================
+        function loadItems(jenis) {
+            const data = DB_RUMUS[jenis];
+            if (!data) {
+                itemPickerContainer.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#94a3b8;font-size:13px;padding:20px 0;">Tidak ada item untuk jenis ini</div>';
+                return;
+            }
+
+            let html = '';
+            for (const [key, item] of Object.entries(data.items)) {
+                html += `
+                    <button class="item-picker-btn" data-key="${key}" data-nama="${item.nama}">
+                        <i class="fas ${item.icon}"></i>
+                        ${item.nama}
+                        <span class="badge-item">${key}</span>
+                    </button>
+                `;
+            }
+            itemPickerContainer.innerHTML = html;
+
+            // Event listener untuk item picker
+            document.querySelectorAll('.item-picker-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
-                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelectorAll('.item-picker-btn').forEach(b => b.classList.remove('active'));
                     this.classList.add('active');
-                    const tabId = this.dataset.tab;
-                    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-                    document.getElementById(`tabContent_${tabId}`).classList.add('active');
-                    activeTab = tabId;
-                    updateCalcPreview();
+                    const key = this.dataset.key;
+                    const nama = this.dataset.nama;
+                    selectedItemKey = key;
+                    selectedItemLabel.textContent = '📐 ' + nama;
+                    step3Container.classList.remove('hidden');
+                    loadForm(key);
                 });
             });
         }
 
-        // ===== FUNGSI DATA =====
+        // ============================================
+        // STEP 3: LOAD FORM & RUMUS
+        // ============================================
+        function loadForm(key) {
+            const jenisData = DB_RUMUS[selectedJenis];
+            if (!jenisData) return;
+            const itemData = jenisData.items[key];
+            if (!itemData) return;
+
+            // Reset form
+            formContainer.innerHTML = '';
+            currentFormData = {};
+
+            // Generate form
+            let formHtml = '';
+            const fields = itemData.fields || [];
+            
+            // Kelompokkan field
+            let currentGroup = [];
+            let groupIndex = 0;
+            
+            for (let i = 0; i < fields.length; i++) {
+                const f = fields[i];
+                let inputHtml = '';
+                if (f.type === 'text') {
+                    inputHtml = `<input type="text" id="field_${f.id}" placeholder="${f.label}" value="${f.default || ''}" />`;
+                } else if (f.type === 'number') {
+                    inputHtml = `<input type="number" id="field_${f.id}" step="${f.step || 0.001}" value="${f.default || 0}" />`;
+                } else if (f.type === 'select') {
+                    let opts = (f.options || []).map(o => `<option value="${o}" ${o===f.default?'selected':''}>${o}</option>`).join('');
+                    inputHtml = `<select id="field_${f.id}">${opts}</select>`;
+                }
+                const fieldHtml = `
+                    <div class="form-group">
+                        <label><i class="fas fa-${f.icon || 'circle'}"></i> ${f.label}</label>
+                        ${inputHtml}
+                        ${f.hint ? `<div class="hint">${f.hint}</div>` : ''}
+                    </div>
+                `;
+                currentGroup.push(fieldHtml);
+                
+                if (currentGroup.length === 4 || i === fields.length - 1) {
+                    const cols = currentGroup.length;
+                    const colClass = cols === 1 ? '' : cols === 2 ? 'form-row' : cols === 3 ? 'form-row-3' : 'form-row-4';
+                    formHtml += `<div class="${colClass}" style="margin-bottom:8px;">${currentGroup.join('')}</div>`;
+                    currentGroup = [];
+                }
+            }
+
+            formContainer.innerHTML = formHtml;
+
+            // Event listener untuk update preview
+            document.querySelectorAll('#formContainer input, #formContainer select').forEach(el => {
+                el.addEventListener('input', function() { updatePreview(key); });
+                el.addEventListener('change', function() { updatePreview(key); });
+            });
+
+            // Tampilkan rumus
+            rumusDisplay.textContent = '📐 ' + itemData.rumus;
+
+            // Tampilkan detail perhitungan
+            calcDetailContainer.classList.add('show');
+
+            // Preview awal
+            updatePreview(key);
+        }
+
+        // ============================================
+        // UPDATE PREVIEW
+        // ============================================
+        function updatePreview(key) {
+            const jenisData = DB_RUMUS[selectedJenis];
+            if (!jenisData) return;
+            const itemData = jenisData.items[key];
+            if (!itemData) return;
+
+            // Ambil data dari form
+            const data = getFormData(key);
+            
+            // Hitung
+            const hasil = itemData.hitung(data);
+            if (!hasil) return;
+
+            // Tampilkan step
+            let stepHtml = '';
+            for (const [k, v] of Object.entries(data)) {
+                if (typeof v === 'number' && v !== 0) {
+                    stepHtml += `<span>${k}: <strong>${formatAngka(v)}</strong></span>`;
+                }
+            }
+            if (stepHtml) {
+                stepDisplay.innerHTML = stepHtml;
+            } else {
+                stepDisplay.innerHTML = '<span>Masukkan dimensi untuk melihat hasil</span>';
+            }
+
+            // Tampilkan hasil
+            const firstKey = Object.keys(hasil).find(k => k !== 'satuan');
+            if (firstKey) {
+                calcResultValue.textContent = formatAngka(hasil[firstKey] || 0) + ' ' + (hasil.satuan || '');
+            }
+            
+            // Sub result
+            let subHtml = [];
+            for (const [k, v] of Object.entries(hasil)) {
+                if (k !== 'satuan' && k !== firstKey && typeof v === 'number') {
+                    subHtml.push(`${k}: ${formatAngka(v)}`);
+                }
+            }
+            calcResultSub.textContent = subHtml.join(' | ') || '-';
+
+            // Simpan data untuk ditambahkan
+            currentFormData = { ...data, ...hasil };
+        }
+
+        // ============================================
+        // GET FORM DATA
+        // ============================================
         function getFormData(key) {
-            const rumus = QSE_RUMUS[key];
-            if (!rumus) return {};
             const data = {};
-            (rumus.fields || []).forEach(f => {
-                const el = document.getElementById(f.id);
-                if (el) data[f.id] = f.type === 'number' ? (parseFloat(el.value) || 0) : el.value;
+            const jenisData = DB_RUMUS[selectedJenis];
+            if (!jenisData) return data;
+            const itemData = jenisData.items[key];
+            if (!itemData) return data;
+            
+            (itemData.fields || []).forEach(f => {
+                const el = document.getElementById(`field_${f.id}`);
+                if (el) {
+                    if (f.type === 'number') {
+                        data[f.id] = parseFloat(el.value) || 0;
+                    } else if (f.type === 'select') {
+                        data[f.id] = el.value;
+                    } else {
+                        data[f.id] = el.value;
+                    }
+                }
             });
             return data;
         }
 
-        function setFormData(key, data) {
-            const rumus = QSE_RUMUS[key];
-            if (!rumus) return;
-            (rumus.fields || []).forEach(f => {
-                const el = document.getElementById(f.id);
-                if (el && data[f.id] !== undefined) el.value = data[f.id];
-            });
-        }
-
-        function hitungItem(key) {
-            const rumus = QSE_RUMUS[key];
-            if (!rumus || !rumus.hitung) return null;
-            return rumus.hitung(getFormData(key));
-        }
-
-        function updateCalcPreview() {
-            for (const key of Object.keys(QSE_RUMUS)) {
-                const el = document.getElementById(`calcResult_${key}`);
-                if (!el) continue;
-                const hasil = hitungItem(key);
-                if (hasil) {
-                    const firstKey = Object.keys(hasil)[0];
-                    if (firstKey) el.textContent = formatAngka(hasil[firstKey] || 0);
-                }
-            }
-        }
-
-        // ===== RENDER =====
-        function renderItems() {
-            if (items.length === 0) {
-                itemListContainer.innerHTML = `<div class="empty-state"><i class="fas fa-box-open"></i><p>Belum ada item</p></div>`;
-                updateStats(); updateMaterialPreview(); updateBreakdown();
+        // ============================================
+        // TAMBAH ITEM
+        // ============================================
+        function tambahItem() {
+            if (!selectedJenis || !selectedItemKey) {
+                alert('⚠️ Pilih Jenis Pekerjaan dan Item terlebih dahulu!');
                 return;
             }
-            let html = '', totalVol = 0, materialCount = {}, jenisSet = new Set();
+
+            const jenisData = DB_RUMUS[selectedJenis];
+            if (!jenisData) return;
+            const itemData = jenisData.items[selectedItemKey];
+            if (!itemData) return;
+
+            // Validasi
+            let valid = true;
+            (itemData.fields || []).forEach(f => {
+                if (f.type === 'number') {
+                    const el = document.getElementById(`field_${f.id}`);
+                    if (el) {
+                        const val = parseFloat(el.value);
+                        if (isNaN(val) || val < 0) valid = false;
+                    }
+                }
+            });
+
+            if (!valid) {
+                alert('⚠️ Periksa input, pastikan nilai valid!');
+                return;
+            }
+
+            // Ambil data
+            const data = getFormData(selectedItemKey);
+            const hasil = itemData.hitung(data);
+            if (!hasil) return;
+
+            // Cari field nama dan material
+            const namaField = (itemData.fields || []).find(f => f.id === 'namaItem');
+            const materialField = (itemData.fields || []).find(f => f.id === 'material');
+            const nama = namaField ? document.getElementById(`field_${namaField.id}`).value.trim() || 'Item' : 'Item';
+            const material = materialField ? document.getElementById(`field_${materialField.id}`).value : 'Material';
+
+            // Simpan
+            const itemEntry = {
+                tipe: selectedItemKey,
+                jenis: selectedJenis,
+                nama: nama,
+                material: material,
+                ...data,
+                ...hasil
+            };
+
+            items.push(itemEntry);
+            renderItems();
+            
+            // Reset form setelah tambah (opsional)
+            // loadForm(selectedItemKey);
+        }
+
+        // ============================================
+        // RENDER ITEMS
+        // ============================================
+        function renderItems() {
+            if (items.length === 0) {
+                itemListContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-box-open"></i>
+                        <p>Belum ada item</p>
+                        <p style="font-size:11px; margin-top:4px;">Ikuti workflow di atas untuk menambahkan</p>
+                    </div>
+                `;
+                updateStats();
+                updateMaterialPreview();
+                updateBreakdown();
+                return;
+            }
+
+            let html = '';
+            let totalVol = 0;
+            const materialCount = {};
+            const jenisSet = new Set();
+
             items.forEach((item, index) => {
-                const rumus = QSE_RUMUS[item.tipe];
-                const display = rumus ? rumus.display(item) : { volume: 0, unit: 'm³', detail: '' };
+                const jenisData = DB_RUMUS[item.jenis];
+                const itemData = jenisData ? jenisData.items[item.tipe] : null;
+                const display = itemData ? itemData.display(item) : { volume: 0, unit: 'm³', detail: '' };
                 const vol = display.volume || 0;
                 totalVol += vol;
                 jenisSet.add(item.jenis);
                 materialCount[item.material] = (materialCount[item.material] || 0) + vol;
+
                 const icon = getJenisIcon(item.jenis);
-                const tipeLabel = rumus ? rumus.nama : item.tipe;
+                const tipeLabel = itemData ? itemData.nama : item.tipe;
+
                 html += `
                     <div class="item-card">
                         <div class="item-header">
                             <div>
-                                <span class="item-name">${escHtml(item.nama)}
+                                <span class="item-name">
+                                    ${escHtml(item.nama)}
                                     <span class="badge-type"><i class="fas ${icon}"></i> ${escHtml(item.jenis)}</span>
                                     <span class="badge-type" style="background:#e0f2fe;color:#0369a1;">${tipeLabel}</span>
                                 </span>
@@ -640,7 +1652,9 @@
                     </div>
                 `;
             });
+
             itemListContainer.innerHTML = html;
+
             document.querySelectorAll('.del-item').forEach(btn => {
                 btn.addEventListener('click', function(e) {
                     e.stopPropagation();
@@ -651,7 +1665,11 @@
                     }
                 });
             });
-            updateStats(); updateMaterialPreview(); updateBreakdown();
+
+            updateStats();
+            updateMaterialPreview();
+            updateBreakdown();
+
             let topMat = '-', topVol = 0;
             for (const [mat, vol] of Object.entries(materialCount)) {
                 if (vol > topVol) { topVol = vol; topMat = mat; }
@@ -663,8 +1681,9 @@
         function updateStats() {
             let total = 0;
             items.forEach(item => {
-                const r = QSE_RUMUS[item.tipe];
-                const d = r ? r.display(item) : { volume: 0 };
+                const jenisData = DB_RUMUS[item.jenis];
+                const itemData = jenisData ? jenisData.items[item.tipe] : null;
+                const d = itemData ? itemData.display(item) : { volume: 0 };
                 total += d.volume || 0;
             });
             const t = formatAngka(total);
@@ -679,77 +1698,66 @@
             if (items.length === 0) {
                 displayMaterial.textContent = '-';
                 displayVolume.textContent = '0.000';
-                displayTipe.textContent = '-';
+                displayItem.textContent = '-';
                 displayJenis.textContent = '-';
                 return;
             }
             const last = items[items.length - 1];
-            const r = QSE_RUMUS[last.tipe];
-            const d = r ? r.display(last) : { volume: 0, unit: 'm³' };
+            const jenisData = DB_RUMUS[last.jenis];
+            const itemData = jenisData ? jenisData.items[last.tipe] : null;
+            const d = itemData ? itemData.display(last) : { volume: 0, unit: 'm³' };
             displayMaterial.textContent = last.material;
             displayVolume.textContent = formatAngka(d.volume || 0) + ' ' + (d.unit || 'm³');
-            displayTipe.textContent = r ? r.nama : last.tipe;
+            displayItem.textContent = itemData ? itemData.nama : last.tipe;
             displayJenis.textContent = last.jenis;
         }
 
         function updateBreakdown() {
             if (items.length === 0) {
-                materialBreakdown.innerHTML = `<div style="color:#94a3b8;font-size:12px;text-align:center;padding:12px 0;"><i class="fas fa-cube" style="display:block;font-size:20px;margin-bottom:4px;opacity:0.3;"></i>Belum ada data</div>`;
+                materialBreakdown.innerHTML = `
+                    <div style="color:#94a3b8;font-size:12px;text-align:center;padding:12px 0;">
+                        <i class="fas fa-cube" style="display:block;font-size:20px;margin-bottom:4px;opacity:0.3;"></i>
+                        Belum ada data
+                    </div>
+                `;
                 return;
             }
+
             const mv = {};
             items.forEach(item => {
-                const r = QSE_RUMUS[item.tipe];
-                const d = r ? r.display(item) : { volume: 0 };
+                const jenisData = DB_RUMUS[item.jenis];
+                const itemData = jenisData ? jenisData.items[item.tipe] : null;
+                const d = itemData ? itemData.display(item) : { volume: 0 };
                 const vol = d.volume || 0;
                 mv[item.material] = (mv[item.material] || 0) + vol;
             });
-            let html = '', total = Object.values(mv).reduce((a,b) => a + b, 0);
-            Object.entries(mv).sort((a,b) => b[1] - a[1]).forEach(([mat, vol]) => {
+
+            let html = '';
+            let total = Object.values(mv).reduce((a, b) => a + b, 0);
+            Object.entries(mv).sort((a, b) => b[1] - a[1]).forEach(([mat, vol]) => {
                 const pct = total > 0 ? (vol / total * 100) : 0;
-                html += `<div class="mat-item"><span class="mat-name">${escHtml(mat)}</span><span class="mat-vol">${formatAngka(vol)} (${pct.toFixed(1)}%)</span></div>`;
+                html += `
+                    <div class="mat-item">
+                        <span class="mat-name">${escHtml(mat)}</span>
+                        <span class="mat-vol">${formatAngka(vol)} (${pct.toFixed(1)}%)</span>
+                    </div>
+                `;
             });
             materialBreakdown.innerHTML = html;
         }
 
-        // ===== TAMBAH ITEM =====
-        function tambahItem() {
-            const key = activeTab, rumus = QSE_RUMUS[key];
-            if (!rumus) return;
-            const data = getFormData(key);
-            let valid = true;
-            (rumus.fields || []).forEach(f => {
-                const el = document.getElementById(f.id);
-                if (el && f.type === 'number') {
-                    const val = parseFloat(el.value);
-                    if (isNaN(val) || val <= 0) valid = false;
-                }
-            });
-            if (!valid) { alert('⚠️ Periksa input, pastikan nilai > 0'); return; }
-            
-            const namaField = (rumus.fields || []).find(f => f.label && f.label.toLowerCase().includes('nama'));
-            const materialField = (rumus.fields || []).find(f => f.label && f.label.toLowerCase().includes('material'));
-            const jenisField = (rumus.fields || []).find(f => f.label && f.label.toLowerCase().includes('jenis'));
-            const nama = namaField ? document.getElementById(namaField.id).value.trim() || 'Item' : 'Item';
-            const material = materialField ? document.getElementById(materialField.id).value : 'Material';
-            const jenis = jenisField ? document.getElementById(jenisField.id).value : 'Struktur';
-            const hasil = rumus.hitung(data);
-            if (!hasil) return;
-            items.push({ tipe: key, nama, jenis, material, ...data, ...hasil });
-            renderItems();
-        }
-
-        // ===== RESET =====
+        // ============================================
+        // RESET FORM
+        // ============================================
         function resetForm() {
-            for (const [key, rumus] of Object.entries(QSE_RUMUS)) {
-                const def = {};
-                (rumus.fields || []).forEach(f => def[f.id] = f.default);
-                setFormData(key, def);
+            if (selectedItemKey) {
+                loadForm(selectedItemKey);
             }
-            updateCalcPreview();
         }
 
-        // ===== GAMBAR =====
+        // ============================================
+        // GAMBAR
+        // ============================================
         function handleGambar(file) {
             if (!file) return;
             const reader = new FileReader();
@@ -762,17 +1770,21 @@
             reader.readAsDataURL(file);
         }
 
-        // ===== EXPORT =====
+        // ============================================
+        // EXPORT & CETAK
+        // ============================================
         function exportCSV() {
             if (items.length === 0) { alert('Tidak ada data.'); return; }
-            let header = 'Nama,Jenis,Tipe,Material,Volume,Satuan\n';
+            let header = 'Nama,Jenis,Item,Material,Volume,Satuan\n';
             let rows = items.map(item => {
-                const r = QSE_RUMUS[item.tipe];
-                const d = r ? r.display(item) : { volume: 0, unit: 'm³' };
-                const tipe = r ? r.nama : item.tipe;
-                return `${item.nama},${item.jenis},${tipe},${item.material},${formatAngka(d.volume||0)},${d.unit||'m³'}`;
+                const jenisData = DB_RUMUS[item.jenis];
+                const itemData = jenisData ? jenisData.items[item.tipe] : null;
+                const d = itemData ? itemData.display(item) : { volume: 0, unit: 'm³' };
+                const itemNama = itemData ? itemData.nama : item.tipe;
+                return `${item.nama},${item.jenis},${itemNama},${item.material},${formatAngka(d.volume||0)},${d.unit||'m³'}`;
             }).join('\n');
-            const blob = new Blob([header + rows], { type: 'text/csv;charset=utf-8;' });
+            const csv = header + rows;
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
             link.download = 'QSE_Report.csv';
@@ -782,15 +1794,16 @@
             URL.revokeObjectURL(link.href);
         }
 
-        // ===== CETAK =====
         function cetakRingkasan() {
             if (items.length === 0) { alert('Tidak ada data.'); return; }
             let text = '=== QUANTITY SURVEY ENGINEER ===\n\n';
             items.forEach((item, i) => {
-                const r = QSE_RUMUS[item.tipe];
-                const d = r ? r.display(item) : { volume: 0, unit: 'm³' };
+                const jenisData = DB_RUMUS[item.jenis];
+                const itemData = jenisData ? jenisData.items[item.tipe] : null;
+                const d = itemData ? itemData.display(item) : { volume: 0, unit: 'm³' };
+                const itemNama = itemData ? itemData.nama : item.tipe;
                 text += `${i+1}. ${item.nama}\n`;
-                text += `   Jenis: ${item.jenis} | Tipe: ${r ? r.nama : item.tipe}\n`;
+                text += `   Jenis: ${item.jenis} | Item: ${itemNama}\n`;
                 text += `   Material: ${item.material} | Volume: ${formatAngka(d.volume||0)} ${d.unit||'m³'}\n\n`;
             });
             const win = window.open('', '_blank', 'width=500,height=500');
@@ -803,21 +1816,24 @@
             }
         }
 
-        // ===== EVENT =====
+        // ============================================
+        // EVENT LISTENERS
+        // ============================================
         tambahBtn.addEventListener('click', tambahItem);
         resetFormBtn.addEventListener('click', resetForm);
-        document.querySelectorAll('input, select').forEach(el => {
-            el.addEventListener('keypress', e => { if (e.key === 'Enter') { e.preventDefault(); tambahItem(); } });
-            el.addEventListener('input', updateCalcPreview);
-            el.addEventListener('change', updateCalcPreview);
-        });
+
         hapusSemuaBtn.addEventListener('click', function() {
             if (items.length === 0) return;
             if (confirm('Hapus semua item?')) { items = []; renderItems(); }
         });
+
         exportBtn.addEventListener('click', exportCSV);
         cetakBtn.addEventListener('click', cetakRingkasan);
-        fileInput.addEventListener('change', function(e) { if (this.files && this.files[0]) handleGambar(this.files[0]); });
+
+        fileInput.addEventListener('change', function(e) {
+            if (this.files && this.files[0]) handleGambar(this.files[0]);
+        });
+
         gambarArea.addEventListener('dragover', e => { e.preventDefault(); this.classList.add('drag-over'); });
         gambarArea.addEventListener('dragleave', e => { e.preventDefault(); this.classList.remove('drag-over'); });
         gambarArea.addEventListener('drop', function(e) {
@@ -825,36 +1841,36 @@
             const files = e.dataTransfer.files;
             if (files && files[0]) { handleGambar(files[0]); fileInput.files = files; }
         });
+
         hapusGambarBtn.addEventListener('click', function() {
             gambarPreview.src = ''; gambarPreview.style.display = 'none';
             gambarPlaceholder.style.display = 'flex'; gambarFile = null; fileInput.value = '';
         });
 
-        // ===== INIT =====
-        generateTabsAndForms();
-        resetForm();
-
-        // Sample data
+        // ============================================
+        // INIT - Sample Data
+        // ============================================
         const samples = [
-            { tipe: 'beton', nama: 'Kolom Lantai 1', jenis: 'Struktur', material: 'Beton K-300', panjang: 0.30, lebar: 0.30, tinggi: 3.50, koefisien: 1.0, volume: 0.315 },
-            { tipe: 'balok', nama: 'Balok B1 30x50', jenis: 'Struktur', material: 'Beton K-300', panjangBalok: 6.00, lebarBalok: 0.30, tinggiBalok: 0.50, jumlahBalok: 4, volume: 3.60, totalBeratBesi: 186.50 },
-            { tipe: 'dinding', nama: 'Core Lift LT1', jenis: 'Struktur', material: 'Beton K-350', panjangDinding: 8.00, tinggiDinding: 3.50, tebalDinding: 0.25, volume: 7.00, totalBeratBesi: 210.70 }
+            { tipe: 'beton', jenis: 'Struktur', nama: 'Kolom Lantai 1', material: 'Beton K-300', panjang: 0.30, lebar: 0.30, tinggi: 3.50, koefisien: 1.0, volume: 0.315 },
+            { tipe: 'pasang_bata', jenis: 'Arsitektur', nama: 'Dinding Bata LT1', material: 'Bata Ringan 10cm', panjang: 8.00, tinggi: 3.50, tebal: 0.10, luasLubang: 0, volume: 2.80, jmlBata: 196, luasBersih: 28.0 },
+            { tipe: 'plesteran', jenis: 'Arsitektur', nama: 'Plesteran Dinding', material: 'Mortar 1:4', panjang: 8.00, tinggi: 3.50, tebalPlester: 2.0, jumlahSisi: '2', luasLubang: 0, volume: 1.12, luas: 56.0 }
         ];
+
         samples.forEach(s => {
-            const r = QSE_RUMUS[s.tipe];
-            if (r) { const d = r.display(s); items.push({ ...s, ...d }); }
+            const jenisData = DB_RUMUS[s.jenis];
+            const itemData = jenisData ? jenisData.items[s.tipe] : null;
+            if (itemData) {
+                const d = itemData.display(s);
+                items.push({ ...s, ...d });
+            }
         });
+
         renderItems();
 
-        console.log('🏗️ QSE Pro loaded!');
-        console.log(`📊 ${Object.keys(QSE_RUMUS).length} rumus tersedia`);
+        console.log('🏗️ QSE Pro v6.0 - Workflow Based');
+        console.log('📊 Database dengan ' + Object.keys(DB_RUMUS).length + ' jenis pekerjaan');
+        console.log('📋 Total item: ' + Object.values(DB_RUMUS).reduce((acc, j) => acc + Object.keys(j.items).length, 0));
 
-        // Register Service Worker
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js')
-                .then(() => console.log('✅ SW registered'))
-                .catch(() => console.log('⚠️ SW registration failed'));
-        }
     })();
 </script>
 </body>
