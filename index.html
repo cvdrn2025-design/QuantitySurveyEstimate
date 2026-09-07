@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#0f172a" />
+    <title>QSE Pro - Quantity Survey Engineer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f0f4f8;
+            color: #1e293b;
+            padding: 12px;
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: white;
+            padding: 16px 20px;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .header-left { display: flex; align-items: center; gap: 12px; }
+        .header-left .logo-icon {
+            width: 40px; height: 40px;
+            background: rgba(96, 165, 250, 0.15);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; color: #60a5fa;
+        }
+        .header-left h1 { font-size: 18px; font-weight: 700; }
+        .header-left h1 span { color: #60a5fa; }
+        .header-left .subtitle { font-size: 10px; color: #94a3b8; }
+        .header-right { display: flex; gap: 6px; flex-wrap: wrap; }
+        .header-right .badge {
+            background: rgba(255,255,255,0.08);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .header-right .badge i { color: #60a5fa; }
+
+        .main-grid { display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 12px; }
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            border: 1px solid #e9edf4;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card-title i { color: #2563eb; font-size: 16px; }
+        .card-title .sub { font-size: 10px; color: #94a3b8; font-weight: 400; margin-left: auto; }
+        .card-title .badge-count {
+            font-size: 10px;
+            background: #dbeafe;
+            color: #1d4ed8;
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+
+        /* ============================================
+           GALLERY / IMAGE VIEWER
+           ============================================ */
+        .gallery-container {
+            position: relative;
+        }
+
+        .gallery-thumbs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+            padding: 8px;
+            background: #f8fafc;
+            border-radius: 12px;
+            min-height: 60px;
+            border: 1px solid #e9edf4;
+        }
+        .gallery-thumbs .thumb-item {
+            position: relative;
+            width: 64px;
+            height: 64px;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: 0.2s;
+            flex-shrink: 0;
+        }
+        .gallery-thumbs .thumb-item:hover { border-color: #94a3b8; }
+        .gallery-thumbs .thumb-item.active { border-color: #2563eb; }
+        .gallery-thumbs .thumb-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .gallery-thumbs .thumb-item .thumb-remove {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #dc2626;
+            color: white;
+            border: none;
+            font-size: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: 0.2s;
+        }
+        .gallery-thumbs .thumb-item:hover .thumb-remove { opacity: 1; }
+        .gallery-thumbs .thumb-add {
+            width: 64px;
+            height: 64px;
+            border-radius: 8px;
+            border: 2px dashed #d1d9e6;
+            background: #fafcff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #94a3b8;
+            transition: 0.2s;
+            flex-shrink: 0;
+        }
+        .gallery-thumbs .thumb-add:hover {
+            border-color: #2563eb;
+            color: #2563eb;
+            background: #eff6ff;
+        }
+        .gallery-thumbs .empty-gallery {
+            width: 100%;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 12px;
+            padding: 10px 0;
+        }
+
+        /* Main Viewer */
+        .viewer-container {
+            position: relative;
+            background: #fafcff;
+            border-radius: 12px;
+            border: 1px solid #e9edf4;
+            overflow: hidden;
+            min-height: 300px;
+            max-height: 500px;
+            cursor: grab;
+            touch-action: none;
+        }
+        .viewer-container:active { cursor: grabbing; }
+        .viewer-container .viewer-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+            color: #94a3b8;
+        }
+        .viewer-container .viewer-placeholder i {
+            font-size: 48px;
+            margin-bottom: 12px;
+            opacity: 0.3;
+        }
+
+        .viewer-container .viewer-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            min-height: 300px;
+            max-height: 500px;
+            overflow: hidden;
+        }
+        .viewer-container .viewer-wrapper img {
+            display: block;
+            max-width: none;
+            transform-origin: 0 0;
+            transition: transform 0.1s ease-out;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+
+        /* Zoom Controls */
+        .viewer-controls {
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            display: flex;
+            gap: 6px;
+            background: rgba(15, 23, 42, 0.85);
+            padding: 6px 10px;
+            border-radius: 30px;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .viewer-controls button {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .viewer-controls button:hover { background: rgba(255,255,255,0.25); }
+        .viewer-controls .zoom-level {
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            min-width: 40px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .viewer-controls .divider {
+            width: 1px;
+            background: rgba(255,255,255,0.15);
+            margin: 4px 2px;
+        }
+
+        /* Image Info */
+        .image-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: #f8fafc;
+            border-radius: 10px;
+            margin-top: 8px;
+            font-size: 11px;
+            color: #64748b;
+            border: 1px solid #e9edf4;
+        }
+        .image-info .file-name {
+            font-weight: 500;
+            color: #0f172a;
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .image-info .file-size {
+            color: #94a3b8;
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 1024px) {
+            .main-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 640px) {
+            .header { flex-direction: column; align-items: flex-start; gap: 8px; }
+            .gallery-thumbs .thumb-item { width: 48px; height: 48px; }
+            .gallery-thumbs .thumb-add { width: 48px; height: 48px; font-size: 18px; }
+            .viewer-container { min-height: 200px; max-height: 300px; }
+            .viewer-container .viewer-placeholder { min-height: 200px; }
+            .viewer-container .viewer-wrapper { min-height: 200px; max-height: 300px; }
+            .viewer-controls { bottom: 10px; right: 10px; padding: 4px 8px; }
+            .viewer-controls button { width: 28px; height: 28px; font-size: 12px; }
+        }
+
+        /* ============================================
+           TOOLBAR MARKUP
+           ============================================ */
+        .markup-toolbar {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            padding: 8px 10px;
+            background: #f8fafc;
+            border-radius: 10px;
+            margin-top: 8px;
+            border: 1px solid #e9edf4;
+            align-items: center;
+        }
+        .markup-toolbar .label {
+            font-size: 10px;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            margin-right: 4px;
+        }
+        .markup-toolbar button {
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            font-size: 11px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .markup-toolbar button:hover { background: #f1f5f9; }
+        .markup-toolbar button.active {
+            background: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
+        .markup-toolbar button i { font-size: 12px; }
+        .markup-toolbar .color-picker {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid #e2e8f0;
+            padding: 0;
+            cursor: pointer;
+            background: red;
+        }
+        .markup-toolbar .color-picker::-webkit-color-swatch-wrapper { padding: 0; }
+        .markup-toolbar .color-picker::-webkit-color-swatch { border: none; border-radius: 50%; }
+
+        /* Canvas overlay untuk markup */
+        .viewer-container .markup-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+        .viewer-container.markup-mode .markup-canvas {
+            pointer-events: auto;
+            cursor: crosshair;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-left">
+            <div class="logo-icon"><i class="fas fa-ruler-combined"></i></div>
+            <div>
+                <h1>QSE <span>Pro</span></h1>
+                <div class="subtitle"><i class="fas fa-image"></i> Acuan Gambar + Zoom</div>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="badge"><i class="fas fa-images"></i> <span id="imageCount">0</span> Gambar</div>
+            <div class="badge"><i class="fas fa-search-plus"></i> Zoom: <span id="zoomDisplay">100</span>%</div>
+            <div class="badge"><i class="fas fa-tag"></i> v6.0</div>
+        </div>
+    </div>
+
+    <!-- MAIN GRID -->
+    <div class="main-grid">
+
+        <!-- LEFT: FORM -->
+        <div class="card">
+            <div class="card-title">
+                <i class="fas fa-plus-circle"></i> Input Item Pekerjaan
+                <span class="sub">Workflow</span>
+            </div>
+            <div class="workflow-step">
+                <div class="step-num">1</div>
+                <div class="step-label">Pilih Jenis Pekerjaan</div>
+                <div style="flex:1; min-width:120px;">
+                    <select id="jenisPekerjaanUtama" style="width:100%;padding:8px 12px;border-radius:10px;border:1.5px solid #e2e8f0;">
+                        <option value="">-- Pilih Jenis --</option>
+                        <option value="Pekerjaan_Tanah">🏗️ Pekerjaan Tanah</option>
+                        <option value="Pekerjaan_Pondasi">🏗️ Pekerjaan Pondasi</option>
+                        <option value="Struktur_Beton">🏗️ Struktur Beton</option>
+                        <option value="Pekerjaan_Dinding">🏛️ Pekerjaan Dinding</option>
+                        <option value="Pekerjaan_Lantai">🏛️ Pekerjaan Lantai</option>
+                        <option value="Pekerjaan_Atap">🏠 Pekerjaan Atap</option>
+                        <option value="Pekerjaan_Besi">🔩 Pekerjaan Besi</option>
+                        <option value="Pekerjaan_Bekisting">🪵 Pekerjaan Bekisting</option>
+                        <option value="Pekerjaan_Finishing">🎨 Pekerjaan Finishing</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="step2Container" class="hidden">
+                <div class="workflow-step">
+                    <div class="step-num">2</div>
+                    <div class="step-label">Pilih Item Pekerjaan</div>
+                    <div style="flex:1;font-size:12px;color:#64748b;" id="selectedJenisLabel">-</div>
+                </div>
+                <div class="item-picker" id="itemPickerContainer" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin:8px 0 12px 0;">
+                    <div style="grid-column:1/-1;text-align:center;color:#94a3b8;font-size:13px;padding:20px 0;">
+                        <i class="fas fa-arrow-up" style="display:block;font-size:24px;margin-bottom:8px;opacity:0.3;"></i>
+                        Pilih Jenis Pekerjaan terlebih dahulu
+                    </div>
+                </div>
+            </div>
+
+            <div id="step3Container" class="hidden">
+                <div class="workflow-step">
+                    <div class="step-num">3</div>
+                    <div class="step-label">Input Dimensi</div>
+                    <div style="flex:1;font-size:12px;color:#2563eb;font-weight:600;" id="selectedItemLabel">-</div>
+                </div>
+                <div id="formContainer"></div>
+                <div id="calcDetailContainer" class="calc-detail" style="display:none;background:#f8fafc;border-radius:10px;padding:12px 14px;margin-top:10px;border:1px solid #e9edf4;">
+                    <div class="formula" style="font-weight:600;color:#0f172a;font-size:13px;padding:6px 10px;background:#e0f2fe;border-radius:8px;margin-bottom:8px;" id="rumusDisplay">📐 Rumus</div>
+                    <div class="step" style="color:#475569;margin-top:4px;display:flex;flex-wrap:wrap;gap:4px 10px;font-size:12px;" id="stepDisplay">
+                        <span>Masukkan dimensi untuk melihat hasil</span>
+                    </div>
+                    <div class="result-box" style="margin-top:8px;padding:8px 14px;background:#dbeafe;border-radius:8px;font-weight:600;color:#1d4ed8;font-size:14px;" id="resultDisplay">
+                        Hasil: <strong id="calcResultValue">0.000</strong>
+                        <span class="sub-result" style="font-weight:400;font-size:11px;color:#475569;display:block;margin-top:2px;" id="calcResultSub">-</span>
+                    </div>
+                </div>
+                <div class="btn-group" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;">
+                    <button class="btn btn-primary" id="tambahBtn" style="padding:8px 16px;border-radius:24px;font-weight:600;font-size:12px;border:none;cursor:pointer;background:#2563eb;color:white;display:inline-flex;align-items:center;gap:6px;flex:1;justify-content:center;"><i class="fas fa-plus"></i> Tambah Item</button>
+                    <button class="btn btn-outline" id="resetFormBtn" style="padding:8px 16px;border-radius:24px;font-weight:600;font-size:12px;border:1.5px solid #e2e8f0;cursor:pointer;background:transparent;color:#475569;display:inline-flex;align-items:center;gap:6px;flex:1;justify-content:center;"><i class="fas fa-redo"></i> Reset</button>
+                </div>
+            </div>
+
+            <!-- Item List -->
+            <div style="margin-top:16px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                    <span style="font-weight:600;font-size:12px;"><i class="fas fa-list-ul"></i> Daftar Item (<span id="jumlahItem">0</span>)</span>
+                    <button class="btn btn-danger btn-sm" id="hapusSemuaBtn" style="background:transparent;color:#dc2626;border:1px solid #fecaca;padding:2px 10px;font-size:10px;border-radius:20px;cursor:pointer;"><i class="fas fa-trash"></i> Hapus</button>
+                </div>
+                <div class="item-list" id="itemListContainer" style="max-height:280px;overflow-y:auto;margin-top:8px;">
+                    <div class="empty-state" style="text-align:center;padding:30px 20px;color:#94a3b8;font-size:13px;">
+                        <i class="fas fa-box-open" style="font-size:30px;opacity:0.3;display:block;margin-bottom:8px;"></i>
+                        <p>Belum ada item</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT: ACUAN GAMBAR -->
+        <div class="card">
+            <div class="card-title">
+                <i class="fas fa-image"></i> Acuan Gambar
+                <span class="sub">Referensi</span>
+                <span class="badge-count" id="imageCountBadge">0</span>
+            </div>
+
+            <!-- GALLERY THUMBNAILS -->
+            <div class="gallery-container">
+                <div class="gallery-thumbs" id="galleryThumbs">
+                    <div class="empty-gallery">
+                        <i class="fas fa-images" style="font-size:20px;display:block;margin-bottom:4px;"></i>
+                        Belum ada gambar. Klik + untuk upload.
+                    </div>
+                </div>
+
+                <!-- MAIN VIEWER -->
+                <div class="viewer-container" id="viewerContainer">
+                    <div class="viewer-placeholder" id="viewerPlaceholder">
+                        <i class="fas fa-file-image"></i>
+                        <span>Pilih gambar untuk dilihat</span>
+                        <label for="fileInput" class="file-label" style="margin-top:8px;padding:6px 18px;border-radius:20px;background:white;border:1px solid #d1d9e6;font-size:12px;cursor:pointer;">
+                            <i class="fas fa-cloud-upload-alt"></i> Upload Gambar
+                        </label>
+                    </div>
+                    <div class="viewer-wrapper" id="viewerWrapper" style="display:none;">
+                        <img id="viewerImage" src="" alt="Preview" style="display:block;max-width:none;transform-origin:0 0;user-select:none;-webkit-user-drag:none;" />
+                        <canvas class="markup-canvas" id="markupCanvas"></canvas>
+                    </div>
+
+                    <!-- Zoom Controls -->
+                    <div class="viewer-controls" id="viewerControls" style="display:none;">
+                        <button id="zoomOutBtn" title="Zoom Out"><i class="fas fa-search-minus"></i></button>
+                        <span class="zoom-level" id="zoomLevelDisplay">100%</span>
+                        <button id="zoomInBtn" title="Zoom In"><i class="fas fa-search-plus"></i></button>
+                        <div class="divider"></div>
+                        <button id="zoomResetBtn" title="Reset Zoom"><i class="fas fa-compress-alt"></i></button>
+                        <div class="divider"></div>
+                        <button id="fitScreenBtn" title="Fit Screen"><i class="fas fa-arrows-alt"></i></button>
+                        <div class="divider"></div>
+                        <button id="fullscreenBtn" title="Fullscreen"><i class="fas fa-expand"></i></button>
+                    </div>
+
+                    <!-- Markup Controls -->
+                    <div class="viewer-controls" id="markupControls" style="display:none;bottom:70px;right:16px;">
+                        <button id="markupToggleBtn" title="Markup Mode"><i class="fas fa-pen"></i></button>
+                    </div>
+                </div>
+
+                <!-- Image Info -->
+                <div class="image-info" id="imageInfo" style="display:none;">
+                    <span class="file-name" id="currentFileName">-</span>
+                    <span class="file-size" id="currentFileSize">-</span>
+                    <span id="imageDimension">-</span>
+                </div>
+
+                <!-- Markup Toolbar -->
+                <div class="markup-toolbar" id="markupToolbar" style="display:none;">
+                    <span class="label">✏️ Markup</span>
+                    <button id="markupLineBtn" data-tool="line"><i class="fas fa-minus"></i> Garis</button>
+                    <button id="markupRectBtn" data-tool="rect"><i class="fas fa-square"></i> Kotak</button>
+                    <button id="markupCircleBtn" data-tool="circle"><i class="fas fa-circle"></i> Lingkaran</button>
+                    <button id="markupTextBtn" data-tool="text"><i class="fas fa-font"></i> Teks</button>
+                    <button id="markupUndoBtn"><i class="fas fa-undo"></i> Undo</button>
+                    <button id="markupClearBtn" style="color:#dc2626;"><i class="fas fa-trash"></i> Clear</button>
+                    <input type="color" id="markupColor" class="color-picker" value="#ff0000" />
+                    <input type="range" id="markupSize" min="1" max="10" value="2" style="width:60px;" />
+                </div>
+
+                <input type="file" id="fileInput" accept="image/*" multiple style="display:none;" />
+            </div>
+
+            <!-- Tombol Export -->
+            <div class="btn-group" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
+                <button class="btn btn-success" id="exportBtn" style="padding:6px 14px;border-radius:20px;font-weight:600;font-size:11px;border:none;cursor:pointer;background:#059669;color:white;display:inline-flex;align-items:center;gap:4px;flex:1;justify-content:center;"><i class="fas fa-file-export"></i> Export</button>
+                <button class="btn btn-warning" id="cetakBtn" style="padding:6px 14px;border-radius:20px;font-weight:600;font-size:11px;border:none;cursor:pointer;background:#f59e0b;color:white;display:inline-flex;align-items:center;gap:4px;flex:1;justify-content:center;"><i class="fas fa-print"></i> Cetak</button>
+                <button class="btn btn-outline" id="exportImagesBtn" style="padding:6px 14px;border-radius:20px;font-weight:600;font-size:11px;border:1.5px solid #e2e8f0;cursor:pointer;background:transparent;color:#475569;display:inline-flex;align-items:center;gap:4px;flex:1;justify-content:center;"><i class="fas fa-file-archive"></i> Export Gambar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        "use strict";
+
+        // ============================================
+        // STATE
+        // ============================================
+        const state = {
+            images: [],               // { id, file, name, size, type, dataUrl }
+            currentIndex: -1,
+            zoom: 1,
+            panX: 0,
+            panY: 0,
+            isDragging: false,
+            startX: 0,
+            startY: 0,
+            lastX: 0,
+            lastY: 0,
+            markupMode: false,
+            markupTool: 'line',
+            markupColor: '#ff0000',
+            markupSize: 2,
+            markupHistory: [],
+            isDrawing: false,
+            drawStartX: 0,
+            drawStartY: 0,
+            // Form state
+            selectedJenis: '',
+            selectedItemKey: '',
+            items: []
+        };
+
+        // ============================================
+        // DOM REFS
+        // ============================================
+        const DOM = {
+            thumbs: document.getElementById('galleryThumbs'),
+            viewerContainer: document.getElementById('viewerContainer'),
+            viewerPlaceholder: document.getElementById('viewerPlaceholder'),
+            viewerWrapper: document.getElementById('viewerWrapper'),
+            viewerImage: document.getElementById('viewerImage'),
+            markupCanvas: document.getElementById('markupCanvas'),
+            viewerControls: document.getElementById('viewerControls'),
+            markupControls: document.getElementById('markupControls'),
+            zoomLevelDisplay: document.getElementById('zoomLevelDisplay'),
+            imageInfo: document.getElementById('imageInfo'),
+            currentFileName: document.getElementById('currentFileName'),
+            currentFileSize: document.getElementById('currentFileSize'),
+            imageDimension: document.getElementById('imageDimension'),
+            imageCount: document.getElementById('imageCount'),
+            imageCountBadge: document.getElementById('imageCountBadge'),
+            markupToolbar: document.getElementById('markupToolbar'),
+            fileInput: document.getElementById('fileInput'),
+            zoomInBtn: document.getElementById('zoomInBtn'),
+            zoomOutBtn: document.getElementById('zoomOutBtn'),
+            zoomResetBtn: document.getElementById('zoomResetBtn'),
+            fitScreenBtn: document.getElementById('fitScreenBtn'),
+            fullscreenBtn: document.getElementById('fullscreenBtn'),
+            markupToggleBtn: document.getElementById('markupToggleBtn'),
+            markupLineBtn: document.getElementById('markupLineBtn'),
+            markupRectBtn: document.getElementById('markupRectBtn'),
+            markupCircleBtn: document.getElementById('markupCircleBtn'),
+            markupTextBtn: document.getElementById('markupTextBtn'),
+            markupUndoBtn: document.getElementById('markupUndoBtn'),
+            markupClearBtn: document.getElementById('markupClearBtn'),
+            markupColor: document.getElementById('markupColor'),
+            markupSize: document.getElementById('markupSize'),
+            exportImagesBtn: document.getElementById('exportImagesBtn'),
+            // Form
+            jenisSelect: document.getElementById('jenisPekerjaanUtama'),
+            step2: document.getElementById('step2Container'),
+            step3: document.getElementById('step3Container'),
+            itemPicker: document.getElementById('itemPickerContainer'),
+            selectedJenisLabel: document.getElementById('selectedJenisLabel'),
+            selectedItemLabel: document.getElementById('selectedItemLabel'),
+            formContainer: document.getElementById('formContainer'),
+            rumusDisplay: document.getElementById('rumusDisplay'),
+            stepDisplay: document.getElementById('stepDisplay'),
+            calcResultValue: document.getElementById('calcResultValue'),
+            calcResultSub: document.getElementById('calcResultSub'),
+            tambahBtn: document.getElementById('tambahBtn'),
+            resetFormBtn: document.getElementById('resetFormBtn'),
+            hapusSemuaBtn: document.getElementById('hapusSemuaBtn'),
+            itemListContainer: document.getElementById('itemListContainer'),
+            jumlahItem: document.getElementById('jumlahItem'),
+            exportBtn: document.getElementById('exportBtn'),
+            cetakBtn: document.getElementById('cetakBtn')
+        };
+
+        // ============================================
+        // FUNGSI UTILITY
+        // ============================================
+        function formatFileSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / 1048576).toFixed(1) + ' MB';
+        }
+
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+        }
+
+        // ============================================
+        // GALLERY FUNCTIONS
+        // ============================================
+        function renderThumbs() {
+            const container = DOM.thumbs;
+            if (state.images.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-gallery">
+                        <i class="fas fa-images" style="font-size:20px;display:block;margin-bottom:4px;"></i>
+                        Belum ada gambar. Klik + untuk upload.
+                    </div>
+                `;
+                DOM.imageCount.textContent = '0';
+                DOM.imageCountBadge.textContent = '0';
+                return;
+            }
+
+            let html = '';
+            state.images.forEach((img, index) => {
+                const active = index === state.currentIndex ? 'active' : '';
+                html += `
+                    <div class="thumb-item ${active}" data-index="${index}">
+                        <img src="${img.dataUrl}" alt="${img.name}" />
+                        <button class="thumb-remove" data-index="${index}" title="Hapus"><i class="fas fa-times"></i></button>
+                    </div>
+                `;
+            });
+            html += `<div class="thumb-add" id="thumbAddBtn"><i class="fas fa-plus"></i></div>`;
+            container.innerHTML = html;
+
+            DOM.imageCount.textContent = state.images.length;
+            DOM.imageCountBadge.textContent = state.images.length;
+
+            // Event listeners thumb
+            container.querySelectorAll('.thumb-item').forEach(el => {
+                el.addEventListener('click', function(e) {
+                    if (e.target.closest('.thumb-remove')) return;
+                    const idx = parseInt(this.dataset.index);
+                    if (!isNaN(idx)) selectImage(idx);
+                });
+                const removeBtn = el.querySelector('.thumb-remove');
+                if (removeBtn) {
+                    removeBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const idx = parseInt(this.dataset.index);
+                        if (!isNaN(idx)) removeImage(idx);
+                    });
+                }
+            });
+
+            const addBtn = container.querySelector('#thumbAddBtn');
+            if (addBtn) {
+                addBtn.addEventListener('click', function() {
+                    DOM.fileInput.click();
+                });
+            }
+
+            // Update viewer jika current index valid
+            if (state.currentIndex >= 0 && state.currentIndex < state.images.length) {
+                updateViewer();
+            } else if (state.images.length > 0) {
+                selectImage(0);
+            } else {
+                hideViewer();
+            }
+        }
+
+        function selectImage(index) {
+            if (index < 0 || index >= state.images.length) return;
+            state.currentIndex = index;
+            state.zoom = 1;
+            state.panX = 0;
+            state.panY = 0;
+            state.markupHistory = [];
+            renderThumbs();
+            updateViewer();
+        }
+
+        function removeImage(index) {
+            if (index < 0 || index >= state.images.length) return;
+            state.images.splice(index, 1);
+            if (state.currentIndex === index) {
+                state.currentIndex = -1;
+                state.markupHistory = [];
+            } else if (state.currentIndex > index) {
+                state.currentIndex--;
+            }
+            if (state.currentIndex >= state.images.length) {
+                state.currentIndex = state.images.length - 1;
+            }
+            renderThumbs();
+            if (state.currentIndex >= 0) {
+                selectImage(state.currentIndex);
+            } else {
+                hideViewer();
+            }
+        }
+
+        function updateViewer() {
+            const img = state.images[state.currentIndex];
+            if (!img) {
+                hideViewer();
+                return;
+            }
+
+            DOM.viewerPlaceholder.style.display = 'none';
+            DOM.viewerWrapper.style.display = 'block';
+            DOM.viewerControls.style.display = 'flex';
+            DOM.markupControls.style.display = 'flex';
+            DOM.imageInfo.style.display = 'flex';
+            DOM.viewerImage.src = img.dataUrl;
+
+            DOM.currentFileName.textContent = img.name;
+            DOM.currentFileSize.textContent = formatFileSize(img.size);
+
+            // Dapatkan dimensi gambar
+            const tempImg = new Image();
+            tempImg.onload = function() {
+                DOM.imageDimension.textContent = `${this.naturalWidth} × ${this.naturalHeight} px`;
+                setupCanvas(this.naturalWidth, this.naturalHeight);
+                applyTransform();
+            };
+            tempImg.src = img.dataUrl;
+
+            // Reset markup
+            state.markupHistory = [];
+            clearMarkupCanvas();
+
+            // Update zoom display
+            updateZoomDisplay();
+        }
+
+        function hideViewer() {
+            DOM.viewerPlaceholder.style.display = 'flex';
+            DOM.viewerWrapper.style.display = 'none';
+            DOM.viewerControls.style.display = 'none';
+            DOM.markupControls.style.display = 'none';
+            DOM.imageInfo.style.display = 'none';
+            DOM.markupToolbar.style.display = 'none';
+            state.markupMode = false;
+        }
+
+        function setupCanvas(imgWidth, imgHeight) {
+            const canvas = DOM.markupCanvas;
+            const container = DOM.viewerContainer;
+            const rect = container.getBoundingClientRect();
+            const containerWidth = rect.width;
+            const containerHeight = rect.height - 10;
+
+            canvas.width = imgWidth;
+            canvas.height = imgHeight;
+            canvas.style.width = imgWidth + 'px';
+            canvas.style.height = imgHeight + 'px';
+            canvas.style.pointerEvents = 'none';
+
+            // Set canvas size based on image
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function applyTransform() {
+            const img = DOM.viewerImage;
+            const container = DOM.viewerContainer;
+            const rect = container.getBoundingClientRect();
+            const containerWidth = rect.width;
+            const containerHeight = rect.height - 10;
+
+            // Fit image to container if zoom is 1
+            if (state.zoom === 1 && state.panX === 0 && state.panY === 0) {
+                const imgNaturalWidth = img.naturalWidth || 1;
+                const imgNaturalHeight = img.naturalHeight || 1;
+                const scaleX = containerWidth / imgNaturalWidth;
+                const scaleY = containerHeight / imgNaturalHeight;
+                const fitScale = Math.min(scaleX, scaleY, 1);
+
+                if (fitScale < 1) {
+                    state.zoom = fitScale;
+                }
+            }
+
+            const zoom = state.zoom;
+            const panX = state.panX;
+            const panY = state.panY;
+
+            img.style.transform = `translate(${panX}px, ${panY}px) scale(${zoom})`;
+            img.style.transformOrigin = '0 0';
+
+            // Update canvas position
+            const canvas = DOM.markupCanvas;
+            canvas.style.transform = `translate(${panX}px, ${panY}px) scale(${zoom})`;
+            canvas.style.transformOrigin = '0 0';
+
+            updateZoomDisplay();
+        }
+
+        function updateZoomDisplay() {
+            const percent = Math.round(state.zoom * 100);
+            DOM.zoomLevelDisplay.textContent = percent + '%';
+            document.getElementById('zoomDisplay').textContent = percent;
+        }
+
+        // ============================================
+        // ZOOM & PAN CONTROLS
+        // ============================================
+        function zoomIn() {
+            state.zoom = Math.min(state.zoom * 1.2, 10);
+            applyTransform();
+        }
+
+        function zoomOut() {
+            state.zoom = Math.max(state.zoom / 1.2, 0.1);
+            applyTransform();
+        }
+
+        function resetZoom() {
+            state.zoom = 1;
+            state.panX = 0;
+            state.panY = 0;
+            applyTransform();
+        }
+
+        function fitScreen() {
+            const img = DOM.viewerImage;
+            const container = DOM.viewerContainer;
+            const rect = container.getBoundingClientRect();
+            const containerWidth = rect.width;
+            const containerHeight = rect.height - 10;
+
+            const imgWidth = img.naturalWidth || 1;
+            const imgHeight = img.naturalHeight || 1;
+
+            const scaleX = containerWidth / imgWidth;
+            const scaleY = containerHeight / imgHeight;
+            state.zoom = Math.min(scaleX, scaleY);
+            state.panX = 0;
+            state.panY = 0;
+            applyTransform();
+        }
+
+        function toggleFullscreen() {
+            const container = DOM.viewerContainer;
+            if (!document.fullscreenElement) {
+                container.requestFullscreen().catch(err => {});
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        // ============================================
+        // MARKUP FUNCTIONS
+        // ============================================
+        function toggleMarkup() {
+            state.markupMode = !state.markupMode;
+            DOM.viewerContainer.classList.toggle('markup-mode', state.markupMode);
+            DOM.markupToolbar.style.display = state.markupMode ? 'flex' : 'none';
+            DOM.markupToggleBtn.style.background = state.markupMode ? 'rgba(37,99,235,0.6)' : 'rgba(255,255,255,0.1)';
+            DOM.markupCanvas.style.pointerEvents = state.markupMode ? 'auto' : 'none';
+        }
+
+        function getCanvasCoords(e) {
+            const canvas = DOM.markupCanvas;
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.clientX || e.touches?.[0]?.clientX || 0;
+            const clientY = e.clientY || e.touches?.[0]?.clientY || 0;
+
+            const x = (clientX - rect.left) / state.zoom;
+            const y = (clientY - rect.top) / state.zoom;
+            return { x, y };
+        }
+
+        function drawMarkup(type, x1, y1, x2, y2, color, size, text) {
+            const canvas = DOM.markupCanvas;
+            const ctx = canvas.getContext('2d');
+
+            // Save to history
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            state.markupHistory.push(imageData);
+
+            ctx.save();
+            ctx.strokeStyle = color || state.markupColor;
+            ctx.fillStyle = color || state.markupColor;
+            ctx.lineWidth = size || state.markupSize;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            const w = x2 - x1;
+            const h = y2 - y1;
+
+            switch (type) {
+                case 'line':
+                    ctx.beginPath();
+                    ctx.moveTo(x1, y1);
+                    ctx.lineTo(x2, y2);
+                    ctx.stroke();
+                    break;
+                case 'rect':
+                    ctx.strokeRect(x1, y1, w, h);
+                    break;
+                case 'circle':
+                    const radius = Math.sqrt(w*w + h*h) / 2;
+                    const cx = (x1 + x2) / 2;
+                    const cy = (y1 + y2) / 2;
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
+                    ctx.stroke();
+                    break;
+                case 'text':
+                    if (text) {
+                        ctx.font = `${size * 8}px Inter, sans-serif`;
+                        ctx.fillText(text, x1, y1);
+                    }
+                    break;
+            }
+
+            ctx.restore();
+        }
+
+        function clearMarkupCanvas() {
+            const canvas = DOM.markupCanvas;
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            state.markupHistory = [];
+        }
+
+        function undoMarkup() {
+            if (state.markupHistory.length === 0) return;
+            const canvas = DOM.markupCanvas;
+            const ctx = canvas.getContext('2d');
+            const prev = state.markupHistory.pop();
+            ctx.putImageData(prev, 0, 0);
+        }
+
+        // ============================================
+        // IMAGE EVENT HANDLERS
+        // ============================================
+        // Drag & Drop
+        DOM.viewerContainer.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.style.borderColor = '#2563eb';
+        });
+        DOM.viewerContainer.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.style.borderColor = '#e9edf4';
+        });
+        DOM.viewerContainer.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.style.borderColor = '#e9edf4';
+            const files = e.dataTransfer.files;
+            if (files && files.length > 0) {
+                handleFiles(files);
+            }
+        });
+
+        // File Input
+        DOM.fileInput.addEventListener('change', function(e) {
+            if (this.files && this.files.length > 0) {
+                handleFiles(this.files);
+                this.value = '';
+            }
+        });
+
+        function handleFiles(files) {
+            const validFiles = [];
+            for (const file of files) {
+                if (file.type.startsWith('image/')) {
+                    validFiles.push(file);
+                }
+            }
+
+            if (validFiles.length === 0) {
+                alert('Hanya file gambar yang didukung!');
+                return;
+            }
+
+            let loaded = 0;
+            validFiles.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    state.images.push({
+                        id: generateId(),
+                        file: file,
+                        name: file.name,
+                        size: file.size,
+                        type: file.type,
+                        dataUrl: e.target.result
+                    });
+                    loaded++;
+                    if (loaded === validFiles.length) {
+                        renderThumbs();
+                        if (state.currentIndex === -1) {
+                            selectImage(0);
+                        }
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // ============================================
+        // ZOOM WITH MOUSE WHEEL
+        // ============================================
+        DOM.viewerContainer.addEventListener('wheel', function(e) {
+            e.preventDefault();
+            if (e.deltaY < 0) {
+                zoomIn();
+            } else {
+                zoomOut();
+            }
+        }, { passive: false });
+
+        // ============================================
+        // PAN WITH DRAG
+        // ============================================
+        let isPanning = false;
+        let panStartX = 0;
+        let panStartY = 0;
+        let panStartPanX = 0;
+        let panStartPanY = 0;
+
+        DOM.viewerImage.addEventListener('mousedown', function(e) {
+            if (state.markupMode) return;
+            isPanning = true;
+            panStartX = e.clientX;
+            panStartY = e.clientY;
+            panStartPanX = state.panX;
+            panStartPanY = state.panY;
+            DOM.viewerImage.style.cursor = 'grabbing';
+        });
+
+        document.addEventListener('mousemove', function(e) {
+            if (!isPanning) return;
+            const dx = e.clientX - panStartX;
+            const dy = e.clientY - panStartY;
+            state.panX = panStartPanX + dx;
+            state.panY = panStartPanY + dy;
+            applyTransform();
+        });
+
+        document.addEventListener('mouseup', function() {
+            if (isPanning) {
+                isPanning = false;
+                DOM.viewerImage.style.cursor = 'grab';
+            }
+        });
+
+        // Touch events for mobile
+        let touchStartX = 0, touchStartY = 0;
+        let touchPanX = 0, touchPanY = 0;
+        let lastTouchDist = 0;
+
+        DOM.viewerContainer.addEventListener('touchstart', function(e) {
+            if (e.touches.length === 1 && !state.markupMode) {
+                const touch = e.touches[0];
+                touchStartX = touch.clientX;
+                touchStartY = touch.clientY;
+                touchPanX = state.panX;
+                touchPanY = state.panY;
+            } else if (e.touches.length === 2) {
+                const t1 = e.touches[0];
+                const t2 = e.touches[1];
+                lastTouchDist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+            }
+        }, { passive: true });
+
+        DOM.viewerContainer.addEventListener('touchmove', function(e) {
+            if (e.touches.length === 1 && !state.markupMode) {
+                const touch = e.touches[0];
+                const dx = touch.clientX - touchStartX;
+                const dy = touch.clientY - touchStartY;
+                state.panX = touchPanX + dx;
+                state.panY = touchPanY + dy;
+                applyTransform();
+            } else if (e.touches.length === 2) {
+                const t1 = e.touches[0];
+                const t2 = e.touches[1];
+                const dist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+                const delta = dist - lastTouchDist;
+                if (delta > 0) zoomIn();
+                else zoomOut();
+                lastTouchDist = dist;
+            }
+        }, { passive: true });
+
+        // ============================================
+        // MARKUP CANVAS EVENTS
+        // ============================================
+        let isDrawingMarkup = false;
+
+        DOM.markupCanvas.addEventListener('mousedown', function(e) {
+            if (!state.markupMode) return;
+            const coords = getCanvasCoords(e);
+            isDrawingMarkup = true;
+            state.drawStartX = coords.x;
+            state.drawStartY = coords.y;
+        });
+
+        DOM.markupCanvas.addEventListener('mousemove', function(e) {
+            if (!state.markupMode || !isDrawingMarkup) return;
+            // Untuk preview, kita bisa implementasikan nanti
+        });
+
+        DOM.markupCanvas.addEventListener('mouseup', function(e) {
+            if (!state.markupMode || !isDrawingMarkup) return;
+            const coords = getCanvasCoords(e);
+            const tool = state.markupTool;
+
+            if (tool === 'text') {
+                const text = prompt('Masukkan teks:');
+                if (text) {
+                    drawMarkup('text', state.drawStartX, state.drawStartY, 0, 0, state.markupColor, state.markupSize, text);
+                }
+            } else {
+                drawMarkup(tool, state.drawStartX, state.drawStartY, coords.x, coords.y, state.markupColor, state.markupSize);
+            }
+
+            isDrawingMarkup = false;
+        });
+
+        // Touch support untuk markup
+        DOM.markupCanvas.addEventListener('touchstart', function(e) {
+            if (!state.markupMode) return;
+            e.preventDefault();
+            const touch = e.touches[0];
+            const coords = getCanvasCoords(touch);
+            isDrawingMarkup = true;
+            state.drawStartX = coords.x;
+            state.drawStartY = coords.y;
+        }, { passive: false });
+
+        DOM.markupCanvas.addEventListener('touchend', function(e) {
+            if (!state.markupMode || !isDrawingMarkup) return;
+            const touch = e.changedTouches[0];
+            const coords = getCanvasCoords(touch);
+            const tool = state.markupTool;
+
+            if (tool === 'text') {
+                const text = prompt('Masukkan teks:');
+                if (text) {
+                    drawMarkup('text', state.drawStartX, state.drawStartY, 0, 0, state.markupColor, state.markupSize, text);
+                }
+            } else {
+                drawMarkup(tool, state.drawStartX, state.drawStartY, coords.x, coords.y, state.markupColor, state.markupSize);
+            }
+
+            isDrawingMarkup = false;
+        }, { passive: false });
+
+        // ============================================
+        // EXPORT IMAGES
+        // ============================================
+        function exportImages() {
+            if (state.images.length === 0) {
+                alert('Tidak ada gambar untuk diexport.');
+                return;
+            }
+
+            // Buat ZIP sederhana (tanpa library, hanya download satu per satu)
+            if (state.images.length === 1) {
+                const link = document.createElement('a');
+                link.href = state.images[0].dataUrl;
+                link.download = state.images[0].name;
+                link.click();
+                return;
+            }
+
+            // Untuk multiple, download satu per satu dengan delay
+            let i = 0;
+            function downloadNext() {
+                if (i >= state.images.length) return;
+                const img = state.images[i];
+                const link = document.createElement('a');
+                link.href = img.dataUrl;
+                link.download = img.name;
+                link.click();
+                i++;
+                setTimeout(downloadNext, 300);
+            }
+            downloadNext();
+        }
+
+        // ============================================
+        // EVENT LISTENERS
+        // ============================================
+        // Zoom controls
+        DOM.zoomInBtn.addEventListener('click', zoomIn);
+        DOM.zoomOutBtn.addEventListener('click', zoomOut);
+        DOM.zoomResetBtn.addEventListener('click', resetZoom);
+        DOM.fitScreenBtn.addEventListener('click', fitScreen);
+        DOM.fullscreenBtn.addEventListener('click', toggleFullscreen);
+
+        // Markup controls
+        DOM.markupToggleBtn.addEventListener('click', toggleMarkup);
+
+        DOM.markupLineBtn.addEventListener('click', function() {
+            state.markupTool = 'line';
+            document.querySelectorAll('.markup-toolbar button[data-tool]').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+        });
+        DOM.markupRectBtn.addEventListener('click', function() {
+            state.markupTool = 'rect';
+            document.querySelectorAll('.markup-toolbar button[data-tool]').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+        });
+        DOM.markupCircleBtn.addEventListener('click', function() {
+            state.markupTool = 'circle';
+            document.querySelectorAll('.markup-toolbar button[data-tool]').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+        });
+        DOM.markupTextBtn.addEventListener('click', function() {
+            state.markupTool = 'text';
+            document.querySelectorAll('.markup-toolbar button[data-tool]').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+        });
+
+        DOM.markupUndoBtn.addEventListener('click', undoMarkup);
+        DOM.markupClearBtn.addEventListener('click', function() {
+            if (confirm('Hapus semua markup?')) {
+                clearMarkupCanvas();
+            }
+        });
+
+        DOM.markupColor.addEventListener('change', function() {
+            state.markupColor = this.value;
+        });
+
+        DOM.markupSize.addEventListener('input', function() {
+            state.markupSize = parseInt(this.value);
+        });
+
+        // Export images
+        DOM.exportImagesBtn.addEventListener('click', exportImages);
+
+        // ============================================
+        // INISIALISASI
+        // ============================================
+        // Sample image (opsional)
+        renderThumbs();
+
+        console.log('🖼️ Acuan Gambar v6.0 loaded!');
+        console.log('📸 Fitur: Multiple Upload | Zoom | Pan | Markup | Export');
+
+        // ============================================
+        // FORM HANDLING (SEDERHANA)
+        // ============================================
+        // Data sampel untuk form
+        const itemData = {
+            'Pekerjaan_Tanah': ['Galian Tanah', 'Urugan Tanah', 'Pasir Urug'],
+            'Pekerjaan_Pondasi': ['Pondasi Batu Kali', 'Pondasi Batu Belah', 'Pile Cap'],
+            'Struktur_Beton': ['Beton', 'Balok', 'Sloof', 'Kolom', 'Kolom Bulat'],
+            'Pekerjaan_Dinding': ['Pasang Bata', 'Plesteran', 'Acian'],
+            'Pekerjaan_Lantai': ['Lantai Keramik', 'Lantai Beton', 'Plafon'],
+            'Pekerjaan_Atap': ['Atap Genteng', 'Atap Baja Ringan', 'Rangka Atap Kayu'],
+            'Pekerjaan_Besi': ['Pembesian', 'Wiremesh'],
+            'Pekerjaan_Bekisting': ['Bekisting Kolom', 'Bekisting Balok', 'Bekisting Pelat'],
+            'Pekerjaan_Finishing': ['Cat Dinding', 'Cat Plafon']
+        };
+
+        DOM.jenisSelect.addEventListener('change', function() {
+            const jenis = this.value;
+            if (!jenis) {
+                DOM.step2.classList.add('hidden');
+                DOM.step3.classList.add('hidden');
+                return;
+            }
+            DOM.step2.classList.remove('hidden');
+            DOM.selectedJenisLabel.textContent = '🏗️ ' + jenis.replace('_', ' ');
+
+            const items = itemData[jenis] || [];
+            let html = '';
+            items.forEach(item => {
+                html += `
+                    <button class="item-picker-btn" style="padding:10px 12px;border:2px solid #e2e8f0;border-radius:12px;background:#fafcff;cursor:pointer;transition:0.2s;text-align:center;font-family:'Inter',sans-serif;font-size:12px;font-weight:500;color:#475569;">
+                        <i class="fas fa-cube" style="display:block;font-size:20px;margin-bottom:4px;color:#2563eb;"></i>
+                        ${item}
+                        <span class="badge-item" style="font-size:9px;background:#e2e8f0;padding:1px 8px;border-radius:10px;display:inline-block;margin-top:2px;">${item.toLowerCase().replace(/ /g,'_')}</span>
+                    </button>
+                `;
+            });
+            DOM.itemPicker.innerHTML = html;
+
+            document.querySelectorAll('.item-picker-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.item-picker-btn').forEach(b => b.style.borderColor = '#e2e8f0');
+                    this.style.borderColor = '#2563eb';
+                    this.style.background = '#dbeafe';
+                    DOM.selectedItemLabel.textContent = '📐 ' + this.textContent.trim();
+                    DOM.step3.classList.remove('hidden');
+                    DOM.calcDetailContainer.style.display = 'block';
+                    DOM.rumusDisplay.textContent = '📐 Rumus: Volume = P × L × T × Koefisien';
+                    DOM.calcResultValue.textContent = '0.000';
+                    DOM.calcResultSub.textContent = 'Masukkan dimensi';
+                    DOM.stepDisplay.innerHTML = `
+                        <span>P: <strong>0.300</strong> m</span>
+                        <span>L: <strong>0.300</strong> m</span>
+                        <span>T: <strong>3.500</strong> m</span>
+                        <span>K: <strong>1.000</strong></span>
+                    `;
+                });
+            });
+        });
+
+        // Tombol tambah item (simulasi)
+        DOM.tambahBtn.addEventListener('click', function() {
+            const nama = document.querySelector('#formContainer input')?.value || 'Item';
+            const list = DOM.itemListContainer;
+            const items = list.querySelectorAll('.item-card');
+            const count = items.length + 1;
+
+            const card = document.createElement('div');
+            card.className = 'item-card';
+            card.style.cssText = 'background:#f8fafc;border-radius:10px;padding:10px 12px;margin-bottom:6px;border-left:3px solid #2563eb;';
+            card.innerHTML = `
+                <div class="item-header" style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:4px;">
+                    <span class="item-name" style="font-weight:600;font-size:13px;color:#0f172a;">${nama}</span>
+                    <div style="display:flex;align-items:center;gap:6px;">
+                        <span class="item-volume" style="font-weight:700;font-size:13px;color:#0f172a;background:white;padding:2px 10px;border-radius:20px;border:1px solid #e2e8f0;">0.315 m³</span>
+                        <button class="del-item" style="background:transparent;border:none;padding:2px 6px;border-radius:6px;cursor:pointer;color:#94a3b8;"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                </div>
+                <div class="item-details" style="display:flex;flex-wrap:wrap;gap:4px 8px;margin-top:4px;font-size:11px;color:#475569;">
+                    <span><i class="fas fa-cube"></i> Beton K-300</span>
+                    <span><i class="fas fa-arrows-alt-h"></i> 0.300 m</span>
+                    <span><i class="fas fa-arrows-alt-v"></i> 0.300 m</span>
+                    <span><i class="fas fa-arrows-alt"></i> 3.500 m</span>
+                </div>
+            `;
+
+            // Hapus empty state jika ada
+            const emptyState = list.querySelector('.empty-state');
+            if (emptyState) emptyState.remove();
+
+            list.appendChild(card);
+            DOM.jumlahItem.textContent = count;
+
+            // Event hapus item
+            card.querySelector('.del-item').addEventListener('click', function() {
+                card.remove();
+                DOM.jumlahItem.textContent = list.querySelectorAll('.item-card').length;
+                if (list.querySelectorAll('.item-card').length === 0) {
+                    list.innerHTML = `
+                        <div class="empty-state" style="text-align:center;padding:30px 20px;color:#94a3b8;font-size:13px;">
+                            <i class="fas fa-box-open" style="font-size:30px;opacity:0.3;display:block;margin-bottom:8px;"></i>
+                            <p>Belum ada item</p>
+                        </div>
+                    `;
+                }
+            });
+        });
+
+        // Reset form
+        DOM.resetFormBtn.addEventListener('click', function() {
+            DOM.jenisSelect.value = '';
+            DOM.step2.classList.add('hidden');
+            DOM.step3.classList.add('hidden');
+            DOM.itemPicker.innerHTML = `
+                <div style="grid-column:1/-1;text-align:center;color:#94a3b8;font-size:13px;padding:20px 0;">
+                    <i class="fas fa-arrow-up" style="display:block;font-size:24px;margin-bottom:8px;opacity:0.3;"></i>
+                    Pilih Jenis Pekerjaan terlebih dahulu
+                </div>
+            `;
+        });
+
+        // Hapus semua
+        DOM.hapusSemuaBtn.addEventListener('click', function() {
+            if (confirm('Hapus semua item?')) {
+                DOM.itemListContainer.innerHTML = `
+                    <div class="empty-state" style="text-align:center;padding:30px 20px;color:#94a3b8;font-size:13px;">
+                        <i class="fas fa-box-open" style="font-size:30px;opacity:0.3;display:block;margin-bottom:8px;"></i>
+                        <p>Belum ada item</p>
+                    </div>
+                `;
+                DOM.jumlahItem.textContent = '0';
+            }
+        });
+
+        // Export & Cetak (simulasi)
+        DOM.exportBtn.addEventListener('click', function() {
+            alert('📤 Export data ke CSV (simulasi)');
+        });
+
+        DOM.cetakBtn.addEventListener('click', function() {
+            alert('🖨️ Cetak ringkasan (simulasi)');
+        });
+
+        console.log('✅ QSE Pro v6.0 with Advanced Image Gallery loaded!');
+    })();
+</script>
+</body>
+                                                                                              </html>
