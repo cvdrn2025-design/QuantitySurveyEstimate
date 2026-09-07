@@ -127,7 +127,7 @@
         /* Main Layout */
         .main-grid {
             display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
+            grid-template-columns: 1.3fr 0.7fr;
             gap: 24px;
         }
         
@@ -156,6 +156,49 @@
             color: #94a3b8;
             font-weight: 400;
             margin-left: auto;
+        }
+        
+        /* Tabs */
+        .tab-container {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 16px;
+            background: #f1f5f9;
+            padding: 4px;
+            border-radius: 14px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            background: transparent;
+            color: #64748b;
+            transition: 0.2s;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .tab-btn:hover {
+            background: rgba(255,255,255,0.5);
+        }
+        .tab-btn.active {
+            background: white;
+            color: #0f172a;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .tab-btn i {
+            font-size: 14px;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
         }
         
         /* Form */
@@ -465,6 +508,14 @@
             border: 1px solid #e2e8f0;
             font-size: 12px;
         }
+        .calc-detail .result-box {
+            margin-top: 8px;
+            padding: 10px 14px;
+            background: #dbeafe;
+            border-radius: 10px;
+            font-weight: 600;
+            color: #1d4ed8;
+        }
         
         /* Material breakdown */
         .material-breakdown {
@@ -518,6 +569,9 @@
             .item-card .item-header {
                 flex-direction: column;
             }
+            .tab-container {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -538,7 +592,7 @@
         <div class="header-right">
             <div class="badge"><i class="fas fa-file-alt"></i> <span id="totalItemsBadge">0</span> Item</div>
             <div class="badge"><i class="fas fa-cube"></i> <span id="totalVolumeBadge">0.000</span> m³</div>
-            <div class="badge"><i class="fas fa-tag"></i> QSE v2.0</div>
+            <div class="badge"><i class="fas fa-tag"></i> QSE v3.0</div>
         </div>
     </div>
 
@@ -572,91 +626,310 @@
                 <span class="sub">QTO Calculator</span>
             </div>
 
-            <!-- Form -->
-            <div class="form-group">
-                <label><i class="fas fa-tag"></i> Nama Pekerjaan</label>
-                <input type="text" id="namaItem" placeholder="Contoh: Kolom Struktur Lantai 1" value="Kolom Lantai 1" />
+            <!-- Tabs -->
+            <div class="tab-container">
+                <button class="tab-btn active" data-tab="tabBetony"><i class="fas fa-cube"></i> Beton</button>
+                <button class="tab-btn" data-tab="tabBesi"><i class="fas fa-vector-square"></i> Pembesian</button>
+                <button class="tab-btn" data-tab="tabBekisting"><i class="fas fa-border-all"></i> Bekisting</button>
+                <button class="tab-btn" data-tab="tabPondasi"><i class="fas fa-chess-queen"></i> Pondasi</button>
             </div>
 
-            <div class="form-row">
+            <!-- TAB 1: BETON -->
+            <div id="tabBetony" class="tab-content active">
                 <div class="form-group">
-                    <label><i class="fas fa-layer-group"></i> Jenis Pekerjaan</label>
-                    <select id="jenisPekerjaan">
-                        <option value="Struktur">🏗️ Struktur</option>
-                        <option value="Arsitektur" selected>🏛️ Arsitektur</option>
-                        <option value="Mekanikal">⚙️ Mekanikal</option>
-                        <option value="Elektrikal">⚡ Elektrikal</option>
-                        <option value="Finishing">🎨 Finishing</option>
-                        <option value="Plumbing">🔧 Plumbing</option>
-                    </select>
+                    <label><i class="fas fa-tag"></i> Nama Pekerjaan</label>
+                    <input type="text" id="namaItem" placeholder="Contoh: Kolom Lantai 1" value="Kolom Lantai 1" />
                 </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-layer-group"></i> Jenis Pekerjaan</label>
+                        <select id="jenisPekerjaan">
+                            <option value="Struktur">🏗️ Struktur</option>
+                            <option value="Arsitektur" selected>🏛️ Arsitektur</option>
+                            <option value="Mekanikal">⚙️ Mekanikal</option>
+                            <option value="Elektrikal">⚡ Elektrikal</option>
+                            <option value="Finishing">🎨 Finishing</option>
+                            <option value="Plumbing">🔧 Plumbing</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-cube"></i> Material</label>
+                        <select id="materialSelect">
+                            <optgroup label="Beton">
+                                <option value="Beton K-250">Beton K-250</option>
+                                <option value="Beton K-300" selected>Beton K-300</option>
+                                <option value="Beton K-350">Beton K-350</option>
+                                <option value="Beton K-400">Beton K-400</option>
+                            </optgroup>
+                            <optgroup label="Besi">
+                                <option value="Besi Tulangan D10">Besi Tulangan D10</option>
+                                <option value="Besi Tulangan D13">Besi Tulangan D13</option>
+                                <option value="Besi Tulangan D16">Besi Tulangan D16</option>
+                            </optgroup>
+                            <optgroup label="Kayu">
+                                <option value="Kayu Meranti">Kayu Meranti</option>
+                                <option value="Kayu Kamper">Kayu Kamper</option>
+                            </optgroup>
+                            <optgroup label="Bata & Mortar">
+                                <option value="Bata Ringan 10cm">Bata Ringan 10cm</option>
+                                <option value="Mortar">Mortar</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row-4">
+                    <div class="form-group">
+                        <label><i class="fas fa-arrows-alt-h"></i> Panjang (m)</label>
+                        <input type="number" id="panjang" step="0.001" value="0.30" />
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-arrows-alt-v"></i> Lebar (m)</label>
+                        <input type="number" id="lebar" step="0.001" value="0.30" />
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-arrows-alt"></i> Tinggi (m)</label>
+                        <input type="number" id="tinggi" step="0.001" value="3.50" />
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-times"></i> Koefisien</label>
+                        <input type="number" id="koefisien" step="0.001" value="1.0" />
+                        <div class="hint">Faktor pengali</div>
+                    </div>
+                </div>
+                <div class="calc-detail">
+                    <div class="formula">📐 Rumus Beton: Volume = P × L × T × Koefisien</div>
+                    <div class="step" id="calcSteps">
+                        <span>P: <strong id="calcP">0.300</strong> m</span>
+                        <span>L: <strong id="calcL">0.300</strong> m</span>
+                        <span>T: <strong id="calcT">3.500</strong> m</span>
+                        <span>K: <strong id="calcK">1.000</strong></span>
+                        <span style="background:#2563eb;color:white;border:none;">= <strong id="calcResult">0.315</strong> m³</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: PEMBESIAN -->
+            <div id="tabBesi" class="tab-content">
                 <div class="form-group">
-                    <label><i class="fas fa-cube"></i> Material</label>
-                    <select id="materialSelect">
-                        <optgroup label="Beton">
-                            <option value="Beton K-250">Beton K-250</option>
-                            <option value="Beton K-300" selected>Beton K-300</option>
-                            <option value="Beton K-350">Beton K-350</option>
-                            <option value="Beton K-400">Beton K-400</option>
-                        </optgroup>
-                        <optgroup label="Besi">
+                    <label><i class="fas fa-tag"></i> Nama Pekerjaan</label>
+                    <input type="text" id="namaItemBesi" placeholder="Contoh: Tulangan Kolom" value="Tulangan Kolom K1" />
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-layer-group"></i> Jenis Pekerjaan</label>
+                        <select id="jenisPekerjaanBesi">
+                            <option value="Struktur" selected>🏗️ Struktur</option>
+                            <option value="Arsitektur">🏛️ Arsitektur</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-cube"></i> Material</label>
+                        <select id="materialBesi">
                             <option value="Besi Tulangan D10">Besi Tulangan D10</option>
                             <option value="Besi Tulangan D13">Besi Tulangan D13</option>
-                            <option value="Besi Tulangan D16">Besi Tulangan D16</option>
+                            <option value="Besi Tulangan D16" selected>Besi Tulangan D16</option>
                             <option value="Besi Tulangan D19">Besi Tulangan D19</option>
-                        </optgroup>
-                        <optgroup label="Kayu">
+                            <option value="Besi Tulangan D22">Besi Tulangan D22</option>
+                            <option value="Besi Tulangan D25">Besi Tulangan D25</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row-4">
+                    <div class="form-group">
+                        <label><i class="fas fa-arrows-alt-h"></i> Panjang (m)</label>
+                        <input type="number" id="panjangBesi" step="0.001" value="3.50" />
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-arrows-alt-v"></i> Lebar (m)</label>
+                        <input type="number" id="lebarBesi" step="0.001" value="0.30" />
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-arrows-alt"></i> Tinggi (m)</label>
+                        <input type="number" id="tinggiBesi" step="0.001" value="0.30" />
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-hashtag"></i> Jumlah Tulangan</label>
+                        <input type="number" id="jumlahTulangan" step="1" value="8" />
+                        <div class="hint">Jumlah batang tulangan</div>
+                    </div>
+                </div>
+                <div class="form-row-3">
+                    <div class="form-group">
+                        <label><i class="fas fa-arrow-right"></i> Jarak Sengkang (cm)</label>
+                        <input type="number" id="jarakSengkang" step="0.5" value="15" />
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-vector-square"></i> Selimut Beton (cm)</label>
+                        <input type="number" id="selimutBeton" step="0.5" value="4" />
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-weight-hanging"></i> Berat Jenis Besi (kg/m)</label>
+                        <input type="number" id="beratJenisBesi" step="0.001" value="1.58" />
+                        <div class="hint">D16 = 1.58 kg/m</div>
+                    </div>
+                </div>
+                <div class="calc-detail">
+                    <div class="formula">📐 Rumus Pembesian:</div>
+                    <div class="step" id="calcStepsBesi">
+                        <span>Panjang Tulangan: <strong id="calcPanjangTulangan">3.50</strong> m</span>
+                        <span>Jumlah: <strong id="calcJumlahTulangan">8</strong> bh</span>
+                        <span>Berat/m: <strong id="calcBeratMeter">1.580</strong> kg</span>
+                    </div>
+                    <div class="step" style="margin-top:4px;">
+                        <span>Sengkang: <strong id="calcSengkang">20</strong> bh</span>
+                        <span>Panjang Sengkang: <strong id="calcPanjangSengkang">1.04</strong> m</span>
+                    </div>
+                    <div class="result-box">
+                        <i class="fas fa-check-circle"></i> Total Berat Besi: <strong id="calcTotalBesi">0.000</strong> kg
+                        <span style="font-weight:400;font-size:12px;color:#475569;margin-left:8px;">(Tulangan + Sengkang)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: BEKISTING -->
+            <div id="tabBekisting" class="tab-content">
+                <div class="form-group">
+                    <label><i class="fas fa-tag"></i> Nama Pekerjaan</label>
+                    <input type="text" id="namaItemBekisting" placeholder="Contoh: Bekisting Kolom" value="Bekisting Kolom K1" />
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-layer-group"></i> Jenis Pekerjaan</label>
+                        <select id="jenisPekerjaanBekisting">
+                            <option value="Struktur" selected>🏗️ Struktur</option>
+                            <option value="Arsitektur">🏛️ Arsitektur</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-cube"></i> Material</label>
+                        <select id="materialBekisting">
                             <option value="Kayu Meranti">Kayu Meranti</option>
-                            <option value="Kayu Kamper">Kayu Kamper</option>
+                            <option value="Kayu Kamper" selected>Kayu Kamper</option>
                             <option value="Kayu Jati">Kayu Jati</option>
-                        </optgroup>
-                        <optgroup label="Bata & Mortar">
-                            <option value="Bata Ringan 10cm">Bata Ringan 10cm</option>
-                            <option value="Bata Ringan 7.5cm">Bata Ringan 7.5cm</option>
-                            <option value="Mortar">Mortar</option>
+                            <option value="Multiplek 12mm">Multiplek 12mm</option>
+                            <option value="Multiplek 15mm">Multiplek 15mm</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row-4">
+                    <div class="form-group">
+                        <label><i class="fas fa-arrows-alt-h"></i> Panjang (m)</label>
+                        <input type="number" id="panjangBekisting" step="0.001" value="0.30" />
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-arrows-alt-v"></i> Lebar (m)</label>
+                        <input type="number" id="lebarBekisting" step="0.001" value="0.30" />
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-arrows-alt"></i> Tinggi (m)</label>
+                        <input type="number" id="tinggiBekisting" step="0.001" value="3.50" />
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-boxes"></i> Jumlah Sisi</label>
+                        <select id="jumlahSisi">
+                            <option value="4">4 Sisi (Kolom)</option>
+                            <option value="3">3 Sisi (Balok)</option>
+                            <option value="2">2 Sisi (Dinding)</option>
+                            <option value="1">1 Sisi (Pelat)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="calc-detail">
+                    <div class="formula">📐 Rumus Bekisting: Luas = (P×T + L×T) × 2 × Jumlah Sisi</div>
+                    <div class="step" id="calcStepsBekisting">
+                        <span>P: <strong id="calcPBekisting">0.300</strong> m</span>
+                        <span>L: <strong id="calcLBekisting">0.300</strong> m</span>
+                        <span>T: <strong id="calcTBekisting">3.500</strong> m</span>
+                        <span>Sisi: <strong id="calcSisi">4</strong></span>
+                    </div>
+                    <div class="step" style="margin-top:4px;">
+                        <span>Luas 1 sisi: <strong id="calcLuasSisi">1.050</strong> m²</span>
+                        <span>Total Sisi: <strong id="calcTotalSisi">4</strong></span>
+                    </div>
+                    <div class="result-box">
+                        <i class="fas fa-check-circle"></i> Total Luas Bekisting: <strong id="calcTotalBekisting">0.000</strong> m²
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: PONDASI BATU BELAH -->
+            <div id="tabPondasi" class="tab-content">
+                <div class="form-group">
+                    <label><i class="fas fa-tag"></i> Nama Pekerjaan</label>
+                    <input type="text" id="namaItemPondasi" placeholder="Contoh: Pondasi Batu Belah" value="Pondasi Batu Belah" />
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-layer-group"></i> Jenis Pekerjaan</label>
+                        <select id="jenisPekerjaanPondasi">
+                            <option value="Struktur" selected>🏗️ Struktur</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-cube"></i> Material</label>
+                        <select id="materialPondasi">
+                            <option value="Batu Belah">Batu Belah</option>
+                            <option value="Batu Kali">Batu Kali</option>
+                            <option value="Batu Gunung">Batu Gunung</option>
                             <option value="Pasir">Pasir</option>
                             <option value="Semen">Semen</option>
-                        </optgroup>
-                        <optgroup label="Finishing">
-                            <option value="Cat Tembok">Cat Tembok</option>
-                            <option value="Cat Besi">Cat Besi</option>
-                            <option value="Keramik 40x40">Keramik 40x40</option>
-                            <option value="Keramik 60x60">Keramik 60x60</option>
-                            <option value="Granit">Granit</option>
-                        </optgroup>
-                    </select>
+                        </select>
+                    </div>
                 </div>
-            </div>
-
-            <div class="form-row-4">
-                <div class="form-group">
-                    <label><i class="fas fa-arrows-alt-h"></i> Panjang (m)</label>
-                    <input type="number" id="panjang" step="0.001" value="0.30" />
+                <div class="form-row-4">
+                    <div class="form-group">
+                        <label><i class="fas fa-arrows-alt-h"></i> Panjang (m)</label>
+                        <input type="number" id="panjangPondasi" step="0.001" value="10.00" />
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-arrows-alt-v"></i> Lebar Atas (m)</label>
+                        <input type="number" id="lebarAtasPondasi" step="0.001" value="0.30" />
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-arrows-alt"></i> Lebar Bawah (m)</label>
+                        <input type="number" id="lebarBawahPondasi" step="0.001" value="0.60" />
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-arrows-alt"></i> Tinggi (m)</label>
+                        <input type="number" id="tinggiPondasi" step="0.001" value="0.80" />
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label><i class="fas fa-arrows-alt-v"></i> Lebar (m)</label>
-                    <input type="number" id="lebar" step="0.001" value="0.30" />
+                <div class="form-row-3">
+                    <div class="form-group">
+                        <label><i class="fas fa-percent"></i> Persentase Batu (%)</label>
+                        <input type="number" id="persenBatu" step="1" value="70" />
+                        <div class="hint">Standar 60-75%</div>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-percent"></i> Persentase Pasir (%)</label>
+                        <input type="number" id="persenPasir" step="1" value="20" />
+                        <div class="hint">Standar 15-25%</div>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-percent"></i> Persentase Semen (%)</label>
+                        <input type="number" id="persenSemen" step="1" value="10" />
+                        <div class="hint">Standar 5-15%</div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label><i class="fas fa-arrows-alt"></i> Tinggi (m)</label>
-                    <input type="number" id="tinggi" step="0.001" value="3.50" />
-                </div>
-                <div class="form-group">
-                    <label><i class="fas fa-times"></i> Koefisien</label>
-                    <input type="number" id="koefisien" step="0.001" value="1.0" />
-                    <div class="hint">Faktor pengali</div>
-                </div>
-            </div>
-
-            <!-- Detail Perhitungan -->
-            <div class="calc-detail" id="calcDetail">
-                <div class="formula">📐 Rumus: Volume = P × L × T × Koefisien</div>
-                <div class="step" id="calcSteps">
-                    <span>P: <strong id="calcP">0.300</strong> m</span>
-                    <span>L: <strong id="calcL">0.300</strong> m</span>
-                    <span>T: <strong id="calcT">3.500</strong> m</span>
-                    <span>K: <strong id="calcK">1.000</strong></span>
-                    <span style="background:#2563eb;color:white;border:none;">= <strong id="calcResult">0.315</strong> m³</span>
+                <div class="calc-detail">
+                    <div class="formula">📐 Rumus Pondasi Trapesium: Volume = ((LA + LB)/2) × T × P</div>
+                    <div class="step" id="calcStepsPondasi">
+                        <span>P: <strong id="calcPPondasi">10.000</strong> m</span>
+                        <span>LA: <strong id="calcLAtas">0.300</strong> m</span>
+                        <span>LB: <strong id="calcLBawah">0.600</strong> m</span>
+                        <span>T: <strong id="calcTPondasi">0.800</strong> m</span>
+                    </div>
+                    <div class="step" style="margin-top:4px;">
+                        <span>Rata-rata lebar: <strong id="calcRataLebar">0.450</strong> m</span>
+                    </div>
+                    <div class="result-box">
+                        <i class="fas fa-check-circle"></i> Total Volume: <strong id="calcTotalPondasi">0.000</strong> m³
+                    </div>
+                    <div class="step" style="margin-top:6px;font-size:12px;color:#475569;">
+                        <span>Batu: <strong id="calcBatu">0.000</strong> m³</span>
+                        <span>Pasir: <strong id="calcPasir">0.000</strong> m³</span>
+                        <span>Semen: <strong id="calcSemen">0.000</strong> m³</span>
+                    </div>
                 </div>
             </div>
 
@@ -759,8 +1032,19 @@
         // ===== STATE =====
         let items = [];
         let gambarFile = null;
+        let activeTab = 'tabBetony';
 
         // ===== DOM REFS =====
+        // Tab elements
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = {
+            beton: document.getElementById('tabBetony'),
+            besi: document.getElementById('tabBesi'),
+            bekisting: document.getElementById('tabBekisting'),
+            pondasi: document.getElementById('tabPondasi')
+        };
+
+        // Beton inputs
         const namaInput = document.getElementById('namaItem');
         const jenisPekerjaan = document.getElementById('jenisPekerjaan');
         const panjangInput = document.getElementById('panjang');
@@ -769,6 +1053,40 @@
         const koefisienInput = document.getElementById('koefisien');
         const materialSelect = document.getElementById('materialSelect');
 
+        // Besi inputs
+        const namaInputBesi = document.getElementById('namaItemBesi');
+        const jenisPekerjaanBesi = document.getElementById('jenisPekerjaanBesi');
+        const panjangBesi = document.getElementById('panjangBesi');
+        const lebarBesi = document.getElementById('lebarBesi');
+        const tinggiBesi = document.getElementById('tinggiBesi');
+        const jumlahTulangan = document.getElementById('jumlahTulangan');
+        const jarakSengkang = document.getElementById('jarakSengkang');
+        const selimutBeton = document.getElementById('selimutBeton');
+        const beratJenisBesi = document.getElementById('beratJenisBesi');
+        const materialBesi = document.getElementById('materialBesi');
+
+        // Bekisting inputs
+        const namaInputBekisting = document.getElementById('namaItemBekisting');
+        const jenisPekerjaanBekisting = document.getElementById('jenisPekerjaanBekisting');
+        const panjangBekisting = document.getElementById('panjangBekisting');
+        const lebarBekisting = document.getElementById('lebarBekisting');
+        const tinggiBekisting = document.getElementById('tinggiBekisting');
+        const jumlahSisi = document.getElementById('jumlahSisi');
+        const materialBekisting = document.getElementById('materialBekisting');
+
+        // Pondasi inputs
+        const namaInputPondasi = document.getElementById('namaItemPondasi');
+        const jenisPekerjaanPondasi = document.getElementById('jenisPekerjaanPondasi');
+        const panjangPondasi = document.getElementById('panjangPondasi');
+        const lebarAtasPondasi = document.getElementById('lebarAtasPondasi');
+        const lebarBawahPondasi = document.getElementById('lebarBawahPondasi');
+        const tinggiPondasi = document.getElementById('tinggiPondasi');
+        const persenBatu = document.getElementById('persenBatu');
+        const persenPasir = document.getElementById('persenPasir');
+        const persenSemen = document.getElementById('persenSemen');
+        const materialPondasi = document.getElementById('materialPondasi');
+
+        // Common
         const tambahBtn = document.getElementById('tambahBtn');
         const resetFormBtn = document.getElementById('resetFormBtn');
         const hapusSemuaBtn = document.getElementById('hapusSemuaBtn');
@@ -786,12 +1104,6 @@
         const displayVolume = document.getElementById('displayVolume');
         const displayKoefisien = document.getElementById('displayKoefisien');
         const displayJenis = document.getElementById('displayJenis');
-
-        const calcP = document.getElementById('calcP');
-        const calcL = document.getElementById('calcL');
-        const calcT = document.getElementById('calcT');
-        const calcK = document.getElementById('calcK');
-        const calcResult = document.getElementById('calcResult');
 
         const fileInput = document.getElementById('fileInput');
         const gambarArea = document.getElementById('gambarArea');
@@ -831,6 +1143,97 @@
             return icons[jenis] || 'fa-cube';
         }
 
+        // ===== FUNGSI PERHITUNGAN KHUSUS =====
+
+        // 1. Perhitungan Pembesian
+        function hitungPembesian() {
+            const p = parseFloat(panjangBesi.value) || 0;
+            const l = parseFloat(lebarBesi.value) || 0;
+            const t = parseFloat(tinggiBesi.value) || 0;
+            const jml = parseInt(jumlahTulangan.value) || 0;
+            const jarak = parseFloat(jarakSengkang.value) || 15;
+            const selimut = parseFloat(selimutBeton.value) || 4;
+            const beratM = parseFloat(beratJenisBesi.value) || 1.58;
+
+            // Panjang tulangan utama (tinggi kolom)
+            const panjangTulangan = t;
+            
+            // Berat tulangan utama
+            const beratTulangan = panjangTulangan * jml * beratM;
+
+            // Sengkang
+            const selimutM = selimut / 100;
+            const lebarSengkang = l - 2 * selimutM;
+            const tinggiSengkang = p - 2 * selimutM;
+            const panjangSengkang = 2 * (lebarSengkang + tinggiSengkang) + 0.10; // +10cm untuk kait
+            
+            const jumlahSengkang = Math.floor(t / (jarak / 100)) + 1;
+            const beratSengkang = jumlahSengkang * panjangSengkang * beratM * 0.01; // asumsi diameter sengkang lebih kecil
+
+            const totalBerat = beratTulangan + beratSengkang;
+
+            return {
+                panjangTulangan,
+                jumlahTulangan: jml,
+                beratMeter: beratM,
+                beratTulangan,
+                jumlahSengkang,
+                panjangSengkang,
+                beratSengkang,
+                totalBerat
+            };
+        }
+
+        // 2. Perhitungan Bekisting
+        function hitungBekisting() {
+            const p = parseFloat(panjangBekisting.value) || 0;
+            const l = parseFloat(lebarBekisting.value) || 0;
+            const t = parseFloat(tinggiBekisting.value) || 0;
+            const sisi = parseInt(jumlahSisi.value) || 4;
+
+            // Luas per sisi
+            const luasSisi = p * t;
+            const luasSisi2 = l * t;
+            const totalLuas = (luasSisi + luasSisi2) * (sisi / 2);
+
+            return {
+                luasSisi,
+                luasSisi2,
+                totalLuas,
+                jumlahSisi: sisi
+            };
+        }
+
+        // 3. Perhitungan Pondasi Batu Belah
+        function hitungPondasi() {
+            const p = parseFloat(panjangPondasi.value) || 0;
+            const la = parseFloat(lebarAtasPondasi.value) || 0;
+            const lb = parseFloat(lebarBawahPondasi.value) || 0;
+            const t = parseFloat(tinggiPondasi.value) || 0;
+            const persenB = parseFloat(persenBatu.value) || 70;
+            const persenP = parseFloat(persenPasir.value) || 20;
+            const persenS = parseFloat(persenSemen.value) || 10;
+
+            // Volume trapesium
+            const rataLebar = (la + lb) / 2;
+            const volumeTotal = rataLebar * t * p;
+
+            const volumeBatu = volumeTotal * (persenB / 100);
+            const volumePasir = volumeTotal * (persenP / 100);
+            const volumeSemen = volumeTotal * (persenS / 100);
+
+            return {
+                rataLebar,
+                volumeTotal,
+                volumeBatu,
+                volumePasir,
+                volumeSemen,
+                persenBatu: persenB,
+                persenPasir: persenP,
+                persenSemen: persenS
+            };
+        }
+
         // ===== RENDER =====
         function renderItems() {
             if (items.length === 0) {
@@ -853,12 +1256,51 @@
             const jenisSet = new Set();
 
             items.forEach((item, index) => {
-                const vol = hitungVolume(item.panjang, item.lebar, item.tinggi, item.koefisien);
+                let vol = 0;
+                let volumeDisplay = '';
+                let detailDisplay = '';
+
+                if (item.tipe === 'beton') {
+                    vol = hitungVolume(item.panjang, item.lebar, item.tinggi, item.koefisien || 1);
+                    detailDisplay = `
+                        <span><i class="fas fa-arrows-alt-h"></i> ${item.panjang.toFixed(3)} m</span>
+                        <span><i class="fas fa-arrows-alt-v"></i> ${item.lebar.toFixed(3)} m</span>
+                        <span><i class="fas fa-arrows-alt"></i> ${item.tinggi.toFixed(3)} m</span>
+                        <span><i class="fas fa-times"></i> ${(item.koefisien || 1).toFixed(3)}</span>
+                    `;
+                    volumeDisplay = formatAngka(vol) + ' m³';
+                } else if (item.tipe === 'besi') {
+                    const hasil = item.hasilBesi || hitungPembesian();
+                    vol = hasil.totalBerat;
+                    detailDisplay = `
+                        <span><i class="fas fa-vector-square"></i> Tul: ${item.jumlahTulangan}×${item.panjang.toFixed(2)}m</span>
+                        <span><i class="fas fa-weight-hanging"></i> ${hasil.totalBerat.toFixed(2)} kg</span>
+                    `;
+                    volumeDisplay = formatAngka(vol) + ' kg';
+                } else if (item.tipe === 'bekisting') {
+                    const hasil = item.hasilBekisting || hitungBekisting();
+                    vol = hasil.totalLuas;
+                    detailDisplay = `
+                        <span><i class="fas fa-border-all"></i> ${item.jumlahSisi} sisi</span>
+                        <span><i class="fas fa-arrows-alt-h"></i> ${item.panjang.toFixed(2)}×${item.tinggi.toFixed(2)}</span>
+                    `;
+                    volumeDisplay = formatAngka(vol) + ' m²';
+                } else if (item.tipe === 'pondasi') {
+                    const hasil = item.hasilPondasi || hitungPondasi();
+                    vol = hasil.volumeTotal;
+                    detailDisplay = `
+                        <span><i class="fas fa-chess-queen"></i> ${item.panjang.toFixed(2)}m</span>
+                        <span><i class="fas fa-percent"></i> Batu ${item.persenBatu}%</span>
+                    `;
+                    volumeDisplay = formatAngka(vol) + ' m³';
+                }
+
                 totalVol += vol;
                 jenisSet.add(item.jenis);
                 materialCount[item.material] = (materialCount[item.material] || 0) + vol;
 
                 const icon = getJenisIcon(item.jenis);
+                const tipeLabel = item.tipe.charAt(0).toUpperCase() + item.tipe.slice(1);
                 html += `
                     <div class="item-card">
                         <div class="item-header">
@@ -866,21 +1308,19 @@
                                 <span class="item-name">
                                     ${escHtml(item.nama)}
                                     <span class="badge-type"><i class="fas ${icon}"></i> ${escHtml(item.jenis)}</span>
+                                    <span class="badge-type" style="background:#e0f2fe;color:#0369a1;">${tipeLabel}</span>
                                 </span>
                             </div>
                             <div style="display:flex; align-items:center; gap:8px;">
-                                <span class="item-volume">${formatAngka(vol)} m³</span>
+                                <span class="item-volume">${volumeDisplay}</span>
                                 <div class="item-actions">
                                     <button class="del-item" data-index="${index}" title="Hapus"><i class="fas fa-trash-alt"></i></button>
                                 </div>
                             </div>
                         </div>
                         <div class="item-details">
-                            <span><i class="fas fa-arrows-alt-h"></i> ${item.panjang.toFixed(3)} m</span>
-                            <span><i class="fas fa-arrows-alt-v"></i> ${item.lebar.toFixed(3)} m</span>
-                            <span><i class="fas fa-arrows-alt"></i> ${item.tinggi.toFixed(3)} m</span>
-                            <span><i class="fas fa-times"></i> ${item.koefisien.toFixed(3)}</span>
                             <span><i class="fas fa-cube"></i> ${escHtml(item.material)}</span>
+                            ${detailDisplay}
                         </div>
                     </div>
                 `;
@@ -888,7 +1328,6 @@
 
             itemListContainer.innerHTML = html;
 
-            // Event listener hapus
             document.querySelectorAll('.del-item').forEach(btn => {
                 btn.addEventListener('click', function(e) {
                     e.stopPropagation();
@@ -900,12 +1339,10 @@
                 });
             });
 
-            // Update stats
             updateStats();
             updateMaterialPreview();
             updateBreakdown();
 
-            // Cari material terbanyak (berdasarkan volume)
             let topMaterial = '-';
             let topVol = 0;
             for (const [mat, vol] of Object.entries(materialCount)) {
@@ -921,7 +1358,17 @@
         function updateStats() {
             let totalVol = 0;
             items.forEach(item => {
-                totalVol += hitungVolume(item.panjang, item.lebar, item.tinggi, item.koefisien);
+                let vol = 0;
+                if (item.tipe === 'beton') {
+                    vol = hitungVolume(item.panjang, item.lebar, item.tinggi, item.koefisien || 1);
+                } else if (item.tipe === 'besi') {
+                    vol = item.hasilBesi?.totalBerat || 0;
+                } else if (item.tipe === 'bekisting') {
+                    vol = item.hasilBekisting?.totalLuas || 0;
+                } else if (item.tipe === 'pondasi') {
+                    vol = item.hasilPondasi?.volumeTotal || 0;
+                }
+                totalVol += vol;
             });
             const total = formatAngka(totalVol);
             statTotalVolume.textContent = total;
@@ -934,16 +1381,30 @@
         function updateMaterialPreview() {
             if (items.length === 0) {
                 displayMaterial.textContent = '-';
-                displayVolume.textContent = '0.000 m³';
+                displayVolume.textContent = '0.000';
                 displayKoefisien.textContent = '-';
                 displayJenis.textContent = '-';
                 return;
             }
             const last = items[items.length - 1];
-            const vol = hitungVolume(last.panjang, last.lebar, last.tinggi, last.koefisien);
+            let vol = 0;
+            let unit = 'm³';
+            if (last.tipe === 'beton') {
+                vol = hitungVolume(last.panjang, last.lebar, last.tinggi, last.koefisien || 1);
+                unit = 'm³';
+            } else if (last.tipe === 'besi') {
+                vol = last.hasilBesi?.totalBerat || 0;
+                unit = 'kg';
+            } else if (last.tipe === 'bekisting') {
+                vol = last.hasilBekisting?.totalLuas || 0;
+                unit = 'm²';
+            } else if (last.tipe === 'pondasi') {
+                vol = last.hasilPondasi?.volumeTotal || 0;
+                unit = 'm³';
+            }
             displayMaterial.textContent = last.material;
-            displayVolume.textContent = formatAngka(vol) + ' m³';
-            displayKoefisien.textContent = last.koefisien.toFixed(3);
+            displayVolume.textContent = formatAngka(vol) + ' ' + unit;
+            displayKoefisien.textContent = last.koefisien ? last.koefisien.toFixed(3) : '-';
             displayJenis.textContent = last.jenis;
         }
 
@@ -960,7 +1421,16 @@
 
             const materialVol = {};
             items.forEach(item => {
-                const vol = hitungVolume(item.panjang, item.lebar, item.tinggi, item.koefisien);
+                let vol = 0;
+                if (item.tipe === 'beton') {
+                    vol = hitungVolume(item.panjang, item.lebar, item.tinggi, item.koefisien || 1);
+                } else if (item.tipe === 'besi') {
+                    vol = item.hasilBesi?.totalBerat || 0;
+                } else if (item.tipe === 'bekisting') {
+                    vol = item.hasilBekisting?.totalLuas || 0;
+                } else if (item.tipe === 'pondasi') {
+                    vol = item.hasilPondasi?.volumeTotal || 0;
+                }
                 materialVol[item.material] = (materialVol[item.material] || 0) + vol;
             });
 
@@ -973,7 +1443,7 @@
                 html += `
                     <div class="mat-item">
                         <span class="mat-name">${escHtml(material)}</span>
-                        <span class="mat-vol">${formatAngka(volume)} m³ (${percent.toFixed(1)}%)</span>
+                        <span class="mat-vol">${formatAngka(volume)} (${percent.toFixed(1)}%)</span>
                     </div>
                 `;
             });
@@ -981,46 +1451,190 @@
             materialBreakdown.innerHTML = html;
         }
 
+        // ===== UPDATE CALC PREVIEW =====
         function updateCalcPreview() {
+            // Beton
             const p = parseFloat(panjangInput.value) || 0;
             const l = parseFloat(lebarInput.value) || 0;
             const t = parseFloat(tinggiInput.value) || 0;
             const k = parseFloat(koefisienInput.value) || 1;
             const vol = hitungVolume(p, l, t, k);
+            document.getElementById('calcP').textContent = p.toFixed(3);
+            document.getElementById('calcL').textContent = l.toFixed(3);
+            document.getElementById('calcT').textContent = t.toFixed(3);
+            document.getElementById('calcK').textContent = k.toFixed(3);
+            document.getElementById('calcResult').textContent = formatAngka(vol);
 
-            calcP.textContent = p.toFixed(3);
-            calcL.textContent = l.toFixed(3);
-            calcT.textContent = t.toFixed(3);
-            calcK.textContent = k.toFixed(3);
-            calcResult.textContent = formatAngka(vol);
+            // Besi
+            const hasilBesi = hitungPembesian();
+            document.getElementById('calcPanjangTulangan').textContent = hasilBesi.panjangTulangan.toFixed(2);
+            document.getElementById('calcJumlahTulangan').textContent = hasilBesi.jumlahTulangan;
+            document.getElementById('calcBeratMeter').textContent = hasilBesi.beratMeter.toFixed(3);
+            document.getElementById('calcSengkang').textContent = hasilBesi.jumlahSengkang;
+            document.getElementById('calcPanjangSengkang').textContent = hasilBesi.panjangSengkang.toFixed(2);
+            document.getElementById('calcTotalBesi').textContent = hasilBesi.totalBerat.toFixed(2);
+
+            // Bekisting
+            const hasilBekisting = hitungBekisting();
+            document.getElementById('calcPBekisting').textContent = parseFloat(panjangBekisting.value || 0).toFixed(3);
+            document.getElementById('calcLBekisting').textContent = parseFloat(lebarBekisting.value || 0).toFixed(3);
+            document.getElementById('calcTBekisting').textContent = parseFloat(tinggiBekisting.value || 0).toFixed(3);
+            document.getElementById('calcSisi').textContent = jumlahSisi.value;
+            document.getElementById('calcLuasSisi').textContent = hasilBekisting.luasSisi.toFixed(3);
+            document.getElementById('calcTotalSisi').textContent = hasilBekisting.jumlahSisi;
+            document.getElementById('calcTotalBekisting').textContent = hasilBekisting.totalLuas.toFixed(3);
+
+            // Pondasi
+            const hasilPondasi = hitungPondasi();
+            document.getElementById('calcPPondasi').textContent = parseFloat(panjangPondasi.value || 0).toFixed(3);
+            document.getElementById('calcLAtas').textContent = parseFloat(lebarAtasPondasi.value || 0).toFixed(3);
+            document.getElementById('calcLBawah').textContent = parseFloat(lebarBawahPondasi.value || 0).toFixed(3);
+            document.getElementById('calcTPondasi').textContent = parseFloat(tinggiPondasi.value || 0).toFixed(3);
+            document.getElementById('calcRataLebar').textContent = hasilPondasi.rataLebar.toFixed(3);
+            document.getElementById('calcTotalPondasi').textContent = hasilPondasi.volumeTotal.toFixed(3);
+            document.getElementById('calcBatu').textContent = hasilPondasi.volumeBatu.toFixed(3);
+            document.getElementById('calcPasir').textContent = hasilPondasi.volumePasir.toFixed(3);
+            document.getElementById('calcSemen').textContent = hasilPondasi.volumeSemen.toFixed(3);
         }
+
+        // ===== TABS =====
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                tabBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                const tabId = this.dataset.tab;
+                Object.values(tabContents).forEach(el => el.classList.remove('active'));
+                document.getElementById(tabId).classList.add('active');
+                activeTab = tabId;
+                updateCalcPreview();
+            });
+        });
 
         // ===== TAMBAH ITEM =====
         function tambahItem() {
-            const nama = namaInput.value.trim() || 'Item';
-            const jenis = jenisPekerjaan.value;
-            const p = parseFloat(panjangInput.value) || 0;
-            const l = parseFloat(lebarInput.value) || 0;
-            const t = parseFloat(tinggiInput.value) || 0;
-            const k = parseFloat(koefisienInput.value) || 1;
-            const material = materialSelect.value;
+            let itemData = null;
 
-            if (p <= 0 || l <= 0 || t <= 0) {
-                alert('⚠️ Panjang, Lebar, dan Tinggi harus > 0');
-                return;
+            if (activeTab === 'tabBetony') {
+                const nama = namaInput.value.trim() || 'Item';
+                const jenis = jenisPekerjaan.value;
+                const p = parseFloat(panjangInput.value) || 0;
+                const l = parseFloat(lebarInput.value) || 0;
+                const t = parseFloat(tinggiInput.value) || 0;
+                const k = parseFloat(koefisienInput.value) || 1;
+                const material = materialSelect.value;
+
+                if (p <= 0 || l <= 0 || t <= 0) {
+                    alert('⚠️ Panjang, Lebar, dan Tinggi harus > 0');
+                    return;
+                }
+
+                itemData = {
+                    tipe: 'beton',
+                    nama: nama,
+                    jenis: jenis,
+                    panjang: p,
+                    lebar: l,
+                    tinggi: t,
+                    koefisien: k,
+                    material: material
+                };
+            } 
+            else if (activeTab === 'tabBesi') {
+                const nama = namaInputBesi.value.trim() || 'Tulangan';
+                const jenis = jenisPekerjaanBesi.value;
+                const p = parseFloat(panjangBesi.value) || 0;
+                const l = parseFloat(lebarBesi.value) || 0;
+                const t = parseFloat(tinggiBesi.value) || 0;
+                const jml = parseInt(jumlahTulangan.value) || 0;
+                const material = materialBesi.value;
+
+                if (p <= 0 || l <= 0 || t <= 0 || jml <= 0) {
+                    alert('⚠️ Semua dimensi dan jumlah tulangan harus > 0');
+                    return;
+                }
+
+                const hasilBesi = hitungPembesian();
+                itemData = {
+                    tipe: 'besi',
+                    nama: nama,
+                    jenis: jenis,
+                    panjang: p,
+                    lebar: l,
+                    tinggi: t,
+                    jumlahTulangan: jml,
+                    material: material,
+                    hasilBesi: hasilBesi
+                };
+            }
+            else if (activeTab === 'tabBekisting') {
+                const nama = namaInputBekisting.value.trim() || 'Bekisting';
+                const jenis = jenisPekerjaanBekisting.value;
+                const p = parseFloat(panjangBekisting.value) || 0;
+                const l = parseFloat(lebarBekisting.value) || 0;
+                const t = parseFloat(tinggiBekisting.value) || 0;
+                const sisi = parseInt(jumlahSisi.value) || 4;
+                const material = materialBekisting.value;
+
+                if (p <= 0 || l <= 0 || t <= 0) {
+                    alert('⚠️ Panjang, Lebar, dan Tinggi harus > 0');
+                    return;
+                }
+
+                const hasilBekisting = hitungBekisting();
+                itemData = {
+                    tipe: 'bekisting',
+                    nama: nama,
+                    jenis: jenis,
+                    panjang: p,
+                    lebar: l,
+                    tinggi: t,
+                    jumlahSisi: sisi,
+                    material: material,
+                    hasilBekisting: hasilBekisting
+                };
+            }
+            else if (activeTab === 'tabPondasi') {
+                const nama = namaInputPondasi.value.trim() || 'Pondasi';
+                const jenis = jenisPekerjaanPondasi.value;
+                const p = parseFloat(panjangPondasi.value) || 0;
+                const la = parseFloat(lebarAtasPondasi.value) || 0;
+                const lb = parseFloat(lebarBawahPondasi.value) || 0;
+                const t = parseFloat(tinggiPondasi.value) || 0;
+                const pb = parseFloat(persenBatu.value) || 70;
+                const pp = parseFloat(persenPasir.value) || 20;
+                const ps = parseFloat(persenSemen.value) || 10;
+                const material = materialPondasi.value;
+
+                if (p <= 0 || la <= 0 || lb <= 0 || t <= 0) {
+                    alert('⚠️ Semua dimensi pondasi harus > 0');
+                    return;
+                }
+                if (pb + pp + ps !== 100) {
+                    alert('⚠️ Total persentase harus 100%');
+                    return;
+                }
+
+                const hasilPondasi = hitungPondasi();
+                itemData = {
+                    tipe: 'pondasi',
+                    nama: nama,
+                    jenis: jenis,
+                    panjang: p,
+                    lebarAtas: la,
+                    lebarBawah: lb,
+                    tinggi: t,
+                    persenBatu: pb,
+                    persenPasir: pp,
+                    persenSemen: ps,
+                    material: material,
+                    hasilPondasi: hasilPondasi
+                };
             }
 
-            items.push({
-                nama: nama,
-                jenis: jenis,
-                panjang: p,
-                lebar: l,
-                tinggi: t,
-                koefisien: k,
-                material: material
-            });
-
-            renderItems();
+            if (itemData) {
+                items.push(itemData);
+                renderItems();
+            }
         }
 
         // ===== RESET FORM =====
@@ -1032,6 +1646,34 @@
             tinggiInput.value = '3.50';
             koefisienInput.value = '1.0';
             materialSelect.value = 'Beton K-300';
+
+            namaInputBesi.value = 'Tulangan Kolom K1';
+            panjangBesi.value = '3.50';
+            lebarBesi.value = '0.30';
+            tinggiBesi.value = '0.30';
+            jumlahTulangan.value = '8';
+            jarakSengkang.value = '15';
+            selimutBeton.value = '4';
+            beratJenisBesi.value = '1.58';
+            materialBesi.value = 'Besi Tulangan D16';
+
+            namaInputBekisting.value = 'Bekisting Kolom K1';
+            panjangBekisting.value = '0.30';
+            lebarBekisting.value = '0.30';
+            tinggiBekisting.value = '3.50';
+            jumlahSisi.value = '4';
+            materialBekisting.value = 'Kayu Kamper';
+
+            namaInputPondasi.value = 'Pondasi Batu Belah';
+            panjangPondasi.value = '10.00';
+            lebarAtasPondasi.value = '0.30';
+            lebarBawahPondasi.value = '0.60';
+            tinggiPondasi.value = '0.80';
+            persenBatu.value = '70';
+            persenPasir.value = '20';
+            persenSemen.value = '10';
+            materialPondasi.value = 'Batu Belah';
+
             updateCalcPreview();
         }
 
@@ -1054,12 +1696,31 @@
                 alert('Tidak ada data untuk diexport.');
                 return;
             }
-            let header = 'Nama Item,Jenis,Panjang (m),Lebar (m),Tinggi (m),Koefisien,Material,Volume (m³)\n';
+            let header = 'Nama Item,Jenis,Tipe Material,Panjang (m),Lebar (m),Tinggi (m),Volume\n';
             let rows = items.map(item => {
-                const vol = hitungVolume(item.panjang, item.lebar, item.tinggi, item.koefisien);
-                return `${item.nama},${item.jenis},${item.panjang.toFixed(3)},${item.lebar.toFixed(3)},${item.tinggi.toFixed(3)},${item.koefisien.toFixed(3)},${item.material},${formatAngka(vol)}`;
+                let vol = 0;
+                let unit = 'm³';
+                let dims = '';
+                if (item.tipe === 'beton') {
+                    vol = hitungVolume(item.panjang, item.lebar, item.tinggi, item.koefisien || 1);
+                    unit = 'm³';
+                    dims = `${item.panjang.toFixed(3)},${item.lebar.toFixed(3)},${item.tinggi.toFixed(3)}`;
+                } else if (item.tipe === 'besi') {
+                    vol = item.hasilBesi?.totalBerat || 0;
+                    unit = 'kg';
+                    dims = `${item.panjang.toFixed(3)},${item.lebar.toFixed(3)},${item.tinggi.toFixed(3)}`;
+                } else if (item.tipe === 'bekisting') {
+                    vol = item.hasilBekisting?.totalLuas || 0;
+                    unit = 'm²';
+                    dims = `${item.panjang.toFixed(3)},${item.lebar.toFixed(3)},${item.tinggi.toFixed(3)}`;
+                } else if (item.tipe === 'pondasi') {
+                    vol = item.hasilPondasi?.volumeTotal || 0;
+                    unit = 'm³';
+                    dims = `${item.panjang.toFixed(3)},${item.lebarAtas?.toFixed(3) || 0},${item.tinggi.toFixed(3)}`;
+                }
+                return `${item.nama},${item.jenis},${item.tipe},${dims},${formatAngka(vol)} ${unit}`;
             }).join('\n');
-            const csv = header + rows;
+            const csv = header + '\n' + rows;
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
@@ -1085,27 +1746,49 @@
             const materialVol = {};
 
             items.forEach((item, i) => {
-                const vol = hitungVolume(item.panjang, item.lebar, item.tinggi, item.koefisien);
+                let vol = 0;
+                let unit = 'm³';
+                let detail = '';
+
+                if (item.tipe === 'beton') {
+                    vol = hitungVolume(item.panjang, item.lebar, item.tinggi, item.koefisien || 1);
+                    unit = 'm³';
+                    detail = `Dimensi: ${item.panjang.toFixed(3)} x ${item.lebar.toFixed(3)} x ${item.tinggi.toFixed(3)} m`;
+                } else if (item.tipe === 'besi') {
+                    vol = item.hasilBesi?.totalBerat || 0;
+                    unit = 'kg';
+                    detail = `Tulangan: ${item.jumlahTulangan} bh x ${item.panjang.toFixed(2)}m | Sengkang: ${item.hasilBesi?.jumlahSengkang || 0} bh`;
+                } else if (item.tipe === 'bekisting') {
+                    vol = item.hasilBekisting?.totalLuas || 0;
+                    unit = 'm²';
+                    detail = `Sisi: ${item.jumlahSisi} | Dimensi: ${item.panjang.toFixed(2)} x ${item.tinggi.toFixed(2)} m`;
+                } else if (item.tipe === 'pondasi') {
+                    vol = item.hasilPondasi?.volumeTotal || 0;
+                    unit = 'm³';
+                    detail = `Batu: ${item.persenBatu}% | Pasir: ${item.persenPasir}% | Semen: ${item.persenSemen}%`;
+                }
+
                 totalVol += vol;
                 materialVol[item.material] = (materialVol[item.material] || 0) + vol;
 
                 text += `${i+1}. ${item.nama}\n`;
                 text += `   Jenis     : ${item.jenis}\n`;
+                text += `   Tipe      : ${item.tipe.toUpperCase()}\n`;
                 text += `   Material  : ${item.material}\n`;
-                text += `   Dimensi   : ${item.panjang.toFixed(3)} x ${item.lebar.toFixed(3)} x ${item.tinggi.toFixed(3)} m\n`;
-                text += `   Koefisien : ${item.koefisien.toFixed(3)}\n`;
-                text += `   Volume    : ${formatAngka(vol)} m³\n\n`;
+                text += `   ${detail}\n`;
+                text += `   Volume    : ${formatAngka(vol)} ${unit}\n\n`;
             });
 
             text += '--------------------------------------------------\n';
-            text += `TOTAL VOLUME      : ${formatAngka(totalVol)} m³\n`;
+            const totalDisplay = Object.values(materialVol).reduce((a, b) => a + b, 0);
+            text += `TOTAL VOLUME      : ${formatAngka(totalDisplay)} (berbagai satuan)\n`;
             text += `JUMLAH ITEM       : ${items.length}\n`;
             text += `JENIS PEKERJAAN   : ${new Set(items.map(i => i.jenis)).size} jenis\n\n`;
 
             text += 'BREAKDOWN MATERIAL:\n';
             for (const [mat, vol] of Object.entries(materialVol).sort((a, b) => b[1] - a[1])) {
-                const percent = totalVol > 0 ? (vol / totalVol * 100) : 0;
-                text += `   ${mat} : ${formatAngka(vol)} m³ (${percent.toFixed(1)}%)\n`;
+                const percent = totalDisplay > 0 ? (vol / totalDisplay * 100) : 0;
+                text += `   ${mat} : ${formatAngka(vol)} (${percent.toFixed(1)}%)\n`;
             }
 
             text += '\n--------------------------------------------------\n';
@@ -1133,7 +1816,6 @@
 
         // ===== EVENT LISTENERS =====
         tambahBtn.addEventListener('click', tambahItem);
-
         resetFormBtn.addEventListener('click', resetForm);
 
         // Enter key
@@ -1144,6 +1826,12 @@
                     tambahItem();
                 }
             });
+        });
+
+        // Input update untuk preview
+        document.querySelectorAll('input, select').forEach(el => {
+            el.addEventListener('input', updateCalcPreview);
+            el.addEventListener('change', updateCalcPreview);
         });
 
         // Hapus semua
@@ -1194,15 +1882,10 @@
             fileInput.value = '';
         });
 
-        // Preview update
-        [panjangInput, lebarInput, tinggiInput, koefisienInput, materialSelect].forEach(el => {
-            el.addEventListener('input', updateCalcPreview);
-            el.addEventListener('change', updateCalcPreview);
-        });
-
         // ===== INIT =====
         // Sample data
         items.push({
+            tipe: 'beton',
             nama: 'Kolom Lantai 1',
             jenis: 'Struktur',
             panjang: 0.30,
@@ -1212,31 +1895,73 @@
             material: 'Beton K-300'
         });
         items.push({
-            nama: 'Balok Gantung',
+            tipe: 'besi',
+            nama: 'Tulangan Kolom K1',
             jenis: 'Struktur',
-            panjang: 4.00,
-            lebar: 0.20,
-            tinggi: 0.40,
-            koefisien: 1.0,
-            material: 'Beton K-250'
+            panjang: 3.50,
+            lebar: 0.30,
+            tinggi: 0.30,
+            jumlahTulangan: 8,
+            material: 'Besi Tulangan D16',
+            hasilBesi: {
+                panjangTulangan: 3.50,
+                jumlahTulangan: 8,
+                beratMeter: 1.58,
+                beratTulangan: 44.24,
+                jumlahSengkang: 24,
+                panjangSengkang: 1.04,
+                beratSengkang: 3.94,
+                totalBerat: 48.18
+            }
         });
         items.push({
-            nama: 'Dinding Bata',
-            jenis: 'Arsitektur',
-            panjang: 8.00,
-            lebar: 0.10,
-            tinggi: 3.00,
-            koefisien: 1.0,
-            material: 'Bata Ringan 10cm'
+            tipe: 'bekisting',
+            nama: 'Bekisting Kolom K1',
+            jenis: 'Struktur',
+            panjang: 0.30,
+            lebar: 0.30,
+            tinggi: 3.50,
+            jumlahSisi: 4,
+            material: 'Kayu Kamper',
+            hasilBekisting: {
+                luasSisi: 1.05,
+                luasSisi2: 1.05,
+                totalLuas: 4.20,
+                jumlahSisi: 4
+            }
+        });
+        items.push({
+            tipe: 'pondasi',
+            nama: 'Pondasi Batu Belah',
+            jenis: 'Struktur',
+            panjang: 10.00,
+            lebarAtas: 0.30,
+            lebarBawah: 0.60,
+            tinggi: 0.80,
+            persenBatu: 70,
+            persenPasir: 20,
+            persenSemen: 10,
+            material: 'Batu Belah',
+            hasilPondasi: {
+                rataLebar: 0.45,
+                volumeTotal: 3.60,
+                volumeBatu: 2.52,
+                volumePasir: 0.72,
+                volumeSemen: 0.36,
+                persenBatu: 70,
+                persenPasir: 20,
+                persenSemen: 10
+            }
         });
 
         renderItems();
         resetForm();
 
-        console.log('🏗️ Quantity Survey Engineer loaded successfully!');
+        console.log('🏗️ Quantity Survey Engineer v3.0 loaded successfully!');
         console.log(`📊 Total items: ${items.length}`);
+        console.log('📐 Fitur: Beton | Pembesian | Bekisting | Pondasi');
 
     })();
 </script>
 </body>
-    </html>
+                        </html>
