@@ -2026,7 +2026,413 @@ const DATABASE = {
             }
         }
     }
+}, 
+
+// ============================================
+// QSE PRO - DATABASE JENIS PEKERJAAN & RUMUS
+// Versi: 3.5 - Complete with ACP, Kusen, Interior
+// ============================================
+
+    // ========================================
+    // 14. PEKERJAAN INTERIOR
+    // ========================================
+    Pekerjaan_Interior: {
+        id: 'pekerjaan_interior',
+        nama: 'Pekerjaan Interior',
+        icon: 'fa-couch',
+        warna: '#8b5cf6',
+        deskripsi: 'Pekerjaan interior bangunan',
+        items: {
+            // ----- PEMASANGAN BACKDROP -----
+            backdrop: {
+                id: 'backdrop',
+                nama: 'Pemasangan Backdrop',
+                icon: 'fa-clipboard',
+                kategori: 'Pekerjaan Interior',
+                rumus: 'Luas = P × T | Jumlah = Luas × 1.05 (waste)',
+                satuan: 'm²',
+                fields: [
+                    { id: 'namaItem', label: 'Nama Pekerjaan', type: 'text', default: 'Backdrop Ruang Tamu', required: true },
+                    { id: 'material', label: 'Material', type: 'select', options: ['Kayu', 'HPL', 'Acrylic', 'GRC', 'Aluminium Composite', 'Wallpaper', 'Batu Alam', 'Kaca'], default: 'Kayu' },
+                    { id: 'panjang', label: 'Panjang (m)', type: 'number', step: 0.001, default: 4.00, required: true },
+                    { id: 'tinggi', label: 'Tinggi (m)', type: 'number', step: 0.001, default: 2.50, required: true },
+                    { id: 'jenisBackdrop', label: 'Jenis Backdrop', type: 'select', options: ['Dinding', 'Partisi', 'TV', 'Pajangan', 'Ruang Keluarga'], default: 'Dinding' },
+                    { id: 'luasLubang', label: 'Luas Lubang (m²)', type: 'number', step: 0.001, default: 0, hint: 'Untuk lubang speaker, AC, dll' },
+                    { id: 'waste', label: 'Waste Material (%)', type: 'number', step: 0.1, default: 5, hint: 'Standar 5-10%' }
+                ],
+                hitung: function(data) {
+                    const p = data.panjang || 0;
+                    const t = data.tinggi || 0;
+                    const luasLubang = data.luasLubang || 0;
+                    const waste = (data.waste || 5) / 100;
+                    
+                    const luas = p * t - luasLubang;
+                    const luasTotal = luas * (1 + waste);
+                    
+                    return { 
+                        volume: isNaN(luasTotal) || luasTotal < 0 ? 0 : luasTotal,
+                        satuan: 'm²',
+                        luasBersih: luas,
+                        wasteMaterial: luas * waste
+                    };
+                },
+                display: function(item) {
+                    return {
+                        volume: item.volume || 0,
+                        unit: 'm²',
+                        detail: `
+                            <span><i class="fas fa-arrows-alt-h"></i> ${(item.panjang || 0).toFixed(2)}×${(item.tinggi || 0).toFixed(2)} m</span>
+                            <span><i class="fas fa-tag"></i> ${item.jenisBackdrop || 'Dinding'}</span>
+                            <span><i class="fas fa-cube"></i> ${item.material || 'Kayu'}</span>
+                            <span><i class="fas fa-vector-square"></i> ${(item.luasBersih || 0).toFixed(2)} m²</span>
+                            <span><i class="fas fa-percent"></i> Waste ${item.waste || 5}%</span>
+                        `
+                    };
+                }
+            },
+
+            // ----- PEMASANGAN WPC -----
+            wpc: {
+                id: 'wpc',
+                nama: 'Pemasangan WPC',
+                icon: 'fa-layer-group',
+                kategori: 'Pekerjaan Interior',
+                rumus: 'Luas = P × L | Jumlah = Luas × 1.05 (waste)',
+                satuan: 'm²',
+                fields: [
+                    { id: 'namaItem', label: 'Nama Pekerjaan', type: 'text', default: 'WPC Lantai', required: true },
+                    { id: 'material', label: 'Material', type: 'select', options: ['WPC Deck', 'WPC Plank', 'WPC Panel', 'WPC Profile'], default: 'WPC Deck' },
+                    { id: 'panjang', label: 'Panjang (m)', type: 'number', step: 0.001, default: 6.00, required: true },
+                    { id: 'lebar', label: 'Lebar (m)', type: 'number', step: 0.001, default: 4.00, required: true },
+                    { id: 'jenisPemasangan', label: 'Jenis Pemasangan', type: 'select', options: ['Lantai', 'Dinding', 'Plafon', 'Outdoor'], default: 'Lantai' },
+                    { id: 'luasLubang', label: 'Luas Lubang (m²)', type: 'number', step: 0.001, default: 0, hint: 'Untuk kolom, pipa, dll' },
+                    { id: 'waste', label: 'Waste Material (%)', type: 'number', step: 0.1, default: 5, hint: 'Standar 5-10%' },
+                    { id: 'sistemRangka', label: 'Sistem Rangka', type: 'select', options: ['Tanpa Rangka', 'Kayu', 'Aluminium', 'Baja Ringan'], default: 'Aluminium' }
+                ],
+                hitung: function(data) {
+                    const p = data.panjang || 0;
+                    const l = data.lebar || 0;
+                    const luasLubang = data.luasLubang || 0;
+                    const waste = (data.waste || 5) / 100;
+                    
+                    const luas = p * l - luasLubang;
+                    const luasTotal = luas * (1 + waste);
+                    
+                    // Perkiraan kebutuhan material
+                    const kebutuhanPanel = luasTotal / 0.18; // asumsi 1 panel 0.18 m²
+                    
+                    return { 
+                        volume: isNaN(luasTotal) || luasTotal < 0 ? 0 : luasTotal,
+                        satuan: 'm²',
+                        luasBersih: luas,
+                        wasteMaterial: luas * waste,
+                        kebutuhanPanel: Math.ceil(kebutuhanPanel)
+                    };
+                },
+                display: function(item) {
+                    return {
+                        volume: item.volume || 0,
+                        unit: 'm²',
+                        detail: `
+                            <span><i class="fas fa-arrows-alt-h"></i> ${(item.panjang || 0).toFixed(2)}×${(item.lebar || 0).toFixed(2)} m</span>
+                            <span><i class="fas fa-tag"></i> ${item.jenisPemasangan || 'Lantai'}</span>
+                            <span><i class="fas fa-cube"></i> ${item.material || 'WPC Deck'}</span>
+                            <span><i class="fas fa-vector-square"></i> ${(item.luasBersih || 0).toFixed(2)} m²</span>
+                            <span><i class="fas fa-tools"></i> ${item.sistemRangka || 'Aluminium'}</span>
+                            <span><i class="fas fa-hashtag"></i> ${item.kebutuhanPanel || 0} panel</span>
+                        `
+                    };
+                }
+            },
+
+            // ----- PEMASANGAN WALLBOARD -----
+            wallboard: {
+                id: 'wallboard',
+                nama: 'Pemasangan Wallboard',
+                icon: 'fa-border-all',
+                kategori: 'Pekerjaan Interior',
+                rumus: 'Luas = P × T | Jumlah Lembar = Luas / Luas Per Lembar',
+                satuan: 'm²',
+                fields: [
+                    { id: 'namaItem', label: 'Nama Pekerjaan', type: 'text', default: 'Wallboard Dinding', required: true },
+                    { id: 'material', label: 'Material', type: 'select', options: ['Gypsum Board', 'GRC Board', 'Fibreboard', 'Cement Board', 'MDF', 'PVC Board', 'Akustik Board'], default: 'Gypsum Board' },
+                    { id: 'panjang', label: 'Panjang (m)', type: 'number', step: 0.001, default: 8.00, required: true },
+                    { id: 'tinggi', label: 'Tinggi (m)', type: 'number', step: 0.001, default: 3.00, required: true },
+                    { id: 'tebal', label: 'Tebal (mm)', type: 'number', step: 0.5, default: 9, hint: 'Standar 9mm, 12mm' },
+                    { id: 'luasLembar', label: 'Luas Per Lembar (m²)', type: 'number', step: 0.001, default: 2.88, hint: '1.2m × 2.4m = 2.88' },
+                    { id: 'luasLubang', label: 'Luas Lubang (m²)', type: 'number', step: 0.001, default: 0, hint: 'Untuk pintu, jendela, dll' },
+                    { id: 'waste', label: 'Waste Material (%)', type: 'number', step: 0.1, default: 10, hint: 'Standar 10-15%' },
+                    { id: 'jenisAplikasi', label: 'Jenis Aplikasi', type: 'select', options: ['Dinding', 'Plafon', 'Partisi', 'Lantai'], default: 'Dinding' }
+                ],
+                hitung: function(data) {
+                    const p = data.panjang || 0;
+                    const t = data.tinggi || 0;
+                    const luasLubang = data.luasLubang || 0;
+                    const luasLembar = data.luasLembar || 2.88;
+                    const waste = (data.waste || 10) / 100;
+                    
+                    const luas = p * t - luasLubang;
+                    const luasTotal = luas * (1 + waste);
+                    const jmlLembar = Math.ceil(luasTotal / luasLembar);
+                    
+                    // Perkiraan kebutuhan rangka
+                    const kebutuhanRangka = luas * 1.2; // perkiraan
+                    
+                    return { 
+                        volume: isNaN(luasTotal) || luasTotal < 0 ? 0 : luasTotal,
+                        satuan: 'm²',
+                        luasBersih: luas,
+                        jmlLembar: jmlLembar,
+                        luasPerLembar: luasLembar,
+                        wasteMaterial: luas * waste,
+                        kebutuhanRangka: kebutuhanRangka
+                    };
+                },
+                display: function(item) {
+                    return {
+                        volume: item.volume || 0,
+                        unit: 'm²',
+                        detail: `
+                            <span><i class="fas fa-arrows-alt-h"></i> ${(item.panjang || 0).toFixed(2)}×${(item.tinggi || 0).toFixed(2)} m</span>
+                            <span><i class="fas fa-tag"></i> ${item.jenisAplikasi || 'Dinding'}</span>
+                            <span><i class="fas fa-cube"></i> ${item.material || 'Gypsum Board'}</span>
+                            <span><i class="fas fa-arrows-alt-v"></i> ${(item.tebal || 9).toFixed(1)} mm</span>
+                            <span><i class="fas fa-hashtag"></i> ${item.jmlLembar || 0} lembar</span>
+                            <span><i class="fas fa-vector-square"></i> ${(item.luasBersih || 0).toFixed(2)} m²</span>
+                        `
+                    };
+                }
+            }
+        }
+    },
+
+    // ========================================
+    // 15. PEKERJAAN KUSEN
+    // ========================================
+    Pekerjaan_Kusen: {
+        id: 'pekerjaan_kusen',
+        nama: 'Pekerjaan Kusen',
+        icon: 'fa-door-open',
+        warna: '#b45309',
+        deskripsi: 'Pekerjaan kusen pintu dan jendela',
+        items: {
+            // ----- ACP (Aluminium Composite Panel) -----
+            acp: {
+                id: 'acp',
+                nama: 'ACP (Aluminium Composite Panel)',
+                icon: 'fa-vector-square',
+                kategori: 'Pekerjaan Kusen',
+                rumus: 'Luas = P × T | Jumlah Lembar = Luas / Luas Per Lembar',
+                satuan: 'm²',
+                fields: [
+                    { id: 'namaItem', label: 'Nama Pekerjaan', type: 'text', default: 'ACP Fasad', required: true },
+                    { id: 'material', label: 'Material', type: 'select', options: ['ACP Alucobond', 'ACP Alupanel', 'ACP Alstrong', 'ACP B&K', 'ACP Local'], default: 'ACP Alucobond' },
+                    { id: 'panjang', label: 'Panjang (m)', type: 'number', step: 0.001, default: 8.00, required: true },
+                    { id: 'tinggi', label: 'Tinggi (m)', type: 'number', step: 0.001, default: 4.00, required: true },
+                    { id: 'tebal', label: 'Tebal (mm)', type: 'number', step: 0.1, default: 4, hint: 'Standar 3mm, 4mm, 6mm' },
+                    { id: 'luasLembar', label: 'Luas Per Lembar (m²)', type: 'number', step: 0.001, default: 4.80, hint: '1.2m × 4.0m = 4.8' },
+                    { id: 'jenisACP', label: 'Jenis ACP', type: 'select', options: ['Fasad', 'Dinding', 'Plafon', 'Partisi', 'Canopy'], default: 'Fasad' },
+                    { id: 'luasLubang', label: 'Luas Lubang (m²)', type: 'number', step: 0.001, default: 0, hint: 'Untuk jendela, pintu, dll' },
+                    { id: 'waste', label: 'Waste Material (%)', type: 'number', step: 0.1, default: 10, hint: 'Standar 8-15%' }
+                ],
+                hitung: function(data) {
+                    const p = data.panjang || 0;
+                    const t = data.tinggi || 0;
+                    const luasLubang = data.luasLubang || 0;
+                    const luasLembar = data.luasLembar || 4.80;
+                    const waste = (data.waste || 10) / 100;
+                    
+                    const luas = p * t - luasLubang;
+                    const luasTotal = luas * (1 + waste);
+                    const jmlLembar = Math.ceil(luasTotal / luasLembar);
+                    
+                    // Perkiraan kebutuhan rangka
+                    const kebutuhanRangka = luas * 0.8; // perkiraan
+                    
+                    return { 
+                        volume: isNaN(luasTotal) || luasTotal < 0 ? 0 : luasTotal,
+                        satuan: 'm²',
+                        luasBersih: luas,
+                        jmlLembar: jmlLembar,
+                        luasPerLembar: luasLembar,
+                        wasteMaterial: luas * waste,
+                        kebutuhanRangka: kebutuhanRangka,
+                        tebal: data.tebal
+                    };
+                },
+                display: function(item) {
+                    return {
+                        volume: item.volume || 0,
+                        unit: 'm²',
+                        detail: `
+                            <span><i class="fas fa-arrows-alt-h"></i> ${(item.panjang || 0).toFixed(2)}×${(item.tinggi || 0).toFixed(2)} m</span>
+                            <span><i class="fas fa-tag"></i> ${item.jenisACP || 'Fasad'}</span>
+                            <span><i class="fas fa-cube"></i> ${item.material || 'ACP Alucobond'}</span>
+                            <span><i class="fas fa-arrows-alt-v"></i> ${(item.tebal || 4).toFixed(1)} mm</span>
+                            <span><i class="fas fa-hashtag"></i> ${item.jmlLembar || 0} lembar</span>
+                            <span><i class="fas fa-vector-square"></i> ${(item.luasBersih || 0).toFixed(2)} m²</span>
+                        `
+                    };
+                }
+            },
+
+            // ----- KUSEN ALUMINIUM -----
+            kusen_aluminium: {
+                id: 'kusen_aluminium',
+                nama: 'Kusen Aluminium',
+                icon: 'fa-door-open',
+                kategori: 'Pekerjaan Kusen',
+                rumus: 'Panjang = (2×T + L) × Jumlah | Luas Kaca = P × T × Jumlah',
+                satuan: 'm',
+                fields: [
+                    { id: 'namaItem', label: 'Nama Pekerjaan', type: 'text', default: 'Kusen Aluminium Pintu', required: true },
+                    { id: 'material', label: 'Material', type: 'select', options: ['Aluminium YKK', 'Aluminium Alco', 'Aluminium Local', 'Aluminium Anodized', 'Aluminium Powder Coated'], default: 'Aluminium YKK' },
+                    { id: 'tinggi', label: 'Tinggi Kusen (m)', type: 'number', step: 0.001, default: 2.10, required: true },
+                    { id: 'lebar', label: 'Lebar Kusen (m)', type: 'number', step: 0.001, default: 0.90, required: true },
+                    { id: 'jumlah', label: 'Jumlah', type: 'number', step: 1, default: 4, required: true },
+                    { id: 'jenisKusen', label: 'Jenis', type: 'select', options: ['Pintu', 'Jendela', 'Pintu & Jendela', 'Sliding Door', 'Folding Door'], default: 'Pintu' },
+                    { id: 'profil', label: 'Profil Aluminium', type: 'select', options: ['Standar', 'Heavy Duty', 'Minimalis', 'Premium'], default: 'Standar' },
+                    { id: 'warna', label: 'Warna', type: 'select', options: ['Natural', 'Hitam', 'Putih', 'Coklat', 'Silver', 'Custom'], default: 'Natural' }
+                ],
+                hitung: function(data) {
+                    const t = data.tinggi || 0;
+                    const l = data.lebar || 0;
+                    const jml = data.jumlah || 1;
+                    
+                    // Panjang kusen = 2×tinggi + lebar (untuk pintu)
+                    // Untuk jendela dengan 4 sisi: 2×tinggi + 2×lebar
+                    const jenis = data.jenisKusen || 'Pintu';
+                    let panjangKusen = 0;
+                    
+                    if (jenis === 'Pintu' || jenis === 'Sliding Door' || jenis === 'Folding Door') {
+                        panjangKusen = (2 * t + l) * jml;
+                    } else if (jenis === 'Jendela') {
+                        panjangKusen = (2 * t + 2 * l) * jml;
+                    } else {
+                        panjangKusen = (2 * t + 2 * l) * jml;
+                    }
+                    
+                    // Luas kaca / panel
+                    const luasKaca = (t * l) * jml;
+                    
+                    // Perkiraan kebutuhan aksesoris
+                    const kebutuhanAksesoris = jml * 4; // engsel, handle, dll
+                    
+                    return { 
+                        volume: isNaN(panjangKusen) || panjangKusen < 0 ? 0 : panjangKusen,
+                        satuan: 'm',
+                        luasKaca: luasKaca,
+                        jumlah: jml,
+                        kebutuhanAksesoris: kebutuhanAksesoris,
+                        jenisKusen: jenis
+                    };
+                },
+                display: function(item) {
+                    return {
+                        volume: item.volume || 0,
+                        unit: 'm',
+                        detail: `
+                            <span><i class="fas fa-door-open"></i> ${item.jenisKusen || 'Pintu'}</span>
+                            <span><i class="fas fa-arrows-alt"></i> ${(item.tinggi || 0).toFixed(2)}×${(item.lebar || 0).toFixed(2)} m</span>
+                            <span><i class="fas fa-hashtag"></i> ${item.jumlah || 1} bh</span>
+                            <span><i class="fas fa-cube"></i> ${item.material || 'Aluminium YKK'}</span>
+                            <span><i class="fas fa-palette"></i> ${item.warna || 'Natural'}</span>
+                            <span><i class="fas fa-vector-square"></i> Kaca: ${(item.luasKaca || 0).toFixed(2)} m²</span>
+                        `
+                    };
+                }
+            },
+
+            // ----- KUSEN KAYU -----
+            kusen_kayu: {
+                id: 'kusen_kayu',
+                nama: 'Kusen Kayu',
+                icon: 'fa-tree',
+                kategori: 'Pekerjaan Kusen',
+                rumus: 'Volume = (2×T + L) × Luas Penampang × Jumlah',
+                satuan: 'm³',
+                fields: [
+                    { id: 'namaItem', label: 'Nama Pekerjaan', type: 'text', default: 'Kusen Kayu Pintu', required: true },
+                    { id: 'material', label: 'Material', type: 'select', options: ['Kayu Jati', 'Kayu Meranti', 'Kayu Kamper', 'Kayu Borneo', 'Kayu Mahoni', 'Kayu Glulam'], default: 'Kayu Jati' },
+                    { id: 'tinggi', label: 'Tinggi Kusen (m)', type: 'number', step: 0.001, default: 2.10, required: true },
+                    { id: 'lebar', label: 'Lebar Kusen (m)', type: 'number', step: 0.001, default: 0.90, required: true },
+                    { id: 'lebarKayu', label: 'Lebar Kayu (cm)', type: 'number', step: 0.1, default: 12, required: true, hint: 'Standar 10-15cm' },
+                    { id: 'tebalKayu', label: 'Tebal Kayu (cm)', type: 'number', step: 0.1, default: 4, required: true, hint: 'Standar 3-5cm' },
+                    { id: 'jumlah', label: 'Jumlah', type: 'number', step: 1, default: 4, required: true },
+                    { id: 'jenisKusen', label: 'Jenis', type: 'select', options: ['Pintu', 'Jendela', 'Pintu & Jendela', 'Sliding Door', 'Folding Door'], default: 'Pintu' },
+                    { id: 'kelasKayu', label: 'Kelas Kayu', type: 'select', options: ['Kelas I', 'Kelas II', 'Kelas III', 'Kelas IV'], default: 'Kelas I' }
+                ],
+                hitung: function(data) {
+                    const t = data.tinggi || 0;
+                    const l = data.lebar || 0;
+                    const lb = (data.lebarKayu || 12) / 100; // cm ke m
+                    const tb = (data.tebalKayu || 4) / 100; // cm ke m
+                    const jml = data.jumlah || 1;
+                    
+                    const jenis = data.jenisKusen || 'Pintu';
+                    let panjangKusen = 0;
+                    
+                    if (jenis === 'Pintu' || jenis === 'Sliding Door' || jenis === 'Folding Door') {
+                        panjangKusen = (2 * t + l) * jml;
+                    } else if (jenis === 'Jendela') {
+                        panjangKusen = (2 * t + 2 * l) * jml;
+                    } else {
+                        panjangKusen = (2 * t + 2 * l) * jml;
+                    }
+                    
+                    // Volume kayu = panjang × lebar × tebal
+                    const volumeKayu = panjangKusen * lb * tb;
+                    
+                    // Luas permukaan = panjang × (2×lebar + 2×tebal)
+                    const luasPermukaan = panjangKusen * (2 * lb + 2 * tb);
+                    
+                    // Perkiraan kebutuhan finishing
+                    const kebutuhanFinishing = luasPermukaan * 0.1; // perkiraan
+                    
+                    return { 
+                        volume: isNaN(volumeKayu) || volumeKayu < 0 ? 0 : volumeKayu,
+                        satuan: 'm³',
+                        panjangKusen: panjangKusen,
+                        luasPermukaan: luasPermukaan,
+                        kebutuhanFinishing: kebutuhanFinishing,
+                        jumlah: jml,
+                        jenisKusen: jenis
+                    };
+                },
+                display: function(item) {
+                    return {
+                        volume: item.volume || 0,
+                        unit: 'm³',
+                        detail: `
+                            <span><i class="fas fa-tree"></i> ${item.material || 'Kayu Jati'}</span>
+                            <span><i class="fas fa-door-open"></i> ${item.jenisKusen || 'Pintu'}</span>
+                            <span><i class="fas fa-arrows-alt"></i> ${(item.tinggi || 0).toFixed(2)}×${(item.lebar || 0).toFixed(2)} m</span>
+                            <span><i class="fas fa-arrows-alt"></i> ${(item.lebarKayu || 12).toFixed(1)}×${(item.tebalKayu || 4).toFixed(1)} cm</span>
+                            <span><i class="fas fa-hashtag"></i> ${item.jumlah || 1} bh</span>
+                            <span><i class="fas fa-weight-hanging"></i> ${(item.panjangKusen || 0).toFixed(2)} m</span>
+                        `
+                    };
+                }
+            }
+        }
+    }
 };
+
+// ============================================
+// EKSPOR
+// ============================================
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = DATABASE;
+}
+
+if (typeof window !== 'undefined') {
+    window.DATABASE = DATABASE;
+    console.log('✅ Database loaded!');
+    const totalJenis = Object.keys(DATABASE).length;
+    const totalItems = Object.values(DATABASE).reduce((acc, j) => acc + Object.keys(j.items).length, 0);
+    console.log(`📊 ${totalJenis} jenis pekerjaan, ${totalItems} item pekerjaan`);
+    console.log('✅ Fitur baru: ACP, Kusen Aluminium, Kusen Kayu, Interior (Backdrop, WPC, Wallboard)');
+}
 
 // ============================================
 // DATA BERAT JENIS TULANGAN (untuk referensi)
