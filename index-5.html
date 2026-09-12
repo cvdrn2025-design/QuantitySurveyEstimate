@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#0f172a" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="description" content="Quantity Survey Engineer - Aplikasi Estimasi Material Proyek Konstruksi" />
+    <title>QSE Pro - Quantity Survey Engineer</title>
+    
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json" />
+    <link rel="apple-touch-icon" href="icons/icon-192.png" />
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+    
+    <style>
+        /* ============================================
+           PROJECT MODAL STYLES & FIXES
+           ============================================ */
+        
+        /* Project Button */
+        .project-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 20px;
+            color: white;
+            font-size: 11px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+        .project-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        .project-btn i {
+            font-size: 12px;
+            color: #60a5fa;
+        }
+        .project-btn .project-name {
+            max-width: 100px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        /* Project Info Bar */
+        .project-info-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: #f8fafc;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #e9edf4;
+        }
+        .project-info-bar .info-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            color: #475569;
+        }
+        .project-info-bar .info-item i {
+            color: #2563eb;
+            font-size: 12px;
+        }
+        .project-info-bar .info-item .label {
+            color: #94a3b8;
+        }
+        .project-info-bar .info-item .value {
+            font-weight: 500;
+            color: #0f172a;
+        }
+        
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            padding: 16px;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal {
+            background: white;
+            border-radius: 16px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: modalIn 0.3s ease;
+        }
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid #e9edf4;
+        }
+        .modal-header h2 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .modal-header h2 i {
+            color: #2563eb;
+        }
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 8px;
+            transition: 0.15s;
+        }
+        .modal-close:hover {
+            background: #f1f5f9;
+            color: #0f172a;
+        }
+        .modal-body {
+            padding: 20px;
+        }
+        .modal-footer {
+            padding: 12px 20px;
+            border-top: 1px solid #e9edf4;
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+        
+        /* Error Message */
+        .error-message {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            display: none;
+            font-size: 13px;
+            border: 1px solid #fecaca;
+        }
+        .error-message.show {
+            display: block;
+        }
+        .error-message i {
+            margin-right: 8px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 480px) {
+            .modal { max-width: 100%; margin: 10px; border-radius: 12px; }
+            .project-form .form-row { grid-template-columns: 1fr; }
+            .modal-header h2 { font-size: 14px; }
+            .project-info-bar { flex-direction: column; align-items: flex-start; gap: 4px; }
+            .project-btn .project-name { max-width: 60px; }
+        }
+        
+        /* Dark Mode */
+        @media (prefers-color-scheme: dark) {
+            .modal { background: #1e293b; }
+            .modal-header { border-color: #334155; }
+            .modal-header h2 { color: #e2e8f0; }
+            .modal-footer { border-color: #334155; }
+            .project-info-bar { background: #0f172a; border-color: #334155; }
+            .project-info-bar .info-item .value { color: #e2e8f0; }
+            .error-message { background: #1e293b; color: #fca5a5; border-color: #dc2626; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ===== ERROR MESSAGE ===== -->
+        <div class="error-message" id="errorMessage">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="errorText"></span>
+        </div>
+
+        <!-- ===== HEADER ===== -->
+        <header class="header">
+            <div class="header-left">
+                <div class="logo-icon">
+                    <i class="fas fa-ruler-combined"></i>
+                </div>
+                <div>
+                    <h1>QSE <span>Pro</span></h1>
+                    <div class="subtitle">
+                        <i class="fas fa-database"></i> Quantity Survey Engineer
+                        <span class="version">v6.3</span>
+                    </div>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="project-btn" id="projectBtn" title="Kelola Proyek">
+                    <i class="fas fa-folder-open"></i>
+                    <span class="project-name" id="currentProjectName">Pilih Proyek</span>
+                    <i class="fas fa-chevron-down" style="font-size:10px;"></i>
+                </button>
+                <div class="badge" title="Total Item">
+                    <i class="fas fa-file-alt"></i> <span id="totalItemsBadge">0</span>
+                </div>
+                <div class="badge" title="Total Volume">
+                    <i class="fas fa-cube"></i> <span id="totalVolumeBadge">0.000</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- ===== PROJECT INFO BAR ===== -->
+        <div class="project-info-bar" id="projectInfoBar">
+            <div class="info-item">
+                <i class="fas fa-building"></i>
+                <span class="label">Proyek:</span>
+                <span class="value" id="infoProjectName">-</span>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <span class="label">Lokasi:</span>
+                <span class="value" id="infoProjectLocation">-</span>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-user"></i>
+                <span class="label">Klien:</span>
+                <span class="value" id="infoProjectClient">-</span>
+            </div>
+            <div class="info-item" id="infoProjectStatus">
+                <i class="fas fa-circle"></i>
+                <span class="label">Status:</span>
+                <span class="value" id="infoProjectStatusText">-</span>
+            </div>
+            <div class="info-item" style="margin-left:auto;">
+                <i class="fas fa-calendar-alt"></i>
+                <span class="value" id="infoProjectDate">-</span>
+            </div>
+        </div>
+
+        <!-- ===== STATS ===== -->
+        <section class="stats-grid" aria-label="Statistik">
+            <div class="stat-card">
+                <div class="label">Total Volume</div>
+                <div class="value">
+                    <i class="fas fa-cubes"></i> 
+                    <span id="statTotalVolume">0.000</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Total Item</div>
+                <div class="value">
+                    <i class="fas fa-list"></i> 
+                    <span id="statTotalItem">0</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Jenis Pekerjaan</div>
+                <div class="value">
+                    <i class="fas fa-tasks"></i> 
+                    <span id="statJenisPekerjaan">0</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Material Dominan</div>
+                <div class="value" style="font-size:13px;">
+                    <i class="fas fa-cube"></i> 
+                    <span id="statMaterialTop">-</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== MAIN GRID ===== -->
+        <div class="main-grid">
+
+            <!-- ===== LEFT COLUMN ===== -->
+            <div class="left-column">
+
+                <!-- ===== INPUT ITEM ===== -->
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fas fa-plus-circle"></i> Input Item Pekerjaan
+                        <span class="sub">Workflow</span>
+                    </div>
+
+                    <!-- STEP 1: Pilih Jenis -->
+                    <div class="workflow-step">
+                        <div class="step-num">1</div>
+                        <div class="step-label">Pilih Jenis Pekerjaan</div>
+                        <div style="flex:1; min-width:100px;">
+                            <select id="jenisPekerjaanUtama" aria-label="Pilih Jenis Pekerjaan">
+                                <option value="">-- Pilih Jenis --</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- STEP 2: Pilih Item -->
+                    <div id="step2Container" class="hidden">
+                        <div class="workflow-step">
+                            <div class="step-num">2</div>
+                            <div class="step-label">Pilih Item Pekerjaan</div>
+                            <div style="flex:1; font-size:11px; color:#64748b; text-align:right;" id="selectedJenisLabel">-</div>
+                        </div>
+                        <div style="position:relative; margin-bottom:8px;">
+                            <input type="text" id="itemSearchInput" placeholder="Cari item pekerjaan..." aria-label="Cari item pekerjaan"
+                                style="width:100%; padding:8px 12px 8px 32px; border:1px solid #d1d9e6; border-radius:8px; font-size:12px; font-family:'Inter',sans-serif;" />
+                            <i class="fas fa-search" style="position:absolute; left:11px; top:50%; transform:translateY(-50%); color:#94a3b8; font-size:12px;"></i>
+                        </div>
+                        <div class="item-picker" id="itemPickerContainer" role="list">
+                            <div style="grid-column:1/-1; text-align:center; color:#94a3b8; font-size:13px; padding:20px 0;">
+                                <i class="fas fa-arrow-up" style="display:block; font-size:24px; margin-bottom:8px; opacity:0.3;"></i>
+                                Pilih Jenis Pekerjaan terlebih dahulu
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 3: Input Dimensi -->
+                    <div id="step3Container" class="hidden">
+                        <div class="workflow-step">
+                            <div class="step-num">3</div>
+                            <div class="step-label">Input Dimensi</div>
+                            <div style="flex:1; font-size:11px; color:#2563eb; font-weight:600; text-align:right;" id="selectedItemLabel">-</div>
+                        </div>
+                        
+                        <!-- Form Container -->
+                        <div id="formContainer"></div>
+                        
+                        <!-- Detail Perhitungan -->
+                        <div id="calcDetailContainer" class="calc-detail">
+                            <div class="formula" id="rumusDisplay">📐 Rumus</div>
+                            <div class="step" id="stepDisplay">
+                                <span>Masukkan dimensi untuk melihat hasil</span>
+                            </div>
+                            <div class="result-box" id="resultDisplay">
+                                Hasil: <strong id="calcResultValue">0.000</strong>
+                                <span class="sub-result" id="calcResultSub">-</span>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="btn-group" style="margin-top:10px;">
+                            <button class="btn btn-primary" id="tambahBtn">
+                                <i class="fas fa-plus"></i> Tambah Item
+                            </button>
+                            <button class="btn btn-outline" id="resetFormBtn">
+                                <i class="fas fa-redo"></i> Reset
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Item List -->
+                    <div style="margin-top:16px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                            <span style="font-weight:600; font-size:12px;">
+                                <i class="fas fa-list-ul"></i> Daftar Item 
+                                (<span id="jumlahItem">0</span>)
+                            </span>
+                            <button class="btn btn-danger btn-sm" id="hapusSemuaBtn" 
+                                    style="background:transparent; color:#dc2626; border:1px solid #fecaca; padding:4px 12px; font-size:10px;">
+                                <i class="fas fa-trash"></i> Hapus
+                            </button>
+                        </div>
+                        <div class="item-list" id="itemListContainer">
+                            <div class="empty-state">
+                                <i class="fas fa-box-open"></i>
+                                <p>Belum ada item</p>
+                                <p style="font-size:10px; margin-top:4px; opacity:0.6;">Ikuti workflow di atas untuk menambahkan</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== RIGHT COLUMN ===== -->
+            <div class="right-column">
+
+                <!-- ===== ACUAN GAMBAR ===== -->
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fas fa-image"></i> Acuan Gambar
+                        <span class="sub" id="gambarCount">0 gambar</span>
+                    </div>
+
+                    <!-- Gambar Container -->
+                    <div class="gambar-container" id="gambarContainer">
+                        <!-- Placeholder -->
+                        <div id="gambarPlaceholder" class="placeholder">
+                            <i class="fas fa-file-image"></i>
+                            <span>Drag & drop atau klik untuk upload</span>
+                            <span style="font-size:10px; opacity:0.6; margin-top:2px;">Format: JPG, PNG, GIF, WEBP</span>
+                        </div>
+
+                        <!-- Image Wrapper -->
+                        <div class="image-wrapper" id="imageWrapper">
+                            <img id="gambarPreview" alt="Preview gambar" />
+                            <canvas class="markup-canvas" id="markupCanvas"></canvas>
+                        </div>
+
+                        <!-- Zoom Controls -->
+                        <div class="zoom-controls" id="zoomControls" style="display:none;">
+                            <button id="zoomOutBtn" title="Zoom Out" aria-label="Zoom Out">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <span class="zoom-level" id="zoomLevel">100%</span>
+                            <button id="zoomInBtn" title="Zoom In" aria-label="Zoom In">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                            <span class="divider"></span>
+                            <button id="zoomFitBtn" title="Fit to Screen" aria-label="Fit to Screen">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                            <button id="zoomResetBtn" title="Reset View" aria-label="Reset View">
+                                <i class="fas fa-home"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Gambar Info -->
+                    <div class="gambar-info" id="gambarInfo" style="display:none;">
+                        <span class="gambar-nama" id="gambarNama">-</span>
+                        <span class="gambar-ukuran" id="gambarUkuran">-</span>
+                    </div>
+
+                    <!-- Thumbnail List -->
+                    <div class="thumbnail-list" id="thumbnailList"></div>
+
+                    <!-- Upload Area -->
+                    <div class="upload-area">
+                        <label for="fileInput" class="file-label">
+                            <i class="fas fa-cloud-upload-alt"></i> Upload
+                        </label>
+                        <label for="fileInputMultiple" class="file-label">
+                            <i class="fas fa-images"></i> Multiple
+                        </label>
+                        <button class="btn btn-outline btn-sm" id="hapusGambarBtn">
+                            <i class="fas fa-times"></i> Hapus
+                        </button>
+                        <button class="btn btn-outline btn-sm" id="simpanGambarBtn">
+                            <i class="fas fa-save"></i> Simpan
+                        </button>
+                    </div>
+                    <input type="file" id="fileInput" accept="image/*" />
+                    <input type="file" id="fileInputMultiple" accept="image/*" multiple />
+
+                    <!-- Markup Tools -->
+                    <div class="markup-tools">
+                        <button id="markupDraw" class="active" title="Gambar bebas">
+                            <i class="fas fa-pencil-alt"></i>
+                        </button>
+                        <button id="markupLine" title="Garis">
+                            <i class="fas fa-slash"></i>
+                        </button>
+                        <button id="markupRect" title="Kotak">
+                            <i class="fas fa-square"></i>
+                        </button>
+                        <button id="markupText" title="Teks">
+                            <i class="fas fa-font"></i>
+                        </button>
+                        <button id="markupUndo" title="Undo">
+                            <i class="fas fa-undo"></i>
+                        </button>
+                        <button id="markupClear" title="Hapus semua">
+                            <i class="fas fa-eraser"></i>
+                        </button>
+                        <div class="color-picker">
+                            <input type="color" id="markupColor" value="#dc2626" />
+                        </div>
+                        <span style="font-size:8px; color:#94a3b8; display:flex; align-items:center;">
+                            <i class="fas fa-hand-pointer"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- ===== RINGKASAN MATERIAL ===== -->
+                <div class="card" style="margin-top:10px;">
+                    <div class="card-title">
+                        <i class="fas fa-info-circle"></i> Ringkasan Item Terakhir
+                        <span class="sub">Detail</span>
+                    </div>
+                    <div id="materialInfo">
+                        <div>
+                            <div class="label">Material</div>
+                            <div class="value" id="displayMaterial">-</div>
+                        </div>
+                        <div>
+                            <div class="label">Volume</div>
+                            <div class="value" id="displayVolume">0.000</div>
+                        </div>
+                        <div>
+                            <div class="label">Item</div>
+                            <div class="value" id="displayItem">-</div>
+                        </div>
+                        <div>
+                            <div class="label">Jenis</div>
+                            <div class="value" id="displayJenis">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== BREAKDOWN MATERIAL ===== -->
+                <div class="card" style="margin-top:10px;">
+                    <div class="card-title">
+                        <i class="fas fa-chart-pie"></i> Breakdown Material
+                        <span class="sub">Per item</span>
+                    </div>
+                    <div id="materialBreakdown" class="material-breakdown">
+                        <div style="color:#94a3b8; font-size:11px; text-align:center; padding:12px 0;">
+                            <i class="fas fa-cube" style="display:block; font-size:20px; margin-bottom:4px; opacity:0.3;"></i>
+                            Belum ada data
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== ACTION BUTTONS ===== -->
+                <div class="card" style="margin-top:10px;">
+                    <div class="btn-group">
+                        <button class="btn btn-success btn-sm" id="exportBtn">
+                            <i class="fas fa-file-export"></i> Export
+                        </button>
+                        <button class="btn btn-warning btn-sm" id="cetakBtn">
+                            <i class="fas fa-print"></i> Cetak
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ===== DATABASE INFO ===== -->
+                <div class="card" style="margin-top:10px; background:#f8fafc; border:1px dashed #d1d9e6;">
+                    <div style="font-size:10px; color:#64748b; text-align:center;">
+                        <i class="fas fa-database"></i> Database: <span id="dbInfo">0 jenis, 0 item</span>
+                        <br>
+                        <span style="font-size:8px;">Update database di <code>js/database.js</code></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== PROJECT MODAL ===== -->
+    <div class="modal-overlay" id="projectModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2><i class="fas fa-folder-open"></i> Kelola Proyek</h2>
+                <button class="modal-close" id="projectModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="projectListContainer">
+                    <div class="empty-project">
+                        <i class="fas fa-folder"></i>
+                        <p>Belum ada proyek</p>
+                        <p style="font-size:11px; margin-top:4px;">Klik "Proyek Baru" untuk membuat</p>
+                    </div>
+                </div>
+                
+                <div style="margin-top:16px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                        <span style="font-weight:600; font-size:13px;">
+                            <i class="fas fa-plus-circle"></i> 
+                            <span id="projectFormTitle">Proyek Baru</span>
+                        </span>
+                        <button class="btn btn-outline btn-sm" id="cancelProjectForm" style="display:none;">
+                            <i class="fas fa-times"></i> Batal
+                        </button>
+                    </div>
+                    <form class="project-form" id="projectForm">
+                        <input type="hidden" id="projectFormId" />
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fas fa-tag"></i> Nama Proyek *</label>
+                                <input type="text" id="projectNama" placeholder="Contoh: Proyek Apartemen" required />
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-map-marker-alt"></i> Lokasi</label>
+                                <input type="text" id="projectLokasi" placeholder="Contoh: Jakarta Selatan" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fas fa-user"></i> Klien</label>
+                                <input type="text" id="projectKlien" placeholder="Nama klien" />
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-hard-hat"></i> Kontraktor</label>
+                                <input type="text" id="projectKontraktor" placeholder="Nama kontraktor" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fas fa-user-tie"></i> Konsultan</label>
+                                <input type="text" id="projectKonsultan" placeholder="Nama konsultan" />
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-file-contract"></i> No. Kontrak</label>
+                                <input type="text" id="projectNomorKontrak" placeholder="Nomor kontrak" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fas fa-calendar-start"></i> Tanggal Mulai</label>
+                                <input type="date" id="projectTanggalMulai" />
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-calendar-end"></i> Tanggal Selesai</label>
+                                <input type="date" id="projectTanggalSelesai" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fas fa-money-bill-wave"></i> Nilai Kontrak</label>
+                                <input type="number" id="projectNilaiKontrak" step="1000000" placeholder="0" />
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-circle"></i> Status</label>
+                                <select id="projectStatus">
+                                    <option value="Draft">Draft</option>
+                                    <option value="Aktif" selected>Aktif</option>
+                                    <option value="On Hold">On Hold</option>
+                                    <option value="Selesai">Selesai</option>
+                                    <option value="Batal">Batal</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-align-left"></i> Deskripsi</label>
+                            <textarea id="projectDeskripsi" placeholder="Deskripsi proyek..." rows="2"></textarea>
+                        </div>
+                        <div class="btn-group" style="margin-top:10px;">
+                            <button type="submit" class="btn btn-primary" id="projectSubmitBtn">
+                                <i class="fas fa-save"></i> Simpan Proyek
+                            </button>
+                            <button type="button" class="btn btn-outline" id="projectDeleteBtn" style="display:none;">
+                                <i class="fas fa-trash"></i> Hapus
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== PRINT FOOTER ===== -->
+    <div class="print-footer" id="printFooter">
+        <div class="footer-title">📊 Quantity Survey Engineer - QSE Pro</div>
+        <div class="footer-datetime" id="printDateTime">
+            Dicetak: <span id="printDate"></span> <span id="printTime"></span>
+        </div>
+        <div class="footer-page" id="printPageInfo">
+            Halaman <span id="printPageNumber">1</span> dari <span id="printTotalPages">1</span>
+        </div>
+    </div>
+
+    <!-- ============================================
+    SCRIPTS - URUTAN PENTING!
+    ============================================ -->
+    <!-- 1. Utility Functions (Tidak ada dependensi) -->
+    <script src="js/utils.js"></script>
+    
+    <!-- 2. Database (Tidak ada dependensi) -->
+    <script src="js/database.js"></script>
+    
+    <!-- 3. Project Manager (Membutuhkan utils.js) -->
+    <script src="js/project.js"></script>
+    
+    <!-- 4. Aplikasi Utama (Membutuhkan utils.js, database.js, project.js) -->
+    <script src="js/app.js"></script>
+    
+    <!-- ============================================
+    FALLBACK - Jika Script Gagal Load
+    ============================================ -->
+    <script>
+        (function() {
+            "use strict";
+            
+            // Cek apakah Utils terload
+            function checkDependencies() {
+                const errorEl = document.getElementById('errorMessage');
+                const errorText = document.getElementById('errorText');
+                let hasError = false;
+                let errors = [];
+                
+                // Cek Utils
+                if (typeof Utils === 'undefined') {
+                    errors.push('❌ Utils tidak ditemukan! Pastikan file utils.js terload dengan benar.');
+                    hasError = true;
+                }
+                
+                // Cek DATABASE
+                if (typeof DATABASE === 'undefined') {
+                    errors.push('❌ Database tidak ditemukan! Pastikan file database.js terload dengan benar.');
+                    hasError = true;
+                }
+                
+                // Cek ProjectManager
+                if (typeof ProjectManager === 'undefined') {
+                    errors.push('❌ ProjectManager tidak ditemukan! Pastikan file project.js terload dengan benar.');
+                    hasError = true;
+                }
+                
+                if (hasError) {
+                    errorEl.classList.add('show');
+                    errorText.innerHTML = errors.join('<br>');
+                    console.error('❌ Dependency errors:', errors);
+                } else {
+                    errorEl.classList.remove('show');
+                    console.log('✅ Semua dependensi terload dengan baik!');
+                }
+                
+                return !hasError;
+            }
+            
+            // Jalankan pengecekan setelah semua script terload
+            setTimeout(checkDependencies, 500);
+            
+            // Cek juga saat window load
+            window.addEventListener('load', function() {
+                setTimeout(checkDependencies, 300);
+            });
+            
+        })();
+    </script>
+</body>
+              </html>
